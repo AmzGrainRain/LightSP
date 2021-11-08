@@ -145,8 +145,7 @@ body
   height 100vh
   color #fff
   font 16px/1.2 'CUS'
-  background url('./assets/bg.jpg') no-repeat fixed
-  background-position 75% center
+  background url('./assets/bg.jpg') no-repeat center / cover
   overflow hidden
 kbd
   margin 0 .2rem
