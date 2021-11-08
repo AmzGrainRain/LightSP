@@ -59,3 +59,5 @@ manifest文件位于项目内的public目录下，编译后与index.html文件�
     }
 }
 ```
+## 开源协议
+[MIT](https://opensource.org/licenses/MIT)
