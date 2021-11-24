@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "起始页",
+    "version": "1.0",
+    "action": {
+        "default_title": "垃圾百度"
+    },
+    "author": "kihanlee",
+    "description": "垃圾百度。",
+    "host_permissions": [
+        "http://www.baidu.com/",
+        "https://www.baidu.com/"
+    ],
+    "chrome_url_overrides" : {
+        "newtab": "index.html"
+    }
+}
