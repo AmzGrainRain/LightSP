@@ -1,21 +1,21 @@
 <template>
   <img :src="`${require(`@/assets/wallpaper/home-${currentBackground}.jpg`)}`" alt="bg">
   <!-- 右上角帮助按钮 -->
-  <svg class="help-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="display_help = true">
+  <svg class="help-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="displayHelp = true">
     <path d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"></path>
     <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
   </svg>
   <!-- 帮助 -->
-  <div class="help" v-show="display_help" :class="{ 'help-on': display_help }">
+  <div class="help" v-show="displayHelp" :class="{ 'help-on': displayHelp }">
     <div class="help-content">
       <div>
         <h2>快捷键解释</h2>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="display_help = false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="displayHelp = false">
           <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
         </svg>
       </div>
       <ul>
-        <li><kbd>Ctrl</kbd>+<kbd>t</kbd>&nbsp;翻译搜索框内容</li>
+        <li><kbd>Ctrl</kbd>+<kbd>f</kbd>&nbsp;翻译搜索框内容</li>
         <li><kbd>Ctrl</kbd>+<kbd>b</kbd>&nbsp;必应搜索</li>
         <li><kbd>Ctrl</kbd>+<kbd>g</kbd>&nbsp;谷歌搜索</li>
         <li><kbd>Ctrl</kbd>+<kbd>d</kbd>&nbsp;开发者搜索</li>
@@ -24,14 +24,14 @@
   </div>
   <!-- 搜索栏 -->
   <div class="search-box">
-    <Title :TextSlot="current_time" />
+    <Title :TextSlot="currentTime" />
     <br />
-    <Input placeholder="输入搜索内容" @updateEvent="Input_updateEvent" @enterEvent="Input_enterEvent" />
+    <Input placeholder="输入搜索内容" @updateEvent="inputUpdateEvent" @enterEvent="inputEnterEvent" />
   </div>
   <!-- 装饰用的横线 -->
-  <hr v-show="result_list.length && keywords.length" />
+  <hr v-show="resultList.length && keywords.length" />
   <!-- 关键词联想列表 -->
-  <List :listData="result_list" :keywords="keywords" />
+  <List :listData="resultList" :keywords="keywords" />
 </template>
 
 <script>
@@ -48,17 +48,16 @@ export default {
   },
   setup () {
     /* 动态数据 */
-    let current_time = ref('等待时间函数启动...')
-    let keywords = ref('')
-    let result_list = ref([])
-    let display_help = ref(false)
-    let currentBackground = ref(Math.floor(Math.random() * (10 - 1) + 1))
+    const currentTime = ref('等待时间函数启动...')
+    const keywords = ref('')
+    const resultList = ref([])
+    const displayHelp = ref(false)
+    const currentBackground = ref(Math.floor(Math.random() * (10 - 1) + 1))
     /* 方法 */
-    const Input_updateEvent = str => { // Input组件 - 内容更新事件
+    const inputUpdateEvent = str => { // Input组件 - 内容更新事件
       keywords.value = String(str)
-      console.log(keywords.value)
     }
-    const Input_enterEvent = str => { // Input组件 - 回车事件
+    const inputEnterEvent = str => { // Input组件 - 回车事件
       window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${str}`
     }
     /* 监听动态数据变化 */
@@ -75,9 +74,12 @@ export default {
       }
       axios.get('https://www.baidu.com/sugrec', params).then(res => {
         // 结果为空时
-        if (!Object.keys(res.data).length) return result_list.value = []
+        if (!Object.keys(res.data).length) {
+          resultList.value = []
+          return
+        }
         // 反之
-        let tmp = []
+        const tmp = []
         if (res.data.g.length) {
           for (let i = 0, len = res.data.g.length; i < len; i++) {
             tmp.push({
@@ -86,8 +88,8 @@ export default {
             })
           }
         }
-        if (tmp.length) result_list.value = tmp
-        else result_list.value = []
+        if (tmp.length) resultList.value = tmp
+        else resultList.value = []
       }).catch(err => {
         console.log(err)
       })
@@ -102,30 +104,31 @@ export default {
         const h = t.getHours() < 10 ? `0${t.getHours()}` : t.getHours()
         const m = t.getMinutes() < 10 ? `0${t.getMinutes()}` : t.getMinutes()
         const s = t.getSeconds() < 10 ? `0${t.getSeconds()}` : t.getSeconds()
-        current_time.value = `${h}:${m}:${s}`
+        currentTime.value = `${h}:${m}:${s}`
       }, 1000)
       // 热键捕捉
-      document.onkeydown = e => {
-        // Ctrl + T: 快速翻译
-        if (e.ctrltKey && e.key == 't') {
+      document.addEventListener('keydown', (e) => {
+        // Ctrl + F: 快速翻译
+        if (e.ctrlKey && e.key === 'f') {
           window.location.href = `https://fanyi.baidu.com/#en/zh/${keywords.value}`
         }
         // Ctrl + B: 必应搜索
-        if (e.ctrltKey && e.key == 'b') {
+        if (e.ctrlKey && e.key === 'b') {
           window.location.href = `https://cn.bing.com/search?q=${keywords.value}`
         }
         // Ctrl + G: 谷歌搜索
-        if (e.ctrltKey && e.key == 'g') {
+        if (e.ctrlKey && e.key === 'g') {
           window.location.href = `https://www.google.com/search?q=${keywords.value}`
         }
         // Ctrl + D: 百度开发者搜索
-        if (e.ctrltKey && e.key == 'd') {
+        if (e.ctrlKey && e.key === 'd') {
           window.location.href = `https://kaifa.baidu.com/searchPage?wd=${keywords.value}&module=SEARCH`
         }
-      }
+        e.preventDefault()
+      })
     })
     /* 返回数据 */
-    return { current_time, keywords, result_list, display_help, currentBackground, Input_updateEvent, Input_enterEvent }
+    return { currentTime, keywords, resultList, displayHelp, currentBackground, inputUpdateEvent, inputEnterEvent }
   }
 }
 </script>

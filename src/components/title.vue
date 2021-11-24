@@ -8,7 +8,7 @@ export default {
     ClassSlot: String,
     StyleSlot: String,
     TextSlot: String
-  },
+  }
 }
 </script>
 
