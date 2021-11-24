@@ -15,10 +15,10 @@
         </svg>
       </div>
       <ul>
-        <li><kbd>Shift</kbd>+<kbd>t</kbd>&nbsp;翻译搜索框内容</li>
-        <li><kbd>Shift</kbd>+<kbd>b</kbd>&nbsp;必应搜索</li>
-        <li><kbd>Shift</kbd>+<kbd>g</kbd>&nbsp;谷歌搜索</li>
-        <li><kbd>Shift</kbd>+<kbd>d</kbd>&nbsp;开发者搜索</li>
+        <li><kbd>Ctrl</kbd>+<kbd>t</kbd>&nbsp;翻译搜索框内容</li>
+        <li><kbd>Ctrl</kbd>+<kbd>b</kbd>&nbsp;必应搜索</li>
+        <li><kbd>Ctrl</kbd>+<kbd>g</kbd>&nbsp;谷歌搜索</li>
+        <li><kbd>Ctrl</kbd>+<kbd>d</kbd>&nbsp;开发者搜索</li>
       </ul>
     </div>
   </div>
@@ -106,20 +106,20 @@ export default {
       }, 1000)
       // 热键捕捉
       document.onkeydown = e => {
-        // Shift + T: 快速翻译
-        if (e.shiftKey && e.key == 't') {
+        // Ctrl + T: 快速翻译
+        if (e.ctrltKey && e.key == 't') {
           window.location.href = `https://fanyi.baidu.com/#en/zh/${keywords.value}`
         }
-        // Shift + B: 必应搜索
-        if (e.shiftKey && e.key == 'b') {
+        // Ctrl + B: 必应搜索
+        if (e.ctrltKey && e.key == 'b') {
           window.location.href = `https://cn.bing.com/search?q=${keywords.value}`
         }
-        // Shift + G: 谷歌搜索
-        if (e.shiftKey && e.key == 'g') {
+        // Ctrl + G: 谷歌搜索
+        if (e.ctrltKey && e.key == 'g') {
           window.location.href = `https://www.google.com/search?q=${keywords.value}`
         }
-        // Shift + D: 百度开发者搜索
-        if (e.shiftKey && e.key == 'd') {
+        // Ctrl + D: 百度开发者搜索
+        if (e.ctrltKey && e.key == 'd') {
           window.location.href = `https://kaifa.baidu.com/searchPage?wd=${keywords.value}&module=SEARCH`
         }
       }
