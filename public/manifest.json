@@ -1,12 +1,12 @@
 {
     "manifest_version": 3,
     "name": "起始页",
-    "version": "1.0",
+    "version": "2.0",
     "action": {
-        "default_title": "垃圾百度"
+        "default_title": "轻|净"
     },
     "author": "kihanlee",
-    "description": "垃圾百度。",
+    "description": "简易起始页 - Lightness SP",
     "host_permissions": [
         "http://www.baidu.com/",
         "https://www.baidu.com/"
