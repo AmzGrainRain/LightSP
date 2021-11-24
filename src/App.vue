@@ -111,20 +111,23 @@ export default {
         // Ctrl + F: 快速翻译
         if (e.ctrlKey && e.key === 'f') {
           window.location.href = `https://fanyi.baidu.com/#en/zh/${keywords.value}`
+          e.preventDefault()
         }
         // Ctrl + B: 必应搜索
         if (e.ctrlKey && e.key === 'b') {
           window.location.href = `https://cn.bing.com/search?q=${keywords.value}`
+          e.preventDefault()
         }
         // Ctrl + G: 谷歌搜索
         if (e.ctrlKey && e.key === 'g') {
           window.location.href = `https://www.google.com/search?q=${keywords.value}`
+          e.preventDefault()
         }
         // Ctrl + D: 百度开发者搜索
         if (e.ctrlKey && e.key === 'd') {
           window.location.href = `https://kaifa.baidu.com/searchPage?wd=${keywords.value}&module=SEARCH`
+          e.preventDefault()
         }
-        e.preventDefault()
       })
     })
     /* 返回数据 */
