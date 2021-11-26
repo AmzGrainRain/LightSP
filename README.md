@@ -7,7 +7,7 @@
 ## 兼容性
 适用于所有chromium内核且支持扩展的浏览器。
 
-## 初始化
+## 初始化 & 启动
 ```
 npm install && npm run serve
 ```
