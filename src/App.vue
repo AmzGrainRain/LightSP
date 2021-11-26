@@ -170,9 +170,6 @@ export default {
   box-sizing border-box
 ::-webkit-scrollbar
   display none
-@font-face
-  font-family 'CUS'
-  src url('./assets/font.ttf')
 body
   display flex
   justify-content center
@@ -180,7 +177,7 @@ body
   width 100%
   height 100vh
   color #fff
-  font 16px/1.2 'CUS'
+  font 16px/1.2 "PingFang SC", "Microsoft YaHei", sans-serif
   overflow hidden
 kbd
   margin 0 .2rem
