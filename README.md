@@ -7,7 +7,7 @@
 ## 兼容性
 适用于Mozill Firefox 54.0以上所有版本。
 
-## 初始化
+## 初始化 & 启动
 ```
 npm install && npm run serve
 ```
