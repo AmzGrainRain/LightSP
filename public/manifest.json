@@ -7,7 +7,7 @@
     },
     "author": "kihanlee",
     "description": "简易起始页 - Lightness SP",
-    "host_permissions": [
+    "permissions": [
         "*://www.baidu.com/*"
     ],
     "chrome_url_overrides" : {
