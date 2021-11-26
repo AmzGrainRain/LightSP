@@ -12,7 +12,7 @@
 npm install && npm run serve
 ```
 
-## 编译代码
+## 编译
 ```
 npm run build
 ```
