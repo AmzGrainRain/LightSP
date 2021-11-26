@@ -9,12 +9,7 @@
 
 ## 初始化
 ```
-npm install
-```
-
-## 启动脚手架
-```
-npm run serve
+npm install && npm run serve
 ```
 
 ## 编译代码
