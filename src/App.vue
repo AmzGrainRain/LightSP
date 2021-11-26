@@ -36,7 +36,7 @@
 
 <script>
 import { onMounted, watch, ref } from 'vue'
-import axios from 'axios'
+import { jsonp } from 'vue-jsonp'
 import Title from './components/title.vue'
 import Input from './components/responsive_input.vue'
 import List from './components/list.vue'
@@ -63,36 +63,63 @@ export default {
     /* 监听动态数据变化 */
     watch(keywords, (newVal, oldVal) => {
       if (!String(newVal).length) return
-      // 获取百度关键词联想数据
-      const params = {
-        params: {
-          ie: 'utf-8',
-          prod: 'pc',
-          from: 'pc_web',
-          wd: keywords.value
-        }
-      }
-      axios.get('https://www.baidu.com/sugrec', params).then(res => {
+      jsonp('https://www.baidu.com/sugrec', {
+        callbackName: '_JSONP',
+        ie: 'utf-8',
+        prod: 'pc',
+        from: 'pc_web',
+        wd: keywords.value,
+        json: 1,
+        bs: 'jsonp'
+      }).then(res => {
         // 结果为空时
-        if (!Object.keys(res.data).length) {
+        if (!Object.keys(res).length) {
           resultList.value = []
           return
         }
         // 反之
         const tmp = []
-        if (res.data.g.length) {
-          for (let i = 0, len = res.data.g.length; i < len; i++) {
+        if (res.g.length) {
+          for (let i = 0, len = res.g.length; i < len; i++) {
             tmp.push({
-              text: res.data.g[i].q,
-              url: `https://www.baidu.com/s?ie=utf-8&wd=${res.data.g[i].q}`
+              text: res.g[i].q,
+              url: `https://www.baidu.com/s?ie=utf-8&wd=${res.g[i].q}`
             })
           }
         }
         if (tmp.length) resultList.value = tmp
         else resultList.value = []
-      }).catch(err => {
-        console.log(err)
       })
+      // // 获取百度关键词联想数据
+      // const params = {
+      //   params: {
+      //     ie: 'utf-8',
+      //     prod: 'pc',
+      //     from: 'pc_web',
+      //     wd: keywords.value
+      //   }
+      // }
+      // axios.get('https://www.baidu.com/sugrec', params).then(res => {
+      //   // 结果为空时
+      //   if (!Object.keys(res.data).length) {
+      //     resultList.value = []
+      //     return
+      //   }
+      //   // 反之
+      //   const tmp = []
+      //   if (res.data.g.length) {
+      //     for (let i = 0, len = res.data.g.length; i < len; i++) {
+      //       tmp.push({
+      //         text: res.data.g[i].q,
+      //         url: `https://www.baidu.com/s?ie=utf-8&wd=${res.data.g[i].q}`
+      //       })
+      //     }
+      //   }
+      //   if (tmp.length) resultList.value = tmp
+      //   else resultList.value = []
+      // }).catch(err => {
+      //   console.log(err)
+      // })
     })
     /* 生命周期钩子 */
     onMounted(() => {
