@@ -3,8 +3,8 @@
 ## 扩展介绍
 
 基于vue3构建的一个简易起始页。</br>
-启用后，此扩展会将空白页覆盖为起始页导航。
-我相信说的再多也不如[体验在线版](https://www.kihanlee.site/lightnesssp/)来的直接。</br>
+启用后，此扩展会将空白页覆盖为起始页导航。</br>
+我相信说的再多也不如[体验在线版](https://www.kihanlee.site/lightnesssp/)来的直接。
 
 ## 兼容性
 适用于Mozill Firefox 54.0以上所有版本。
