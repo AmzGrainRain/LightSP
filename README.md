@@ -1,7 +1,7 @@
 # LightnessSP - 拒绝花里胡哨
 ---
 ## 扩展介绍
-基于vue3构建的一个简易起始页。
+基于vue3构建的一个简易起始页。[点击体验在线版本](https://www.kihanlee.site/lightnesssp/)
 
 ## 兼容性
 使用JSONP发送跨域请求，IE兼容性未知。
