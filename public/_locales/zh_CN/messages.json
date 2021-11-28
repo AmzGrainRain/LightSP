@@ -1,0 +1,11 @@
+{
+    "extName": {
+        "message": "LightnessSP - 轻起始页"
+    },
+    "extDefaultTitle": {
+        "message": "愿每次搜索都有好心情~"
+    },
+    "extDescription": {
+        "message": "基于vue3开发的简易起始页，支持百度搜索、百度开发者搜索、必应搜索、谷歌搜索、百度翻译。"
+    }
+}
