@@ -8,11 +8,11 @@ export default {
   props: {
     ClassSlot: String,
     StyleSlot: String,
-    placeholder: String,
+    placeholder: String
   },
   setup (props, { emit }) {
     /* 动态数据 */
-    let text = ref('')
+    const text = ref('')
     /* 方法 */
     const enter = () => {
       emit('enterEvent', text.value)
