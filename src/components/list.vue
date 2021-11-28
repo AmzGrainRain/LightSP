@@ -42,7 +42,7 @@ export default {
         line-height 2.5rem
         text-indent .8rem
         text-decoration inherit
-        text-shadow 0 0 .3rem #000
+        text-shadow 0 0 .3rem #555
         border-radius .6rem
         background-color #fff6
         backdrop-filter blur(.5rem)
