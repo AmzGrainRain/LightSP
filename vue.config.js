@@ -5,6 +5,7 @@ module.exports = {
       return args
     })
   },
+  publicPath: '/lightnesssp',
   productionSourceMap: false // Build时不生成map文件
   // devServer: {
   //   disableHostCheck: true, // 允许外网访问dev服务器
