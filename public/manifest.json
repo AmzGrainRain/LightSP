@@ -1,12 +1,13 @@
 {
     "manifest_version": 2,
-    "name": "起始页",
+    "name": "__MSG_extName__",
     "version": "2.0",
     "browser_action": {
-        "default_title": "轻|净"
+        "default_title": "__MSG_extDefaultTitle__"
     },
     "author": "kihanlee",
-    "description": "简易起始页 - Lightness SP",
+    "description": "__MSG_extDescription__",
+    "default_locale": "zh_CN",
     "permissions": [
         "*://www.baidu.com/*"
     ],
