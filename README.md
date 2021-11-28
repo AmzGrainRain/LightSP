@@ -19,8 +19,7 @@ npm run build
 
 ## 使用方法
 - 前往[发布页](https://github.com/OCEANECHO-GrainRrain/LightnessSP/releases)下载最新发布的版本。
-- 解压缩压缩包。
-- 将浏览器首页设置为压缩包内的index.html即可。
+- 将文件解压缩到服务器根目录的 lightnesssp 目录内即可。
 
 ## 开源协议
 [MIT](https://opensource.org/licenses/MIT)
