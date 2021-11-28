@@ -17,5 +17,5 @@ h1
   letter-spacing .2rem
   font-size 1.8rem
   font-weight normal
-  text-shadow 0 0 2px #555
+  text-shadow 0 0 2px #333
 </style>
