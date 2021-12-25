@@ -1,5 +1,5 @@
 <template>
-  <img :src="`${require(`@/assets/wallpaper/home-${currentBackground}.jpg`)}`" alt="bg">
+  <img :src="`./wallpaper/home-${currentBackground}.jpg`" alt="bg">
   <!-- 右上角帮助按钮 -->
   <svg class="help-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="displayHelp = true">
     <path d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"></path>
@@ -24,7 +24,7 @@
   </div>
   <!-- 搜索栏 -->
   <div class="search-box">
-    <Title :TextSlot="currentTime" />
+    <Clock />
     <br />
     <Input placeholder="输入搜索内容" @updateEvent="inputUpdateEvent" @enterEvent="inputEnterEvent" />
   </div>
@@ -37,30 +37,43 @@
 <script>
 import { onMounted, watch, ref } from 'vue'
 import axios from 'axios'
-import Title from './components/title.vue'
-import Input from './components/responsive_input.vue'
-import List from './components/list.vue'
+import Clock from '@/components/clock.vue'
+import Input from '@/components/responsive_input.vue'
+import List from '@/components/list.vue'
 export default {
   components: {
-    Title,
+    Clock,
     Input,
     List
   },
   setup () {
-    /* 动态数据 */
-    const currentTime = ref('等待时间函数启动...')
+    /**
+     *
+     *  动态数据
+     *
+     */
     const keywords = ref('')
     const resultList = ref([])
     const displayHelp = ref(false)
     const currentBackground = ref(Math.floor(Math.random() * (10 - 1) + 1))
-    /* 方法 */
+
+    /**
+     *
+     *  方法
+     *
+     */
     const inputUpdateEvent = str => { // Input组件 - 内容更新事件
       keywords.value = String(str)
     }
     const inputEnterEvent = str => { // Input组件 - 回车事件
       window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${str}`
     }
-    /* 监听动态数据变化 */
+
+    /**
+     *
+     *  监听动态数据变化
+     *
+     */
     watch(keywords, (newVal, oldVal) => {
       if (!String(newVal).length) return
       // 获取百度关键词联想数据
@@ -94,18 +107,13 @@ export default {
         console.log(err)
       })
     })
-    /* 生命周期钩子 */
+
+    /**
+     *
+     *  生命周期钩子
+     *
+     */
     onMounted(() => {
-      // 搜索框焦点
-      document.querySelector('.search-box input').focus()
-      // 动态刷新时间
-      setInterval(() => {
-        const t = new Date()
-        const h = t.getHours() < 10 ? `0${t.getHours()}` : t.getHours()
-        const m = t.getMinutes() < 10 ? `0${t.getMinutes()}` : t.getMinutes()
-        const s = t.getSeconds() < 10 ? `0${t.getSeconds()}` : t.getSeconds()
-        currentTime.value = `${h}:${m}:${s}`
-      }, 1000)
       // 热键捕捉
       document.addEventListener('keydown', (e) => {
         // Ctrl + F: 快速翻译
@@ -130,8 +138,13 @@ export default {
         }
       })
     })
-    /* 返回数据 */
-    return { currentTime, keywords, resultList, displayHelp, currentBackground, inputUpdateEvent, inputEnterEvent }
+
+    /**
+     *
+     *  返回数据
+     *
+     */
+    return { keywords, resultList, displayHelp, currentBackground, inputUpdateEvent, inputEnterEvent }
   }
 }
 </script>
