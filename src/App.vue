@@ -37,9 +37,9 @@
 <script>
 import { onMounted, watch, ref } from 'vue'
 import axios from 'axios'
-import Clock from './components/clock.vue'
-import Input from './components/responsive_input.vue'
-import List from './components/list.vue'
+import Clock from '@/components/clock.vue'
+import Input from '@/components/responsive_input.vue'
+import List from '@/components/list.vue'
 export default {
   components: {
     Clock,
@@ -138,7 +138,12 @@ export default {
         }
       })
     })
-    /* 返回数据 */
+
+    /**
+     *
+     *  返回数据
+     *
+     */
     return { keywords, resultList, displayHelp, currentBackground, inputUpdateEvent, inputEnterEvent }
   }
 }
