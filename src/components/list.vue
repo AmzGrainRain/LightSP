@@ -1,5 +1,5 @@
 <template>
-  <div class="result-list" :class="{'show': listData.length && keywords.length}">
+  <div id="vList" :class="{'show': listData.length && keywords.length}">
     <ul>
       <li v-for="(item, index) in listData" :key="index">
         <a :href="item.url">{{ item.text }}</a>
@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.result-list
+#vList
   margin-top .5rem
   height 0rem
   overflow hidden auto
@@ -43,7 +43,7 @@ export default {
         text-indent .8rem
         text-decoration inherit
         text-shadow 0 0 .3rem #333
-        border-radius .6rem
+        border-radius 1rem
         background-color #fff6
         backdrop-filter blur(.5rem)
         transition all .3s
@@ -51,5 +51,5 @@ export default {
           text-indent 1rem
           background-color #fff9
 .show
-  height calc(100% - 12rem)
+  height calc(100% - 12rem) !important
 </style>

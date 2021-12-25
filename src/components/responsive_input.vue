@@ -1,5 +1,5 @@
 <template>
-  <input type="text" :placeholder="placeholder" v-model="text" @keyup.enter="enter()" />
+  <input id="vInput" type="text" :placeholder="placeholder" v-model="text" @keyup.enter="enter()" />
 </template>
 
 <script>
@@ -11,13 +11,27 @@ export default {
     placeholder: String
   },
   setup (props, { emit }) {
-    /* 动态数据 */
+    /**
+     *
+     *  动态数据
+     *
+    */
     const text = ref('')
-    /* 方法 */
+
+    /**
+     *
+     *  方法
+     *
+     */
     const enter = () => {
       emit('enterEvent', text.value)
     }
-    /* 监听变化 */
+
+    /**
+     *
+     *  监听变化
+     *
+     */
     watch(text, (newVal, oldVal) => {
       emit('updateEvent', newVal)
     })
@@ -31,11 +45,10 @@ input
   padding 0 .5rem
   width 90%
   height 2.5rem
-  font-family 'CUS'
   font-size 1rem
   text-align center
   border 0
-  border-radius .6rem
+  border-radius 1rem
   outline none
   background-color #fff9
   backdrop-filter blur(.5rem)
