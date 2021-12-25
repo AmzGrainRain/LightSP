@@ -101,7 +101,6 @@ export default {
         }
         if (tmp.length) resultList.value = tmp
         else resultList.value = []
-        console.log(resultList.value)
       })
     })
 
@@ -172,7 +171,7 @@ img
   height 100vh
   object-fit cover
   z-index -1
-#main
+main
   padding 1rem
   width 40rem
   height 85%
