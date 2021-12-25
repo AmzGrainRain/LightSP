@@ -51,5 +51,5 @@ export default {
           text-indent 1rem
           background-color #fff9
 .show
-  height calc(100% - 12rem)
+  height calc(100% - 12rem) !important
 </style>
