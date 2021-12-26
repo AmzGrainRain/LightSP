@@ -2,7 +2,7 @@
   <div id="vList" :class="{'show': listData.length && keywords.length}">
     <ul>
       <li v-for="(item, index) in listData" :key="index">
-        <a :href="item.url">{{ item.text }}</a>
+        <a :href="item.url" :class="{'selected': selected == index}">{{ item.text }}</a>
       </li>
     </ul>
   </div>
@@ -12,7 +12,8 @@
 export default {
   props: {
     listData: Array,
-    keywords: String
+    keywords: String,
+    selected: Number
   }
 }
 </script>
@@ -52,4 +53,7 @@ export default {
           background-color #fff9
 .show
   height calc(100% - 12rem) !important
+.selected
+  text-indent 1rem !important
+  background-color #fff9 !important
 </style>

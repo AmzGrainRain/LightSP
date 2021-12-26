@@ -1,24 +1,24 @@
 <template>
-  <img :src="`./wallpaper/home-${currentBackground}.jpg`" alt="bg">
+  <img :src="`./wallpaper/home-${data.background}.jpg`" alt="bg">
   <!-- 右上角帮助按钮 -->
-  <svg class="help-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="displayHelp = true">
+  <svg class="help-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="background.help = true">
     <path d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"></path>
     <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
   </svg>
   <!-- 帮助 -->
-  <div class="help" v-show="displayHelp" :class="{ 'help-on': displayHelp }">
+  <div class="help" v-show="data.help" :class="{ 'help-on': data.help }">
     <div class="help-content">
       <div>
         <h2>快捷键解释</h2>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="displayHelp = false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="data.help = false">
           <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
         </svg>
       </div>
       <ul>
-        <li><kbd>Ctrl</kbd>+<kbd>f</kbd>&nbsp;翻译搜索框内容</li>
-        <li><kbd>Ctrl</kbd>+<kbd>b</kbd>&nbsp;必应搜索</li>
-        <li><kbd>Ctrl</kbd>+<kbd>g</kbd>&nbsp;谷歌搜索</li>
-        <li><kbd>Ctrl</kbd>+<kbd>d</kbd>&nbsp;开发者搜索</li>
+        <li><kbd>Ctrl</kbd>+<kbd>F</kbd>&nbsp;翻译搜索框内容</li>
+        <li><kbd>Ctrl</kbd>+<kbd>B</kbd>&nbsp;必应搜索</li>
+        <li><kbd>Ctrl</kbd>+<kbd>G</kbd>&nbsp;谷歌搜索</li>
+        <li><kbd>Ctrl</kbd>+<kbd>D</kbd>&nbsp;开发者搜索</li>
       </ul>
     </div>
   </div>
@@ -26,20 +26,20 @@
   <div class="search-box">
     <Clock />
     <br />
-    <Input placeholder="输入搜索内容" @updateEvent="inputUpdateEvent" @enterEvent="inputEnterEvent" />
+    <Input placeholder="输入搜索内容" @updateEvent="inputUpdateEvent" />
   </div>
   <!-- 装饰用的横线 -->
-  <hr v-show="resultList.length && keywords.length" />
+  <hr v-show="data.result.length && data.keywords.length" />
   <!-- 关键词联想列表 -->
-  <List :listData="resultList" :keywords="keywords" />
+  <List :listData="data.result" :selected="data.selected" :keywords="data.keywords" />
 </template>
 
 <script>
-import { onMounted, watch, ref } from 'vue'
+import { onMounted, watch, reactive } from 'vue'
 import axios from 'axios'
 import Clock from '@/components/clock.vue'
-import Input from '@/components/responsive_input.vue'
-import List from '@/components/list.vue'
+import Input from './components/responsive_input.vue'
+import List from './components/list.vue'
 export default {
   components: {
     Clock,
@@ -52,10 +52,13 @@ export default {
      *  动态数据
      *
      */
-    const keywords = ref('')
-    const resultList = ref([])
-    const displayHelp = ref(false)
-    const currentBackground = ref(Math.floor(Math.random() * (10 - 1) + 1))
+    const data = reactive({
+      keywords: '',
+      result: [],
+      selected: 0,
+      help: false,
+      background: Math.floor(Math.random() * (10 - 1) + 1)
+    })
 
     /**
      *
@@ -63,10 +66,7 @@ export default {
      *
      */
     const inputUpdateEvent = str => { // Input组件 - 内容更新事件
-      keywords.value = String(str)
-    }
-    const inputEnterEvent = str => { // Input组件 - 回车事件
-      window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${str}`
+      data.keywords = String(str)
     }
 
     /**
@@ -74,7 +74,7 @@ export default {
      *  监听动态数据变化
      *
      */
-    watch(keywords, (newVal, oldVal) => {
+    watch(() => data.keywords, (newVal, oldVal) => {
       if (!String(newVal).length) return
       // 获取百度关键词联想数据
       const params = {
@@ -82,13 +82,13 @@ export default {
           ie: 'utf-8',
           prod: 'pc',
           from: 'pc_web',
-          wd: keywords.value
+          wd: data.keywords
         }
       }
       axios.get('https://www.baidu.com/sugrec', params).then(res => {
         // 结果为空时
         if (!Object.keys(res.data).length) {
-          resultList.value = []
+          data.result = []
           return
         }
         // 反之
@@ -101,8 +101,8 @@ export default {
             })
           }
         }
-        if (tmp.length) resultList.value = tmp
-        else resultList.value = []
+        if (tmp.length) data.result = tmp
+        else data.result = []
       }).catch(err => {
         console.log(err)
       })
@@ -116,35 +116,43 @@ export default {
     onMounted(() => {
       // 热键捕捉
       document.addEventListener('keydown', (e) => {
+        // 上箭头
+        if (e.key === 'ArrowUp') {
+          data.selected = data.selected - 1 < 0 ? data.result.length - 1 < 0 ? 0 : data.result.length - 1 : data.selected - 1
+        }
+        // 下箭头
+        if (e.key === 'ArrowDown') {
+          data.selected = data.selected + 1 > data.result.length - 1 ? 0 : data.selected + 1
+        }
+        // 回车事件
+        if (e.key === 'Enter') {
+          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.selected].text}`
+        }
         // Ctrl + F: 快速翻译
         if (e.ctrlKey && e.key === 'f') {
-          window.location.href = `https://fanyi.baidu.com/#en/zh/${keywords.value}`
+          window.location.href = `https://fanyi.baidu.com/#en/zh/${data.keywords}`
           e.preventDefault()
         }
         // Ctrl + B: 必应搜索
         if (e.ctrlKey && e.key === 'b') {
-          window.location.href = `https://cn.bing.com/search?q=${keywords.value}`
+          window.location.href = `https://cn.bing.com/search?q=${data.keywords}`
           e.preventDefault()
         }
         // Ctrl + G: 谷歌搜索
         if (e.ctrlKey && e.key === 'g') {
-          window.location.href = `https://www.google.com/search?q=${keywords.value}`
+          window.location.href = `https://www.google.com/search?q=${data.keywords}`
           e.preventDefault()
         }
         // Ctrl + D: 百度开发者搜索
         if (e.ctrlKey && e.key === 'd') {
-          window.location.href = `https://kaifa.baidu.com/searchPage?wd=${keywords.value}&module=SEARCH`
+          window.location.href = `https://kaifa.baidu.com/searchPage?wd=${data.keywords}&module=SEARCH`
           e.preventDefault()
         }
       })
     })
 
-    /**
-     *
-     *  返回数据
-     *
-     */
-    return { keywords, resultList, displayHelp, currentBackground, inputUpdateEvent, inputEnterEvent }
+    /* 返回数据 */
+    return { data, inputUpdateEvent }
   }
 }
 </script>
@@ -183,7 +191,7 @@ img
 main
   padding 1rem
   width 40rem
-  height 90%
+  height 85%
   @media screen and (min-width: 1280px)
     width 48rem
   .help-icon
