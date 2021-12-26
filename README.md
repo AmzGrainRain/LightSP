@@ -2,8 +2,8 @@
 ---
 ## 扩展介绍
 基于vue3构建的一个简易起始页。</br>
-火狐浏览器请看[这里](https://github.com/KiHanLee/LightnessSP/tree/firefox)。
-基于Chromium内核且支持扩展的浏览器请看[这里](https://github.com/KiHanLee/LightnessSP/tree/chromium)。
+火狐浏览器请看[这里](https://github.com/KiHanLee/LightnessSP/tree/firefox)。</br>
+基于Chromium内核且支持扩展的浏览器请看[这里](https://github.com/KiHanLee/LightnessSP/tree/chromium)。</br>
 我相信说的再多也不如[体验在线版](https://www.kihanlee.site/lightnesssp/)来的直接。
 
 ## 兼容性
