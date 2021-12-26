@@ -1,5 +1,5 @@
 <template>
-  <input id="vInput" type="text" :placeholder="placeholder" v-model="text" @keyup.enter="enter()" />
+  <input id="vInput" type="text" :placeholder="placeholder" v-model="text" />
 </template>
 
 <script>
@@ -20,22 +20,13 @@ export default {
 
     /**
      *
-     *  方法
-     *
-     */
-    const enter = () => {
-      emit('enterEvent', text.value)
-    }
-
-    /**
-     *
      *  监听变化
      *
      */
     watch(text, (newVal, oldVal) => {
       emit('updateEvent', newVal)
     })
-    return { text, enter }
+    return { text }
   }
 }
 </script>
