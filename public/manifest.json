@@ -3,7 +3,16 @@
     "name": "__MSG_extName__",
     "version": "2.0.3",
     "browser_action": {
-        "default_title": "__MSG_extDefaultTitle__"
+        "default_title": "__MSG_extDefaultTitle__",
+        "default_icon": {
+            "16": "/assets/ico_16x16.png",
+            "32": "/assets/ico_32x32.png",
+            "48": "/assets/ico_48x48.png",
+            "64": "/assets/ico_64x64.png",
+            "80": "/assets/ico_80x80.png",
+            "96": "/assets/ico_96x96.png",
+            "128": "/assets/ico_128x128.png"
+        }
     },
     "icons": {
         "16": "/assets/ico_16x16.png",
