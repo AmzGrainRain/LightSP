@@ -11,6 +11,12 @@
             "128": "/assets/ico_128x128.png"
         }
     },
+    "icons": {
+        "16": "/assets/ico_16x16.png",
+        "32": "/assets/ico_32x32.png",
+        "48": "/assets/ico_48x48.png",
+        "128": "/assets/ico_128x128.png"
+    },
     "author": "kihanlee",
     "description": "__MSG_extDescription__",
     "default_locale": "zh_CN",
