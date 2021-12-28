@@ -1,11 +1,11 @@
 <template>
   <img :src="`./wallpaper/home-${data.background}.jpg`" alt="bg">
-  <!-- 右上角帮助按钮 -->
-  <svg class="help-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="background.help = true">
+  <!-- 帮助按钮 -->
+  <svg class="help-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="data.help = true">
     <path d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"></path>
     <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
   </svg>
-  <!-- 帮助 -->
+  <!-- 帮助弹窗 -->
   <div class="help" v-show="data.help" :class="{ 'help-on': data.help }">
     <div class="help-content">
       <div>
@@ -22,29 +22,35 @@
       </ul>
     </div>
   </div>
+
+  <!-- 天气组件 -->
+  <vWeather />
+
   <!-- 搜索栏 -->
   <div class="search-box">
-    <Clock />
+    <vClock />
     <br />
-    <Input placeholder="输入搜索内容" @updateEvent="inputUpdateEvent" />
+    <vInput placeholder="输入搜索内容" @updateEvent="inputUpdateEvent" />
   </div>
   <!-- 装饰用的横线 -->
   <hr v-show="data.result.length && data.keywords.length" />
   <!-- 关键词联想列表 -->
-  <List :listData="data.result" :selected="data.selected" :keywords="data.keywords" />
+  <vList :listData="data.result" :selected="data.selected" :keywords="data.keywords" />
 </template>
 
 <script>
 import { onMounted, watch, reactive } from 'vue'
 import { jsonp } from 'vue-jsonp'
-import Clock from '@/components/clock.vue'
-import Input from './components/responsive_input.vue'
-import List from './components/list.vue'
+import vWeather from '@/components/weather.vue'
+import vClock from '@/components/clock.vue'
+import vInput from '@/components/searchBox.vue'
+import vList from '@/components/list.vue'
 export default {
   components: {
-    Clock,
-    Input,
-    List
+    vWeather,
+    vClock,
+    vInput,
+    vList
   },
   setup () {
     /**
@@ -162,6 +168,8 @@ export default {
   box-sizing border-box
 ::-webkit-scrollbar
   display none
+::selection
+  background-color transparent
 body
   display flex
   justify-content center
