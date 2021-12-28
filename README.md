@@ -1,4 +1,4 @@
-# LightnessSP - 拒绝花里胡哨
+# LightSP - 轻起始页
 ---
 ## 扩展介绍
 基于vue3构建的一个简易起始页。[体验在线版](https://www.kihanlee.site/lightnesssp/)</br>
