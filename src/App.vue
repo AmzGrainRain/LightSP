@@ -2,14 +2,11 @@
   <!-- 背景组件 -->
   <vBackground />
 
-  <!-- 设置 -->
-  <vSettings :show="data.settings" @close="data.settings = false" />
-
   <!-- 搜索栏 -->
   <div class="search-box">
     <vClock />
-    <br />
-    <vInput placeholder="输入搜索内容" title="Ctrl+F: 翻译 | Ctrl+G: 谷歌 | Ctrl+B: 必应 | Ctrl+D: 百度开发者 | Ctrl+S 设置" @updateEvent="inputUpdateEvent" />
+    <div style="height: 8px"></div>
+    <vInput placeholder="输入搜索内容" title="Ctrl+F: 翻译 | Ctrl+G: 谷歌 | Ctrl+B: 必应 | Ctrl+D: 百度开发者" @updateEvent="inputUpdateEvent" />
   </div>
 
   <!-- 装饰用的横线 -->
@@ -24,14 +21,12 @@
 import { watch, reactive, onBeforeMount, onMounted } from 'vue'
 import { jsonp } from 'vue-jsonp'
 import vBackground from '@/components/background.vue'
-import vSettings from '@/components/settings.vue'
 import vClock from '@/components/clock.vue'
 import vInput from '@/components/searchBox.vue'
 import vList from '@/components/list.vue'
 export default {
   components: {
     vBackground,
-    vSettings,
     vClock,
     vInput,
     vList
@@ -61,11 +56,6 @@ export default {
         if (data.result?.[data.selected]?.text) {
           window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.selected].text}`
         }
-        e.preventDefault()
-      }
-      // 设置
-      if (e.ctrlKey && e.key === 's') {
-        data.settings = true
         e.preventDefault()
       }
       // Ctrl + F: 快速翻译
@@ -99,7 +89,6 @@ export default {
       keywords: '',
       result: [],
       selected: null,
-      settings: false,
       loaded: false
     })
 
@@ -156,16 +145,6 @@ export default {
      *
      */
     onBeforeMount(() => {
-      if (!localStorage.getItem('LightSP')) {
-        console.log('尝试重建localStorage对象...')
-        localStorage.setItem('LightSP', JSON.stringify({
-          wallpaper: {
-            bing: false,
-            local: true
-          }
-        }))
-        console.log('重建localStorage对象成功.')
-      }
       // 打印信息
       console.log(`
         #      #####   #####
