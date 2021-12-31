@@ -1,11 +1,12 @@
 # LightSP - 轻起始页（谷歌浏览器）
 ---
 ## 扩展介绍
-基于vue3构建的一个简易起始页。[体验在线版](https://www.kihanlee.site/lightsp/)</br>
-启用后，此扩展会将空白页覆盖为起始页导航。
+基于vue3构建的一个简易起始页。[体验在线版](https://www.kihanlee.site/lightsp/)
 
 ## 兼容性
-适用于所有chromium内核且支持扩展的浏览器。
+使用JSONP发送跨域请求，IE兼容性未知。</br>
+火狐浏览器请看[这里](https://github.com/KiHanLee/LightSP/tree/firefox)。</br>
+基于Chromium内核且支持扩展的浏览器请看[这里](https://github.com/KiHanLee/LightSP/tree/chromium)。
 
 ## 初始化 & 启动
 ```
@@ -18,14 +19,8 @@ npm run build
 ```
 
 ## 使用方法
->进行此步骤需要提前部署 **[NodeJS](http://nodejs.cn)** 和 **[VueCli](https://cli.vuejs.org/zh/guide/)** 环境。
-```
-git clone https://github.com/CodeFarmers-GRC/StartPage.git
-npm init
-npm run build
-```
-终端执行上述操作后，进入浏览器扩展页面，启用**开发者模式**。
-点击**加载已解压的扩展**，在弹出的对话框内选中**dist**目录即可。
+- 前往[发布页](https://github.com/KiHanLee/LightSP/releases)下载最新发布的版本。
+- 将文件解压缩到服务器根目录的 lightnesssp 目录内即可。
 
 ## 关于 manifest.json 文件（遵循谷歌扩展开发文档）
 manifest文件位于项目内的public目录下，编译后与index.html文件位置相同。
