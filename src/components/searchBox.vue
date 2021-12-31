@@ -1,5 +1,5 @@
 <template>
-  <input id="vInput" type="text" :placeholder="placeholder" v-model="text" />
+  <input id="vInput" type="text" :placeholder="placeholder" :title="title" v-model="text" />
 </template>
 
 <script>
@@ -8,12 +8,13 @@ export default {
   props: {
     ClassSlot: String,
     StyleSlot: String,
-    placeholder: String
+    placeholder: String,
+    title: String
   },
   setup (props, { emit }) {
     /**
      *
-     *  动态数据
+     *  组件数据
      *
     */
     const text = ref('')

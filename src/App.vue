@@ -1,53 +1,37 @@
 <template>
-  <img :src="`./wallpaper/home-${data.background}.jpg`" alt="bg">
-  <!-- 帮助按钮 -->
-  <svg class="help-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="data.help = true">
-    <path d="M12 6a3.939 3.939 0 0 0-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 0 0-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0 0 12 6zm-1 10h2v2h-2z"></path>
-    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path>
-  </svg>
-  <!-- 帮助弹窗 -->
-  <div class="help" v-show="data.help" :class="{ 'help-on': data.help }">
-    <div class="help-content">
-      <div>
-        <h2>快捷键解释</h2>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" @click="data.help = false">
-          <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
-        </svg>
-      </div>
-      <ul>
-        <li><kbd>Ctrl</kbd>+<kbd>F</kbd>&nbsp;翻译搜索框内容</li>
-        <li><kbd>Ctrl</kbd>+<kbd>B</kbd>&nbsp;必应搜索</li>
-        <li><kbd>Ctrl</kbd>+<kbd>G</kbd>&nbsp;谷歌搜索</li>
-        <li><kbd>Ctrl</kbd>+<kbd>D</kbd>&nbsp;开发者搜索</li>
-      </ul>
-    </div>
-  </div>
+  <!-- 背景组件 -->
+  <vBackground />
 
-  <!-- 天气组件 -->
-  <vWeather />
+  <!-- 设置 -->
+  <vSettings :show="data.settings" @close="data.settings = false" />
 
   <!-- 搜索栏 -->
   <div class="search-box">
     <vClock />
     <br />
-    <vInput placeholder="输入搜索内容" @updateEvent="inputUpdateEvent" />
+    <vInput placeholder="输入搜索内容" title="Ctrl+F: 翻译 | Ctrl+G: 谷歌 | Ctrl+B: 必应 | Ctrl+D: 百度开发者 | Ctrl+S 设置" @updateEvent="inputUpdateEvent" />
   </div>
+
   <!-- 装饰用的横线 -->
   <hr v-show="data.result.length && data.keywords.length" />
+
   <!-- 关键词联想列表 -->
   <vList :listData="data.result" :selected="data.selected" :keywords="data.keywords" />
+
 </template>
 
 <script>
-import { onMounted, watch, reactive } from 'vue'
+import { watch, reactive, onBeforeMount, onMounted } from 'vue'
 import { jsonp } from 'vue-jsonp'
-import vWeather from '@/components/weather.vue'
+import vBackground from '@/components/background.vue'
+import vSettings from '@/components/settings.vue'
 import vClock from '@/components/clock.vue'
 import vInput from '@/components/searchBox.vue'
 import vList from '@/components/list.vue'
 export default {
   components: {
-    vWeather,
+    vBackground,
+    vSettings,
     vClock,
     vInput,
     vList
@@ -55,15 +39,68 @@ export default {
   setup () {
     /**
      *
-     *  动态数据
+     *  热键捕捉
+     *
+     */
+    document.addEventListener('keydown', (e) => {
+      // 上箭头
+      if (e.key === 'ArrowUp') {
+        data.selected = data.selected - 1 < 0 ? data.result.length - 1 < 0 ? 0 : data.result.length - 1 : data.selected - 1
+        e.preventDefault()
+      }
+      // 下箭头
+      if (e.key === 'ArrowDown') {
+        data.selected = data.selected + 1 > data.result.length - 1 ? 0 : data.selected + 1
+        e.preventDefault()
+      }
+      // 回车事件
+      if (e.key === 'Enter') {
+        if (data.selected === null) {
+          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
+        }
+        if (data.result?.[data.selected]?.text) {
+          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.selected].text}`
+        }
+        e.preventDefault()
+      }
+      // 设置
+      if (e.ctrlKey && e.key === 's') {
+        data.settings = true
+        e.preventDefault()
+      }
+      // Ctrl + F: 快速翻译
+      if (e.ctrlKey && e.key === 'f') {
+        window.location.href = `https://fanyi.baidu.com/#en/zh/${data.keywords}`
+        e.preventDefault()
+      }
+      // Ctrl + B: 必应搜索
+      if (e.ctrlKey && e.key === 'b') {
+        window.location.href = `https://cn.bing.com/search?q=${data.keywords}`
+        e.preventDefault()
+      }
+      // Ctrl + G: 谷歌搜索
+      if (e.ctrlKey && e.key === 'g') {
+        window.location.href = `https://www.google.com/search?q=${data.keywords}`
+        e.preventDefault()
+      }
+      // Ctrl + D: 百度开发者搜索
+      if (e.ctrlKey && e.key === 'd') {
+        window.location.href = `https://kaifa.baidu.com/searchPage?wd=${data.keywords}&module=SEARCH`
+        e.preventDefault()
+      }
+    })
+
+    /**
+     *
+     *  组件数据
      *
      */
     const data = reactive({
       keywords: '',
       result: [],
-      selected: 0,
-      help: false,
-      background: Math.floor(Math.random() * (10 - 1) + 1)
+      selected: null,
+      settings: false,
+      loaded: false
     })
 
     /**
@@ -71,7 +108,8 @@ export default {
      *  方法
      *
      */
-    const inputUpdateEvent = str => { // Input组件 - 内容更新事件
+    const inputUpdateEvent = (str) => {
+      // Input组件 - 内容更新事件
       data.keywords = String(str)
     }
 
@@ -82,6 +120,7 @@ export default {
      */
     watch(() => data.keywords, (newVal, oldVal) => {
       if (!String(newVal).length) return
+      // 获取百度关键词联想数据
       jsonp('https://www.baidu.com/sugrec', {
         callbackName: '_JSONP',
         ie: 'utf-8',
@@ -91,6 +130,7 @@ export default {
         json: 1,
         bs: 'jsonp'
       }).then(res => {
+        // 结果为空时
         if (!res?.g.length) {
           data.result = []
           return
@@ -115,47 +155,30 @@ export default {
      *  生命周期钩子
      *
      */
+    onBeforeMount(() => {
+      if (!localStorage.getItem('LightSP')) {
+        console.log('尝试重建localStorage对象...')
+        localStorage.setItem('LightSP', JSON.stringify({
+          wallpaper: {
+            bing: false,
+            local: true
+          }
+        }))
+        console.log('重建localStorage对象成功.')
+      }
+      // 打印信息
+      console.log(`
+        #      #####   #####
+        #      #       #   #                  LightSP - 轻起始页
+        #      #####   #####
+        #          #   #
+        #####  #####   #        开源地址: https://github.com/KiHanLee/LightSP
+      `)
+    })
     onMounted(() => {
-      // 热键捕捉
-      document.addEventListener('keydown', (e) => {
-        // 上箭头
-        if (e.key === 'ArrowUp') {
-          data.selected = data.selected - 1 < 0 ? data.result.length - 1 < 0 ? 0 : data.result.length - 1 : data.selected - 1
-          e.preventDefault()
-        }
-        // 下箭头
-        if (e.key === 'ArrowDown') {
-          data.selected = data.selected + 1 > data.result.length - 1 ? 0 : data.selected + 1
-          e.preventDefault()
-        }
-        // 回车事件
-        if (e.key === 'Enter') {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.selected].text}`
-        }
-        // Ctrl + F: 快速翻译
-        if (e.ctrlKey && e.key === 'f') {
-          window.location.href = `https://fanyi.baidu.com/#en/zh/${data.keywords}`
-          e.preventDefault()
-        }
-        // Ctrl + B: 必应搜索
-        if (e.ctrlKey && e.key === 'b') {
-          window.location.href = `https://cn.bing.com/search?q=${data.keywords}`
-          e.preventDefault()
-        }
-        // Ctrl + G: 谷歌搜索
-        if (e.ctrlKey && e.key === 'g') {
-          window.location.href = `https://www.google.com/search?q=${data.keywords}`
-          e.preventDefault()
-        }
-        // Ctrl + D: 百度开发者搜索
-        if (e.ctrlKey && e.key === 'd') {
-          window.location.href = `https://kaifa.baidu.com/searchPage?wd=${data.keywords}&module=SEARCH`
-          e.preventDefault()
-        }
-      })
+      data.loaded = true
     })
 
-    /* 返回数据 */
     return { data, inputUpdateEvent }
   }
 }
@@ -178,6 +201,7 @@ body
   height 100vh
   color #fff
   font 16px/1.2 "PingFang SC", "Microsoft YaHei", sans-serif
+  background-color #000
   overflow hidden
 kbd
   margin 0 .2rem
@@ -186,64 +210,21 @@ kbd
   border 1px solid #aaa
   border-radius .25rem
   background-color #fafafa
-img
-  position absolute
-  top 0
-  left 0
-  width 100vw
-  height 100vh
-  object-fit cover
-  z-index -1
+.fade-enter-active, .fade-leave-active {
+  transition: all .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>
+
+<style lang="stylus">
 main
   padding 1rem
   width 40rem
   height 85%
   @media screen and (min-width: 1280px)
     width 48rem
-  .help-icon
-    position absolute
-    top 1rem
-    right 1rem
-    fill #ccc
-    cursor pointer
-    &:hover
-      fill #fff
-  .help
-    display flex
-    justify-content center
-    align-items center
-    position absolute
-    top 0
-    right 0
-    width 100vw
-    height 100vh
-    z-index 9
-    background-color #0006
-    .help-content
-      padding 1rem
-      display flex
-      flex-flow column wrap
-      width 32rem
-      color #000
-      background-color #fff
-      border-radius .6rem
-      box-shadow 0 0 2rem #0008
-      div
-        display flex
-        justify-content space-between
-        h2
-          font-size 1.2rem
-        svg
-          border-radius .4rem
-          transition all .3s
-          cursor pointer
-          &:hover
-            fill #fff
-            background-color #a00
-      ul
-        list-style none
-        li
-          margin .4rem 0
   .search-box
     padding .5rem 0
     display flex
@@ -259,19 +240,4 @@ main
     height 1px
     border 0
     border-top 1px solid #fff8
-.help-on
-  animation HelpOnAnimate-Mask .5s forwards
-  .help-content
-    animation HelpOnAnimate-Content .3s cubic-bezier(.5, 0, .5, 1.5) forwards
-
-@keyframes HelpOnAnimate-Mask
-  0%
-    opacity 0
-  100%
-    opacity 1
-@keyframes HelpOnAnimate-Content
-  0%
-    transform scale(.8)
-  100%
-    transform scale(1)
 </style>
