@@ -6,6 +6,6 @@
         "message": "Wish you have a good mood every time you search~"
     },
     "extDescription": {
-        "message": "The simple start page developed based on Vue3 supports Baidu search, baidu developer search, Bing search, Google search and Baidu translation."
+        "message": "The simple start page developed based on Vue3."
     }
 }

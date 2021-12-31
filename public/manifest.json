@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extName__",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "browser_action": {
     "default_title": "__MSG_extDefaultTitle__",
     "default_icon": {
@@ -26,7 +26,10 @@
   "author": "kihanlee",
   "description": "__MSG_extDescription__",
   "default_locale": "zh_CN",
-  "permissions": ["*://www.baidu.com/*"],
+  "permissions": [
+    "*://www.baidu.com/*",
+    "*://cn.bing.com/"
+  ],
   "chrome_url_overrides": {
     "newtab": "index.html"
   }

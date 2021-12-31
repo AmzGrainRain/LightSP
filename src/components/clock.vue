@@ -6,46 +6,38 @@
 </template>
 
 <script>
-import { onBeforeMount, reactive, toRefs } from 'vue'
+import { reactive, toRefs } from 'vue'
 export default {
   setup () {
     /**
      *
-     *  动态数据
+     *  组件数据
      *
      */
     const data = reactive({
-      date: '',
-      time: ''
+      date: 'xxxx-xx-xx xxx',
+      time: '00:00:00'
     })
-
-    /**
-     *
-     *  静态数据
-     *
-     */
     const week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
     // const week = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
     /**
      *
-     *  挂载之前
+     *  初始化
      *
      */
-    onBeforeMount(() => {
-      setInterval(() => {
-        const t = new Date()
-        const Y = t.getFullYear()
-        const M = t.getMonth() + 1 < 10 ? `0${t.getMonth() + 1}` : t.getMonth() + 1
-        const D = t.getDate() < 10 ? `0${t.getDate()}` : t.getDate()
-        const d = week[t.getDay()]
-        const h = t.getHours() < 10 ? `0${t.getHours()}` : t.getHours()
-        const m = t.getMinutes() < 10 ? `0${t.getMinutes()}` : t.getMinutes()
-        const s = t.getSeconds() < 10 ? `0${t.getSeconds()}` : t.getSeconds()
-        data.date = `${Y}-${M}-${D} ${d}`
-        data.time = `${h}:${m}:${s}`
-      }, 1000)
-    })
+    setInterval(() => {
+      const t = new Date()
+      const Y = t.getFullYear()
+      const M = t.getMonth() + 1 < 10 ? `0${t.getMonth() + 1}` : t.getMonth() + 1
+      const D = t.getDate() < 10 ? `0${t.getDate()}` : t.getDate()
+      const d = week[t.getDay()]
+      const h = t.getHours() < 10 ? `0${t.getHours()}` : t.getHours()
+      const m = t.getMinutes() < 10 ? `0${t.getMinutes()}` : t.getMinutes()
+      const s = t.getSeconds() < 10 ? `0${t.getSeconds()}` : t.getSeconds()
+      data.date = `${Y}-${M}-${D} ${d}`
+      data.time = `${h}:${m}:${s}`
+    }, 1000)
 
     return toRefs(data)
   }
@@ -54,8 +46,6 @@ export default {
 
 <style lang="stylus" scoped>
 #vClock
-  font-family sans-serif
-  font-weight lighter
   display flex
   flex-flow column wrap
   text-align center
