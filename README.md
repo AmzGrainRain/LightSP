@@ -17,7 +17,7 @@ npm install && npm run serve
 npm run build
 ```
 
-## 关于 manifest.json 文件（遵循谷歌扩展开发文档）
+## 关于 manifest.json 文件（遵循[Google Extension开发文档](https://developer.chrome.com/docs/extensions/)）
 manifest文件位于项目内的public目录下，编译后与index.html文件位置相同。
 ``` JavaScript
 {
