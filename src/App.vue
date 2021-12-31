@@ -1,7 +1,4 @@
 <template>
-  <!-- 遮罩 -->
-  <vMask :turnOff="data.loaded" />
-
   <!-- 背景组件 -->
   <vBackground />
 
@@ -22,14 +19,12 @@
 <script>
 import { watch, reactive, onBeforeMount, onMounted } from 'vue'
 import axios from 'axios'
-import vMask from '@/components/mask.vue'
 import vBackground from '@/components/background.vue'
 import vClock from '@/components/clock.vue'
 import vInput from '@/components/searchBox.vue'
 import vList from '@/components/list.vue'
 export default {
   components: {
-    vMask,
     vBackground,
     vClock,
     vInput,
