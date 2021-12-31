@@ -18,9 +18,8 @@ npm run build
 ```
 
 ## 关于 manifest.json 文件
-遵循 [Google Extension](https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions)开发文档
-但火狐浏览器与谷歌浏览器存在一部分兼容性问题，详情参阅：https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions
-manifest文件位于项目内的public目录下，编译后与index.html文件位置相同。
+遵循 [Google Extension](https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions) 开发文档。</br>
+兼容性详见：https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions
 ``` JavaScript
 {
   "manifest_version": 2,    // manifest 版本
