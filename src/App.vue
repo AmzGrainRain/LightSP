@@ -161,8 +161,10 @@ export default {
       if (!localStorage.getItem('LightSP')) {
         console.log('尝试重建localStorage对象...')
         localStorage.setItem('LightSP', JSON.stringify({
-          useBingWallpaperAPI: false,
-          useDefaultWallpaper: true
+          wallpaper: {
+            bing: false,
+            local: true
+          }
         }))
         console.log('重建localStorage对象成功.')
       }
