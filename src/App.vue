@@ -1,14 +1,11 @@
 <template>
-  <!-- 遮罩 -->
-  <vMask :turnOff="data.loaded" />
-
   <!-- 背景组件 -->
   <vBackground />
 
   <!-- 搜索栏 -->
   <div class="search-box">
     <vClock />
-    <br />
+    <div style="height: 8px"></div>
     <vInput placeholder="输入搜索内容" title="Ctrl+F: 翻译 | Ctrl+G: 谷歌 | Ctrl+B: 必应 | Ctrl+D: 百度开发者" @updateEvent="inputUpdateEvent" />
   </div>
 
@@ -22,14 +19,12 @@
 <script>
 import { watch, reactive, onBeforeMount, onMounted } from 'vue'
 import axios from 'axios'
-import vMask from '@/components/mask.vue'
 import vBackground from '@/components/background.vue'
 import vClock from '@/components/clock.vue'
 import vInput from '@/components/searchBox.vue'
 import vList from '@/components/list.vue'
 export default {
   components: {
-    vMask,
     vBackground,
     vClock,
     vInput,
