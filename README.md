@@ -18,8 +18,7 @@ npm run build
 ```
 
 ## 关于 manifest.json 文件
-遵循 [Google Extension](https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions) 开发文档
-manifest文件位于项目内的public目录下，编译后与index.html文件位置相同。
+遵循 [Google Extension](https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions) 开发文档。
 ``` JavaScript
 {
   "manifest_version": 3,    // manifest版本
