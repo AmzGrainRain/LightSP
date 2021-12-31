@@ -23,10 +23,10 @@ export default {
 
     /**
      *
-     *  初始化
+     *  方法
      *
      */
-    setInterval(() => {
+    const updateTime = () => {
       const t = new Date()
       const Y = t.getFullYear()
       const M = t.getMonth() + 1 < 10 ? `0${t.getMonth() + 1}` : t.getMonth() + 1
@@ -37,7 +37,15 @@ export default {
       const s = t.getSeconds() < 10 ? `0${t.getSeconds()}` : t.getSeconds()
       data.date = `${Y}-${M}-${D} ${d}`
       data.time = `${h}:${m}:${s}`
-    }, 1000)
+    }
+
+    /**
+     *
+     *  初始化
+     *
+     */
+    updateTime()
+    setInterval(() => updateTime(), 1000)
 
     return toRefs(data)
   }
