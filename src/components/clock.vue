@@ -23,20 +23,10 @@ export default {
 
     /**
      *
-     *  初始化
+     *  方法
      *
      */
-    const t = new Date()
-    const Y = t.getFullYear()
-    const M = t.getMonth() + 1 < 10 ? `0${t.getMonth() + 1}` : t.getMonth() + 1
-    const D = t.getDate() < 10 ? `0${t.getDate()}` : t.getDate()
-    const d = week[t.getDay()]
-    const h = t.getHours() < 10 ? `0${t.getHours()}` : t.getHours()
-    const m = t.getMinutes() < 10 ? `0${t.getMinutes()}` : t.getMinutes()
-    const s = t.getSeconds() < 10 ? `0${t.getSeconds()}` : t.getSeconds()
-    data.date = `${Y}-${M}-${D} ${d}`
-    data.time = `${h}:${m}:${s}`
-    setInterval(() => {
+    const updateTime = () => {
       const t = new Date()
       const Y = t.getFullYear()
       const M = t.getMonth() + 1 < 10 ? `0${t.getMonth() + 1}` : t.getMonth() + 1
@@ -47,7 +37,15 @@ export default {
       const s = t.getSeconds() < 10 ? `0${t.getSeconds()}` : t.getSeconds()
       data.date = `${Y}-${M}-${D} ${d}`
       data.time = `${h}:${m}:${s}`
-    }, 1000)
+    }
+
+    /**
+     *
+     *  初始化
+     *
+     */
+    updateTime()
+    setInterval(() => updateTime(), 1000)
 
     return toRefs(data)
   }
