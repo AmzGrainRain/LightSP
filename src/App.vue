@@ -8,7 +8,7 @@
   <!-- 搜索栏 -->
   <div class="search-box">
     <vClock />
-    <br />
+    <div style="height: 8px"></div>
     <vInput placeholder="输入搜索内容" title="Ctrl+F: 翻译 | Ctrl+G: 谷歌 | Ctrl+B: 必应 | Ctrl+D: 百度开发者" @updateEvent="inputUpdateEvent" />
   </div>
 
