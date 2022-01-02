@@ -18,7 +18,7 @@ npm run build
 ```
 
 ## 关于 manifest.json 文件
-遵循 [Google Extension](https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions) 开发文档。
+遵循 [Google Extension](https://developer.chrome.com/docs/extensions/) 开发文档。
 ``` JavaScript
 {
   "manifest_version": 3,    // manifest版本
