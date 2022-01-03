@@ -171,10 +171,6 @@ export default {
       if (!localStorage.getItem('LightSP')) {
         console.log('尝试重建localStorage对象...')
         localStorage.setItem('LightSP', JSON.stringify({
-          wallpaper: {
-            bing: false,
-            local: true
-          },
           weather: {
             location_id: 101010100
           }
