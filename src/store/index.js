@@ -15,7 +15,6 @@ const weather = {
 
 export default createStore({
   modules: {
-    wallpaper,
     weather
   },
   plugins: [createPersistedState({
