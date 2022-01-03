@@ -2,11 +2,15 @@
   <!-- 背景组件 -->
   <vBackground />
 
+  <!-- 天气组件 -->
+  <vWeather title="查看详情|设置位置" @selectCity="mets.vWeatherSelectCity" />
+  <vSwitchLocation v-show="cStatus.vSwitchLocation.show" @close="cStatus.vSwitchLocation.show = false" />
+
   <!-- 搜索栏 -->
   <div class="search-box">
     <vClock />
     <div style="height: 8px"></div>
-    <vInput placeholder="输入搜索内容" title="Ctrl+F: 翻译 | Ctrl+G: 谷歌 | Ctrl+B: 必应 | Ctrl+D: 百度开发者" @updateEvent="inputUpdateEvent" />
+    <vInput placeholder="输入搜索内容" title="按下回车直接搜索" @updateEvent="mets.vSearchBoxInputUpdateEvent" />
   </div>
 
   <!-- 装饰用的横线 -->
@@ -14,18 +18,21 @@
 
   <!-- 关键词联想列表 -->
   <vList :listData="data.result" :selected="data.selected" :keywords="data.keywords" />
-
 </template>
 
 <script>
 import { watch, reactive, onBeforeMount, onMounted } from 'vue'
 import { jsonp } from 'vue-jsonp'
+import vWeather from '@/components/weather'
+import vSwitchLocation from '@/components/weather/vSwitchLocation.vue'
 import vBackground from '@/components/background.vue'
 import vClock from '@/components/clock.vue'
 import vInput from '@/components/searchBox.vue'
 import vList from '@/components/list.vue'
 export default {
   components: {
+    vWeather,
+    vSwitchLocation,
     vBackground,
     vClock,
     vInput,
@@ -34,28 +41,66 @@ export default {
   setup () {
     /**
      *
+     *  组件数据
+     *
+     */
+    const cStatus = reactive({
+      vSwitchLocation: {
+        show: false
+      }
+    })
+    const data = reactive({
+      keywords: '',
+      result: [],
+      selected: null,
+      loaded: false
+    })
+
+    /**
+     *
+     *  方法
+     *
+     */
+    const mets = {
+      // vInput组件 - 内容更新事件 - 关键词联想
+      vSearchBoxInputUpdateEvent: (str) => {
+        data.keywords = String(str)
+      },
+      // vWeather组件 - 右键事件 - 选择城市（天气）
+      vWeatherSelectCity: () => {
+        cStatus.vSwitchLocation.show = true
+      }
+    }
+
+    /**
+     *
      *  热键捕捉
      *
      */
     document.addEventListener('keydown', (e) => {
       // 上箭头
       if (e.key === 'ArrowUp') {
+        if (data.selected === null) {
+          data.selected = 0
+          return
+        }
         data.selected = data.selected - 1 < 0 ? data.result.length - 1 < 0 ? 0 : data.result.length - 1 : data.selected - 1
         e.preventDefault()
       }
       // 下箭头
       if (e.key === 'ArrowDown') {
+        if (data.selected === null) {
+          data.selected = 0
+          return
+        }
         data.selected = data.selected + 1 > data.result.length - 1 ? 0 : data.selected + 1
         e.preventDefault()
       }
       // 回车事件
       if (e.key === 'Enter') {
-        if (data.selected === null) {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
-        }
-        if (data.result?.[data.selected]?.text) {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.selected].text}`
-        }
+        if (data.selected === null) window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
+        if (data.result?.[data.selected]?.text) window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.selected].text}`
+        if (data.keywords.length) window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
         e.preventDefault()
       }
       // Ctrl + F: 快速翻译
@@ -79,28 +124,6 @@ export default {
         e.preventDefault()
       }
     })
-
-    /**
-     *
-     *  组件数据
-     *
-     */
-    const data = reactive({
-      keywords: '',
-      result: [],
-      selected: null,
-      loaded: false
-    })
-
-    /**
-     *
-     *  方法
-     *
-     */
-    const inputUpdateEvent = (str) => {
-      // Input组件 - 内容更新事件
-      data.keywords = String(str)
-    }
 
     /**
      *
@@ -145,6 +168,19 @@ export default {
      *
      */
     onBeforeMount(() => {
+      if (!localStorage.getItem('LightSP')) {
+        console.log('尝试重建localStorage对象...')
+        localStorage.setItem('LightSP', JSON.stringify({
+          wallpaper: {
+            bing: false,
+            local: true
+          },
+          weather: {
+            location_id: 101010100
+          }
+        }))
+        console.log('重建localStorage对象成功.')
+      }
       // 打印信息
       console.log(`
         #      #####   #####
@@ -158,7 +194,7 @@ export default {
       data.loaded = true
     })
 
-    return { data, inputUpdateEvent }
+    return { data, mets, cStatus }
   }
 }
 </script>
@@ -171,7 +207,7 @@ export default {
 ::-webkit-scrollbar
   display none
 ::selection
-  background-color transparent
+  background-color #00f2
 body
   display flex
   justify-content center
@@ -189,12 +225,6 @@ kbd
   border 1px solid #aaa
   border-radius .25rem
   background-color #fafafa
-.fade-enter-active, .fade-leave-active {
-  transition: all .5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
 </style>
 
 <style lang="stylus">
