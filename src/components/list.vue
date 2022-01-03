@@ -23,8 +23,8 @@ export default {
   margin-top .5rem
   height 0rem
   overflow hidden auto
-  scrollbar-width none
   transition all .3s
+  scrollbar-width none
   ul
     margin 0 auto
     list-style none

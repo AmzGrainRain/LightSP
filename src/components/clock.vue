@@ -1,12 +1,12 @@
 <template>
-  <div id="vClock">
-      <p class="date">{{ date }}</p>
-      <p class="time">{{ time }}</p>
+  <div id="vClock" @click="help">
+      <p class="date">{{ data.date }}</p>
+      <p class="time">{{ data.time }}</p>
   </div>
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+import { reactive } from 'vue'
 export default {
   setup () {
     /**
@@ -38,6 +38,17 @@ export default {
       data.date = `${Y}-${M}-${D} ${d}`
       data.time = `${h}:${m}:${s}`
     }
+    const help = () => {
+      alert(
+`
+Ctrl+F: 百度翻译
+Ctrl+G: 谷歌搜索
+Ctrl+B: 必应搜索
+Ctrl+D: 百度开发者搜索
+点击扩展按钮打开设置
+`
+      )
+    }
 
     /**
      *
@@ -47,7 +58,7 @@ export default {
     updateTime()
     setInterval(() => updateTime(), 1000)
 
-    return toRefs(data)
+    return { data, help }
   }
 }
 </script>
@@ -58,6 +69,7 @@ export default {
   flex-flow column wrap
   text-align center
   text-shadow 0 0 2px #000
+  cursor pointer
   .time
     font-size 2.5rem
     padding .4rem 0 0 0

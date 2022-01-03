@@ -46,5 +46,5 @@ input
   backdrop-filter blur(.5rem)
   transition all .3s
   &:hover
-    background-color #fff9
+    background-color #fffb
 </style>

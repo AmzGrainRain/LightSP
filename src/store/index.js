@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
-// 壁纸相关
+// 壁纸组件相关
 const wallpaper = {
   state: {
     bing: false,
@@ -26,9 +26,22 @@ const wallpaper = {
   }
 }
 
+// 天气组件相关
+const weather = {
+  state: {
+    location_id: 101010100
+  },
+  mutations: {
+    setWeatherLocation (state, id) {
+      state.location_id = id
+    }
+  }
+}
+
 export default createStore({
   modules: {
-    wallpaper
+    wallpaper,
+    weather
   },
   plugins: [createPersistedState({
     key: 'LightSP',

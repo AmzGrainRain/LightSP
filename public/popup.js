@@ -5,6 +5,9 @@ window.onload = () => {
         bing: false,
         local: true
       },
+      weather: {
+        location_id: 101010100
+      }
     }))
   }
 }
