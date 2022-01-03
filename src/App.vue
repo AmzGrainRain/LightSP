@@ -98,13 +98,9 @@ export default {
       }
       // 回车事件
       if (e.key === 'Enter') {
-        console.log(data.result?.[data.selected]?.text)
-        if (data.selected === null) {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
-        }
-        if (data.result?.[data.selected]?.text) {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.selected].text}`
-        }
+        if (data.selected === null) window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
+        if (data.result?.[data.selected]?.text) window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.selected].text}`
+        if (data.keywords.length) window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
         e.preventDefault()
       }
       // Ctrl + F: 快速翻译
