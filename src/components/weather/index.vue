@@ -3,7 +3,7 @@
     id="vWeather"
     :title="title"
     :href="weather.link"
-    :class="{'hide': weather.temp === null}"
+    :class="{'hide': weather.text === null}"
     @contextmenu="setLocation"
     target="_blank"
   >
