@@ -3,7 +3,6 @@
     id="vWeather"
     :title="title"
     :href="weather.link"
-    :class="{'hide': weather.text === null}"
     @contextmenu="setLocation"
     target="_blank"
   >
@@ -29,10 +28,10 @@ export default {
      */
     const store = useStore()
     const weather = reactive({
-      link: null,
-      icon: null,
-      text: null,
-      temp: null
+      link: '',
+      icon: '',
+      text: '',
+      temp: ''
     })
     // 请求天气数据
     axios.get('https://devapi.qweather.com/v7/weather/now', {
@@ -78,6 +77,4 @@ export default {
   cursor pointer
   &:hover
     background-color #fff3
-.hide
-  display none
 </style>
