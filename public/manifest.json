@@ -27,8 +27,8 @@
   "description": "__MSG_extDescription__",
   "default_locale": "zh_CN",
   "permissions": [
-    "*://www.baidu.com/sugrec",
-    "*://cn.bing.com/HPImageArchive.aspx"
+    "https://www.baidu.com/sugrec",
+    "https://cn.bing.com/HPImageArchive.aspx"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"

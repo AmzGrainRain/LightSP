@@ -3,6 +3,7 @@
     id="vInput"
     type="text"
     class="p-lr w-90 text-center text-size-sm border-none border-radius-lg transition blur"
+    :class="{'focus': text.length > 0}"
     :placeholder="placeholder"
     :title="title"
     v-model="text"
@@ -44,5 +45,7 @@ input
   height 2.5rem
   background-color #fff9
   &:hover
-    background-color #fffd
+    background-color #fffb
+.focus
+  background-color #fffb
 </style>
