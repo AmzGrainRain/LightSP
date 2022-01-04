@@ -5,23 +5,23 @@ import createPersistedState from 'vuex-persistedstate'
 const wallpaper = {
   state: {
     bing: false,
-    local: true
+    local: true,
+    customize: ''
   },
   mutations: {
     setWallpaper (state, params) {
-      console.log('setWallpaper')
+      state.bing = false
+      state.local = false
+      state.customize = ''
       if (params === 'bing') {
         state.bing = true
-        state.local = false
+        return
       }
       if (params === 'local') {
-        state.bing = false
         state.local = true
+        return
       }
-      if (params === 'customize') {
-        state.bing = false
-        state.local = ''
-      }
+      state.local = params
     }
   }
 }

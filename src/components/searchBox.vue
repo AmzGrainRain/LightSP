@@ -1,5 +1,12 @@
 <template>
-  <input id="vInput" type="text" :placeholder="placeholder" :title="title" v-model="text" />
+  <input
+    id="vInput"
+    type="text"
+    class="p-lr w-90 text-center text-size-sm border-none border-radius-lg transition blur"
+    :placeholder="placeholder"
+    :title="title"
+    v-model="text"
+  />
 </template>
 
 <script>
@@ -34,17 +41,8 @@ export default {
 
 <style lang="stylus" scoped>
 input
-  padding 0 .5rem
-  width 90%
   height 2.5rem
-  font-size 1rem
-  text-align center
-  border 0
-  border-radius 1rem
-  outline none
   background-color #fff9
-  backdrop-filter blur(.5rem)
-  transition all .3s
   &:hover
-    background-color #fffb
+    background-color #fffd
 </style>
