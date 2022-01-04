@@ -249,6 +249,14 @@ main
 </style>
 
 <style lang="stylus" scoped>
+hr
+  display block
+  margin 0 auto
+  padding 0 1rem
+  width 85%
+  height 1px
+  border 0
+  border-top 1px solid #fff8
 .search-box
   padding .5rem 0
   display flex
