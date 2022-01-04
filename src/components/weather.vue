@@ -1,14 +1,14 @@
 <template>
   <a
     id="vWeather"
+    class="d-block p-tb-sm p-lr border-radius transition pointer"
     :title="title"
     :href="weather.link"
-    @contextmenu="setLocation"
     target="_blank"
   >
     <i :class="`qi-${weather.icon}`"></i>
     <div style="display: inline-block; width: .4rem"></div>
-    <span>{{ `${weather.temp}°${weather.text}` }}</span>
+    <span>{{ `${weather.temp}°C&nbsp;|&nbsp;${weather.text}` }}</span>
   </a>
 </template>
 
@@ -20,7 +20,7 @@ export default {
   props: {
     title: String
   },
-  setup (props, { emit }) {
+  setup () {
     /**
      *
      *  组件数据
@@ -44,20 +44,9 @@ export default {
       weather.temp = res.data.now.temp // 温度
       weather.icon = res.data.now.icon // 天气图标
       weather.text = res.data.now.text // 天气描述
-      // console.log(`${weather.detail.temp}° ${weather.detail.wind.dir}${weather.detail.wind.scale}级`)
     }).catch(err => console.log(err))
 
-    /**
-     *
-     *  组件方法
-     *
-     */
-    const setLocation = (e) => {
-      emit('selectCity')
-      e.preventDefault()
-    }
-
-    return { weather, setLocation }
+    return { weather }
   }
 }
 </script>
@@ -65,16 +54,9 @@ export default {
 <style lang="stylus" scoped>
 @import url('~@/assets/weather/qweather-icons.css')
 #vWeather
-  display block
-  padding .2rem .5rem
   position absolute
   top 1rem
   right 1rem
-  color inherit
-  text-decoration inherit
-  border-radius .5rem
-  transition all .2s
-  cursor pointer
   &:hover
     background-color #fff3
 </style>

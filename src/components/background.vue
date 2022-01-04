@@ -1,5 +1,11 @@
 <template>
-  <img id="vBackground" ref="backgroundEl" :src="currentBackground" alt="bg" />
+  <img
+    id="vBackground"
+    class="object-fit-cover"
+    ref="backgroundEl"
+    :src="currentBackground"
+    alt="bg"
+  />
 </template>
 
 <script>
@@ -72,7 +78,6 @@ export default {
   left 0
   width 100vw
   height 100vh
-  object-fit cover
   filter blur(3px)
   transform scale(1.2)
   transition all .1s

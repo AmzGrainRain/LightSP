@@ -3,40 +3,61 @@
   <vBackground />
 
   <!-- 天气组件 -->
-  <vWeather title="查看详情|设置位置" @selectCity="mets.vWeatherSelectCity" />
-  <vSwitchLocation v-show="cStatus.vSwitchLocation.show" @close="cStatus.vSwitchLocation.show = false" />
+  <vWeather
+    title="点击查看详情"
+    @selectCity="mets.vWeatherSelectCity"
+  />
 
   <!-- 搜索栏 -->
   <div class="search-box">
-    <vClock />
-    <div style="height: 8px"></div>
-    <vInput placeholder="输入搜索内容" title="按下回车直接搜索" @updateEvent="mets.vSearchBoxInputUpdateEvent" />
+    <vClock
+      title="点击打开设置"
+      @openSettings="cStatus.vSettings.show = true"
+    />
+    <div style="height: 16px"></div>
+    <vInput
+      placeholder="输入搜索内容"
+      title="按下回车直接搜索"
+      @updateEvent="mets.vSearchBoxInputUpdateEvent"
+    />
   </div>
 
   <!-- 装饰用的横线 -->
   <hr v-show="data.result.length && data.keywords.length" />
 
   <!-- 关键词联想列表 -->
-  <vList :listData="data.result" :selected="data.selected" :keywords="data.keywords" />
+  <vList
+    :listData="data.result"
+    :selected="data.selected"
+    :keywords="data.keywords"
+  />
+
+  <!-- 设置组件 -->
+  <transition name="fade">
+    <vSettings
+      v-show="cStatus.vSettings.show"
+      @close="cStatus.vSettings.show = false"
+    />
+  </transition>
 </template>
 
 <script>
 import { watch, reactive, onBeforeMount, onMounted } from 'vue'
 import axios from 'axios'
-import vWeather from '@/components/weather'
-import vSwitchLocation from '@/components/weather/vSwitchLocation.vue'
+import vWeather from '@/components/weather.vue'
 import vBackground from '@/components/background.vue'
 import vClock from '@/components/clock.vue'
 import vInput from '@/components/searchBox.vue'
 import vList from '@/components/list.vue'
+import vSettings from '@/components/settings'
 export default {
   components: {
     vWeather,
-    vSwitchLocation,
     vBackground,
     vClock,
     vInput,
-    vList
+    vList,
+    vSettings
   },
   setup () {
     /**
@@ -46,6 +67,9 @@ export default {
      */
     const cStatus = reactive({
       vSwitchLocation: {
+        show: false
+      },
+      vSettings: {
         show: false
       }
     })
@@ -199,14 +223,7 @@ export default {
 </script>
 
 <style lang="stylus">
-*
-  margin 0
-  padding 0
-  box-sizing border-box
-::-webkit-scrollbar
-  display none
-::selection
-  background-color #00f2
+@import '~@/common/stylus/style.styl'
 body
   display flex
   justify-content center
@@ -217,35 +234,34 @@ body
   font 16px/1.2 "PingFang SC", "Microsoft YaHei", sans-serif
   background-color #000
   overflow hidden
-kbd
-  margin 0 .2rem
-  padding 0 .2rem
-  font-size 1rem
-  border 1px solid #aaa
-  border-radius .25rem
-  background-color #fafafa
-</style>
-
-<style lang="stylus">
 main
   padding 1rem
   width 40rem
   height 85%
   @media screen and (min-width: 1280px)
     width 48rem
-  .search-box
-    padding .5rem 0
-    display flex
-    justify-content flex-end
-    align-items center
-    flex-flow column wrap
-    height 12rem
-  hr
-    display block
-    margin 0 auto
-    padding 0 1rem
-    width 85%
-    height 1px
-    border 0
-    border-top 1px solid #fff8
+.fade-enter-active,
+.fade-leave-active
+  transition opacity .2s
+.fade-enter-from,
+.fade-leave-to
+  opacity 0
+</style>
+
+<style lang="stylus" scoped>
+hr
+  display block
+  margin 0 auto
+  padding 0 1rem
+  width 85%
+  height 1px
+  border 0
+  border-top 1px solid #fff8
+.search-box
+  padding .5rem 0
+  display flex
+  justify-content flex-end
+  align-items center
+  flex-flow column wrap
+  height 12rem
 </style>
