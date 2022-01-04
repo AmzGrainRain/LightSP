@@ -4,7 +4,6 @@
 
 <script>
 import { onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
 export default {
   setup () {
     /**
@@ -12,9 +11,8 @@ export default {
      *  组件数据
      *
      */
-    const store = useStore()
     const backgroundEl = ref(null)
-    const currentBackground = ref('./assets/background.jpg')
+    const currentBackground = ref(require('@/assets/background.jpg'))
 
     /**
      *

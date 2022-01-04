@@ -37,7 +37,7 @@ export default {
       hit: []
     })
     // 获取城市列表 https://github.com/qwd/LocationList/blob/master/China-City-List-latest.csv
-    axios.get('/assets/weather/city_list.csv').then(res => {
+    axios.get('./assets/weather/city_list.csv').then(res => {
       res.data = res.data.split('\n')
       let tmp = ''
       res.data.forEach(e => {
