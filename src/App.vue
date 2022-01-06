@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { watch, reactive, onBeforeMount, onMounted } from 'vue'
+import { watch, reactive, onBeforeMount } from 'vue'
 import axios from 'axios'
 import vWeather from '@/components/weather.vue'
 import vBackground from '@/components/background.vue'
@@ -76,8 +76,7 @@ export default {
     const data = reactive({
       keywords: '',
       result: [],
-      selected: null,
-      loaded: false
+      selected: null
     })
 
     /**
@@ -212,9 +211,6 @@ export default {
         #          #   #
         #####  #####   #        开源地址: https://github.com/KiHanLee/LightSP
       `)
-    })
-    onMounted(() => {
-      data.loaded = true
     })
 
     return { data, mets, cStatus }
