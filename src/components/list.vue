@@ -1,8 +1,16 @@
 <template>
-  <div id="vList" :class="{'show': listData.length && keywords.length}">
-    <ul>
-      <li v-for="(item, index) in listData" :key="index">
-        <a :href="item.url" :class="{'selected': selected == index}">{{ item.text }}</a>
+  <div
+    id="vList"
+    class="m-t overflow-x-hide overflow-y-auto transition scrollbar-hide"
+    :class="{'show': listData.length && keywords.length}"
+  >
+    <ul class="m-tb-0 m-lr-auto w-90">
+      <li class="m-b transition" v-for="(item, index) in listData" :key="index">
+        <a
+          class="d-inline-block p-lr-lg w-100 border-radius-lg transition blur"
+          :href="item.url"
+          :class="{'selected': selected == index}"
+        >{{ item.text }}</a>
       </li>
     </ul>
   </div>
@@ -20,40 +28,18 @@ export default {
 
 <style lang="stylus" scoped>
 #vList
-  margin-top .5rem
   height 0rem
-  overflow hidden auto
-  transition all .3s
-  ul
-    margin 0 auto
-    list-style none
-    width 90%
-    li
-      margin .5rem 0
-      transition all .3s
-      &:first-child
-        margin-top 0
-      &:last-child
-        margin-bottom 0
-      a
-        display inline-block
-        width 100%
-        height 2.5rem
-        color inherit
-        line-height 2.5rem
-        text-indent .8rem
-        text-decoration inherit
-        text-shadow 0 0 .3rem #333
-        border-radius 1rem
-        background-color #fff6
-        backdrop-filter blur(.5rem)
-        transition all .3s
-        &:hover
-          text-indent 1rem
-          background-color #fff9
+a
+  height 2.5rem
+  line-height 2.5rem
+  text-shadow 0 0 .3rem #333
+  background-color #fff6
+  &:hover
+    text-indent .5rem
+    background-color #fffa
 .show
   height calc(100% - 12rem) !important
 .selected
-  text-indent 1rem !important
-  background-color #fff9 !important
+  text-indent .5rem !important
+  background-color #fffa !important
 </style>
