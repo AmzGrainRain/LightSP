@@ -28,7 +28,7 @@
   <!-- 关键词联想列表 -->
   <vList
     :listData="data.result"
-    :selected="data.selected"
+    :selected="data.focus"
     :keywords="data.keywords"
   />
 
@@ -76,7 +76,7 @@ export default {
     const data = reactive({
       keywords: '',
       result: [],
-      selected: null
+      focus: false
     })
 
     /**
@@ -103,27 +103,30 @@ export default {
     document.addEventListener('keydown', (e) => {
       // 上箭头
       if (e.key === 'ArrowUp') {
-        if (data.selected === null) {
-          data.selected = 0
-          return
-        }
-        data.selected = data.selected - 1 < 0 ? data.result.length - 1 < 0 ? 0 : data.result.length - 1 : data.selected - 1
+        if (data.focus !== false) data.focus = data.focus - 1 < 0 ? data.result.length - 1 < 0 ? 0 : data.result.length - 1 : data.focus - 1
+        else data.focus = 0
         e.preventDefault()
       }
       // 下箭头
       if (e.key === 'ArrowDown') {
-        if (data.selected === null) {
-          data.selected = 0
-          return
-        }
-        data.selected = data.selected + 1 > data.result.length - 1 ? 0 : data.selected + 1
+        if (data.focus !== false) data.focus = data.focus + 1 > data.result.length - 1 ? 0 : data.focus + 1
+        else data.focus = 0
         e.preventDefault()
       }
       // 回车事件
       if (e.key === 'Enter') {
-        if (data.selected === null) window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
-        if (data.result?.[data.selected]?.text) window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.selected].text}`
-        if (data.keywords.length) window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
+        if (data.focus === false) {
+          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
+          return
+        }
+        if (data.result?.[data.focus]) {
+          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.focus].text}`
+          return
+        }
+        if (data.keywords.length) {
+          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
+          return
+        }
         e.preventDefault()
       }
       // Ctrl + F: 快速翻译
