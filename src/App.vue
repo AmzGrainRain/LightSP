@@ -103,38 +103,28 @@ export default {
     document.addEventListener('keydown', (e) => {
       // 上箭头
       if (e.key === 'ArrowUp') {
-        if (data.focus === false) {
-          data.focus = 0
-          return
-        }
-        data.focus = data.focus - 1 < 0 ? data.result.length - 1 < 0 ? 0 : data.result.length - 1 : data.focus - 1
+        if (data.focus !== false) data.focus = data.focus - 1 < 0 ? data.result.length - 1 < 0 ? 0 : data.result.length - 1 : data.focus - 1
+        else data.focus = 0
         e.preventDefault()
       }
       // 下箭头
       if (e.key === 'ArrowDown') {
-        if (data.focus === false) {
-          data.focus = 0
-          return
-        }
-        data.focus = data.focus + 1 > data.result.length - 1 ? 0 : data.focus + 1
+        if (data.focus !== false) data.focus = data.focus + 1 > data.result.length - 1 ? 0 : data.focus + 1
+        else data.focus = 0
         e.preventDefault()
       }
       // 回车事件
       if (e.key === 'Enter') {
-        const keywords = data.keywords
-        data.keywords = ''
         if (data.focus === false) {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${keywords}`
+          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
           return
         }
         if (data.result?.[data.focus]) {
           window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.focus].text}`
-          data.keywords = ''
           return
         }
         if (data.keywords.length) {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${keywords}`
-          data.keywords = ''
+          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
           return
         }
         e.preventDefault()
