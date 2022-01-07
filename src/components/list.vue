@@ -9,7 +9,7 @@
         <a
           class="d-inline-block p-lr-lg w-100 border-radius-lg transition blur"
           :href="item.url"
-          :class="{'selected': selected == index}"
+          :class="{'selected': selected === index}"
         >{{ item.text }}</a>
       </li>
     </ul>
