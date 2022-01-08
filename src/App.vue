@@ -1,6 +1,6 @@
 <template>
   <!-- 背景组件 -->
-  <vBackground />
+  <vBackground :blur="cStatus.vBackground.blur" />
 
   <!-- 天气组件 -->
   <vWeather
@@ -71,6 +71,9 @@ export default {
       },
       vSettings: {
         show: false
+      },
+      vBackground: {
+        blur: false
       }
     })
     const data = reactive({
@@ -157,7 +160,11 @@ export default {
      *
      */
     watch(() => data.keywords, (newVal, oldVal) => {
-      if (!String(newVal).length) return
+      if (!String(newVal).length) {
+        cStatus.vBackground.blur = false
+        return
+      }
+      cStatus.vBackground.blur = true
       // 获取百度关键词联想数据
       axios.get('https://www.baidu.com/sugrec', {
         params: {
