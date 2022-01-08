@@ -44,7 +44,7 @@
 <script>
 import { watch, reactive, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
-import axios from 'axios'
+import { jsonp } from 'vue-jsonp'
 import vWeather from '@/components/weather.vue'
 import vBackground from '@/components/background.vue'
 import vClock from '@/components/clock.vue'
@@ -168,32 +168,33 @@ export default {
       }
       cStatus.vBackground.blur = true
       // 获取百度关键词联想数据
-      axios.get('https://www.baidu.com/sugrec', {
-        params: {
-          ie: 'utf-8',
-          prod: 'pc',
-          from: 'pc_web',
-          wd: data.keywords
-        }
-      }).then((res) => {
+      jsonp('https://www.baidu.com/sugrec', {
+        callbackName: '_JSONP',
+        ie: 'utf-8',
+        prod: 'pc',
+        from: 'pc_web',
+        wd: data.keywords,
+        json: 1,
+        bs: 'jsonp'
+      }).then(res => {
         // 结果为空时
-        if (!res.data?.g) {
+        if (!res?.g.length) {
           data.result = []
           return
         }
         // 反之
         const tmp = []
-        if (res.data.g.length) {
-          for (let i = 0, len = res.data.g.length; i < len; i++) {
+        if (res.g.length) {
+          for (let i = 0, len = res.g.length; i < len; i++) {
             tmp.push({
-              text: res.data.g[i].q,
-              url: `https://www.baidu.com/s?ie=utf-8&wd=${res.data.g[i].q}`
+              text: res.g[i].q,
+              url: `https://www.baidu.com/s?ie=utf-8&wd=${res.g[i].q}`
             })
           }
         }
         if (tmp.length) data.result = tmp
         else data.result = []
-      }).catch((err) => console.log(err))
+      })
     })
 
     /**
