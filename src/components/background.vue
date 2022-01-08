@@ -2,6 +2,7 @@
   <img
     id="vBackground"
     class="object-fit-cover"
+    :class="{'vBlur': blur}"
     ref="backgroundEl"
     :src="currentBackground"
     alt="bg"
@@ -12,6 +13,12 @@
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 export default {
+  props: {
+    blur: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup () {
     /**
      *
@@ -78,8 +85,9 @@ export default {
   left 0
   width 100vw
   height 100vh
-  filter blur(3px)
   transform scale(1.2)
   transition all .1s
   z-index -1
+.vBlur
+  filter blur(3px)
 </style>
