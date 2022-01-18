@@ -12,6 +12,7 @@
 <script>
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import localforage from 'localforage'
 export default {
   props: {
     blur: {
@@ -34,7 +35,11 @@ export default {
      *  初始化
      *
      */
-    // 检查是否启用了必应壁纸
+    // 是否启用了默认壁纸
+    if (store.state.wallpaper.local) {
+      currentBackground.value = './assets/background.jpg'
+    }
+    // 是否启用了必应壁纸
     if (store.state.wallpaper.bing) {
       fetch('https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN').then(ori => ori.json()).then(res => {
         if (res?.images?.[0]?.url) {
@@ -42,9 +47,16 @@ export default {
         }
       }).catch(err => console.log(err))
     }
-    // 检查是否启用了默认壁纸
-    if (store.state.wallpaper.local === true) {
-      currentBackground.value = './assets/background.jpg'
+    // 是否启用自定义壁纸
+    if (store.state.wallpaper.customize) {
+      localforage.getItem('01', (err, value) => {
+        if (err !== null) {
+          alert('加载自定义背景失败，已自动设置为默认背景。（刷新生效）')
+          store.commit('setWallpaper', 'local')
+          return
+        }
+        currentBackground.value = value
+      })
     }
 
     /**
