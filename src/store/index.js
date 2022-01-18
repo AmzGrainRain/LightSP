@@ -6,22 +6,29 @@ const wallpaper = {
   state: {
     bing: false,
     local: true,
-    customize: ''
+    customize: false
   },
   mutations: {
     setWallpaper (state, params) {
       state.bing = false
       state.local = false
-      state.customize = ''
+      state.customize = false
+      // Bing
       if (params === 'bing') {
         state.bing = true
         return
       }
+      // Default
       if (params === 'local') {
         state.local = true
         return
       }
-      state.local = params
+      // Customize
+      if (params === 'customize') {
+        state.customize = true
+        return
+      }
+      state.local = true
     }
   }
 }

@@ -10,6 +10,8 @@
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "localforage": "^1.10.0",
+    "pako": "^2.0.4",
     "vue": "^3.0.0",
     "vuex": "^4.0.0-0",
     "vuex-persistedstate": "^4.1.0"
