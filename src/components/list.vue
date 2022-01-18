@@ -21,7 +21,7 @@ export default {
   props: {
     listData: Array,
     keywords: String,
-    selected: Number
+    selected: [Boolean, Number]
   }
 }
 </script>

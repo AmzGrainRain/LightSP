@@ -43,7 +43,6 @@
 
 <script>
 import { watch, reactive, onBeforeMount } from 'vue'
-import { useStore } from 'vuex'
 import { jsonp } from 'vue-jsonp'
 import vWeather from '@/components/weather.vue'
 import vBackground from '@/components/background.vue'
@@ -66,7 +65,6 @@ export default {
      *  组件数据
      *
      */
-    const store = useStore()
     const cStatus = reactive({
       vSwitchLocation: {
         show: false
@@ -208,7 +206,8 @@ export default {
         localStorage.setItem('LightSP', JSON.stringify({
           wallpaper: {
             bing: false,
-            local: true
+            local: true,
+            customize: false
           },
           weather: {
             location_id: 101010100
@@ -216,7 +215,6 @@ export default {
         }))
         console.log('重建localStorage对象成功.')
       }
-      store.commit('setWallpaper', 'local')
       // 打印信息
       console.log(`
         #      #####   #####
