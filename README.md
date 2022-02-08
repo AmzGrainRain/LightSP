@@ -1,5 +1,5 @@
 # LightSP - 轻起始页（在线演示版）
----
+
 ## 扩展介绍
 基于vue3构建的一个简易起始页。[点击体验](https://www.kihanlee.site/lightsp/)
 
