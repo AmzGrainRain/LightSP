@@ -1,7 +1,7 @@
 # LightSP - 轻起始页（谷歌浏览器）
 ---
 ## 扩展介绍
-基于vue3构建的一个简易起始页。[体验在线版](https://www.kihanlee.site/lightsp/)</br>
+基于vue3构建的一个简易起始页。[体验在线版](https://www.kihanlee.site/archive/lightsp/)</br>
 启用后，此扩展会将空白页覆盖为起始页导航。
 
 ## 兼容性
