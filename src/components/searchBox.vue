@@ -2,8 +2,9 @@
   <input
     id="vInput"
     type="text"
-    class="p-lr w-90 text-center text-size-sm border-none border-radius-lg transition blur"
-    :class="{'vFocus': text.length > 0}"
+    class="p-lr w-90 text-center text-size-sm border-none transition"
+    :class="{'vFocus': text.length > 0, 'blur': store.state.gl.blur}"
+    :style="`border-radius: ${store.state.gl.fillet}px`"
     :placeholder="placeholder"
     :title="title"
     v-model="text"
@@ -12,6 +13,7 @@
 
 <script>
 import { ref, watch } from 'vue'
+import { useStore } from 'vuex'
 export default {
   props: {
     ClassSlot: String,
@@ -25,6 +27,7 @@ export default {
      *  组件数据
      *
     */
+    const store = useStore()
     const text = ref('')
 
     /**
@@ -35,7 +38,7 @@ export default {
     watch(text, (newVal, oldVal) => {
       emit('updateEvent', newVal)
     })
-    return { text }
+    return { store, text }
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <img
     id="vBackground"
     class="object-fit-cover"
-    :class="{'vBlur': blur}"
+    :class="{'vBlur': blur && store.state.wallpaper.focusBlur}"
     ref="backgroundEl"
     :src="currentBackground"
     alt="bg"
@@ -51,8 +51,8 @@ export default {
     if (store.state.wallpaper.customize) {
       localforage.getItem('01', (err, value) => {
         if (err !== null) {
-          alert('加载自定义背景失败，已自动设置为默认背景。（刷新生效）')
           store.commit('setWallpaper', 'local')
+          alert('加载自定义背景失败，已自动设置为默认背景。（刷新生效）')
           return
         }
         currentBackground.value = value
@@ -70,22 +70,24 @@ export default {
        *  背景视差效果
        *
        */
-      // 获取横坐标中心点（页面宽度除2）
-      const offsetW = document.body.offsetWidth / 2
-      // 获取纵坐标中心点（页面高度除2）
-      const offsetH = document.body.offsetHeight
-      // 鼠标移动事件
-      document.body.onmousemove = e => {
-        // 中心点减去鼠标横坐标
-        const mX = offsetW - e.clientX
-        // 中心点减去鼠标纵坐标
-        const mY = offsetH - e.clientY
-        // 变换 img 标签的位置（×的数值越小，灵敏度越低）
-        backgroundEl.value.style.transform = `scale(1.2) translateX(${mX * 0.02}px) translateY(${mY * 0.03}px)`
+      if (store.state.wallpaper.parallax) {
+        // 获取横坐标中心点（页面宽度除2）
+        const offsetW = document.body.offsetWidth / 2
+        // 获取纵坐标中心点（页面高度除2）
+        const offsetH = document.body.offsetHeight
+        // 鼠标移动事件
+        document.body.onmousemove = e => {
+          // 中心点减去鼠标横坐标
+          const mX = offsetW - e.clientX
+          // 中心点减去鼠标纵坐标
+          const mY = offsetH - e.clientY
+          // 变换 img 标签的位置（×的数值越小，灵敏度越低）
+          backgroundEl.value.style.transform = `scale(1.2) translateX(${mX * 0.02}px) translateY(${mY * 0.03}px)`
+        }
       }
     })
 
-    return { backgroundEl, currentBackground }
+    return { store, backgroundEl, currentBackground }
   }
 }
 </script>
