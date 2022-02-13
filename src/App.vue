@@ -201,20 +201,6 @@ export default {
      *
      */
     onBeforeMount(() => {
-      if (!localStorage.getItem('LightSP')) {
-        console.log('尝试重建localStorage对象...')
-        localStorage.setItem('LightSP', JSON.stringify({
-          wallpaper: {
-            bing: false,
-            local: true,
-            customize: false
-          },
-          weather: {
-            location_id: 101010100
-          }
-        }))
-        console.log('重建localStorage对象成功.')
-      }
       // 打印信息
       console.log(`
         #      #####   #####

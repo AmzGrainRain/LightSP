@@ -2,26 +2,38 @@
   <div
     id="vList"
     class="m-t overflow-x-hide overflow-y-auto transition scrollbar-hide"
-    :class="{'vShow': listData.length && keywords.length}"
+    :class="{ vShow: listData.length && keywords.length }"
   >
     <ul class="m-tb-0 m-lr-auto w-90">
       <li class="m-b transition" v-for="(item, index) in listData" :key="index">
         <a
-          class="d-inline-block p-lr-lg w-100 border-radius-lg transition blur"
+          class="d-inline-block p-lr-lg w-100 transition"
           :href="item.url"
-          :class="{'vSelected': selected === index}"
-        >{{ item.text }}</a>
+          :class="{ 'vSelected': selected === index, 'blur': store.state.gl.blur }"
+          :style="`border-radius: ${store.state.gl.fillet}px`"
+          >{{ item.text }}</a
+        >
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import { useStore } from 'vuex'
 export default {
   props: {
     listData: Array,
     keywords: String,
     selected: [Boolean, Number]
+  },
+  setup () {
+    /**
+     *
+     *  组件数据
+     *
+     */
+    const store = useStore()
+    return { store }
   }
 }
 </script>
