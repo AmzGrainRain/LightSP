@@ -8,9 +8,9 @@
       <li class="m-b transition" v-for="(item, index) in listData" :key="index">
         <a
           class="d-inline-block p-lr-lg w-100 transition"
-          :href="item.url"
           :class="{ 'vSelected': selected === index, 'blur': store.state.gl.blur }"
           :style="`border-radius: ${store.state.gl.fillet}px`"
+          :href="item.url"
           >{{ item.text }}</a
         >
       </li>

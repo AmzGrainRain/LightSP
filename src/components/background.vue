@@ -39,9 +39,20 @@ export default {
     if (store.state.wallpaper.local) {
       currentBackground.value = './assets/background.jpg'
     }
-    // 是否启用了必应壁纸（在线版不支持该功能，故使用默认壁纸）
+    // 是否启用了必应壁纸
     if (store.state.wallpaper.bing) {
-      currentBackground.value = './assets/background.jpg'
+      fetch('https://www.kihanlee.site/api/wallpaper', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `ts=${Date.now()}`
+      }).then(ori => ori.json()).then(res => {
+        if (res?.url) {
+          currentBackground.value = res.url
+        }
+      }).catch(err => console.log(err))
     }
     // 是否启用自定义壁纸
     if (store.state.wallpaper.customize) {

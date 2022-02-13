@@ -32,9 +32,14 @@ const wallpaper = {
     // 设置壁纸
     setWallpaper (state, params) {
       state.local = false
+      state.bing = false
       state.customize = false
       if (params === 'local') {
         state.local = true
+        return
+      }
+      if (params === 'bing') {
+        state.bing = true
         return
       }
       if (params === 'customize') {

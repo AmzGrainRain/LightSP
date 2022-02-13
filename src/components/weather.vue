@@ -1,7 +1,8 @@
 <template>
   <a
     id="vWeather"
-    class="d-block p-tb-sm p-lr border-radius transition pointer"
+    class="d-block p-tb-sm p-lr transition pointer"
+    :style="`border-radius: ${store.state.gl.fillet}px`"
     :title="title"
     :href="weather.link"
     target="_blank"
@@ -28,6 +29,7 @@ export default {
      */
     const store = useStore()
     const weather = reactive({
+      show: false,
       link: '',
       icon: '',
       text: '',
@@ -44,9 +46,13 @@ export default {
       weather.temp = res.data.now.temp // 温度
       weather.icon = res.data.now.icon // 天气图标
       weather.text = res.data.now.text // 天气描述
-    }).catch(err => console.log(err))
+      weather.show = true
+    }).catch(err => {
+      weather.show = false
+      console.log(err)
+    })
 
-    return { weather }
+    return { store, weather }
   }
 }
 </script>
