@@ -1,8 +1,9 @@
 # LightSP - 轻起始页（chromium内核浏览器）
----
+
 ## 扩展介绍
 基于vue3构建的一个简易起始页。[体验在线版](https://www.kihanlee.site/archive/lightsp/)</br>
 启用后，此扩展会将空白页覆盖为起始页导航。
+微软浏览器扩展商店地址：https://microsoftedge.microsoft.com/addons/detail/mianbaepkeclkoclkoikhlgdfpdelnfi
 
 ## 兼容性
 适用于所有chromium内核且支持扩展的浏览器。
