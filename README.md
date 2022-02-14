@@ -1,4 +1,4 @@
-# LightSP - 轻起始页（谷歌浏览器）
+# LightSP - 轻起始页（chromium内核浏览器）
 ---
 ## 扩展介绍
 基于vue3构建的一个简易起始页。[体验在线版](https://www.kihanlee.site/archive/lightsp/)</br>
