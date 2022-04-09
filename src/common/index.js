@@ -3,7 +3,7 @@
  * @param {Unit8Array} u8a 需要传入 Unit8Array
  * @returns {String} 返回一个 String
  */
- const u8aToString = (u8a) => {
+const u8aToString = (u8a) => {
   let result = ''
   u8a.forEach((item, i, items) => {
     result += String.fromCharCode(items[i])

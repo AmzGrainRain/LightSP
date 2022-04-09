@@ -6,4 +6,4 @@ localforage.config({
   name: 'base64img'
 })
 
-createApp(App).use(store).mount('main')
+createApp(App).use(store).mount('body')

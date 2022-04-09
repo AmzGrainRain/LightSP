@@ -3,15 +3,15 @@
     id="vClock"
     :title="title"
     class="d-flex text-center pointer"
-    @click="emit('openSettings')"
   >
-      <p class="date text-size-m">{{ data.date }}</p>
+      <p v-show="store.state.clock.dateVisible" class="date text-size-m">{{ data.date }}</p>
       <p class="time p-t-sm">{{ data.time }}</p>
   </div>
 </template>
 
 <script>
 import { reactive } from 'vue'
+import { useStore } from 'vuex'
 export default {
   props: {
     title: {
@@ -19,7 +19,7 @@ export default {
       default: ''
     }
   },
-  setup (props, { emit }) {
+  setup () {
     /**
      *
      *  组件数据
@@ -29,6 +29,7 @@ export default {
       date: 'xxxx-xx-xx xxx',
       time: '00:00:00'
     })
+    const store = useStore()
     const week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
 
     /**
@@ -57,7 +58,7 @@ export default {
     updateTime()
     setInterval(() => updateTime(), 1000)
 
-    return { data, emit }
+    return { store, data }
   }
 }
 </script>

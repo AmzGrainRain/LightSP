@@ -15,17 +15,27 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
 export default {
   props: {
     active: {
       type: Boolean,
       default: false
     }
+  },
+  setup () {
+    const store = useStore()
+
+    return { store }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+#vSwitch
+  width 2.5rem
+  height 1.25rem
+  box-shadow inset 0 0 2px #888
 input
   top 0
   left 0
@@ -35,4 +45,5 @@ input
     transform: translateX(100%)
 i
   pointer-events none
+  background-color #888
 </style>
