@@ -6,7 +6,6 @@
     :title="title"
     :href="weather.link"
     target="_blank"
-    v-show="weather.show"
   >
     <i :class="`qi-${weather.icon}`"></i>
     <div style="display: inline-block; width: .4rem"></div>

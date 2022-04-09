@@ -4,20 +4,6 @@
     <div class="panel p" :style="`border-radius: ${store.state.gl.fillet}px`">
       <h1 class="p-tb text-center text-size-normal letter-spacing-sm">起始页设置</h1>
       <hr>
-      <!-- 设置全局毛玻璃效果 -->
-      <div class="item d-flex m-b p w-100 border-radius">
-        <span>毛玻璃效果（火狐浏览器暂不支持）</span>
-        <div class="sw" @click="store.commit('setGlobalBlur', !store.state.gl.blur)">
-          <vSwitch :active="store.state.gl.blur" />
-        </div>
-      </div>
-      <!-- 设置全局圆角数值 -->
-      <div class="item d-flex m-b p w-100 border-radius">
-        <span>调整全局圆角</span>
-        <div class="sl">
-          <input type="range" min="0" max="18" v-model="data.slider">
-        </div>
-      </div>
       <!-- 设置背景视差效果 -->
       <div class="item d-flex m-b p w-100 border-radius">
         <span>背景视差效果</span>
@@ -34,7 +20,7 @@
       </div>
       <!-- 使用必应壁纸 -->
       <div class="item d-flex m-b p w-100 border-radius">
-        <span>必应壁纸</span>
+        <span>使用必应壁纸</span>
         <div class="sw" @click="mets.useBingWallpaperAPI">
           <vSwitch :active="store.state.wallpaper.bing" />
         </div>
@@ -147,7 +133,7 @@ export default {
      */
     const mets = {
       useBingWallpaperAPI: () => { // 使用必应壁纸
-        if (store.state.wallpaper.bing) store.commit('setWallpaper', 'local')
+        if (store.state.wallpaper.bing) store.commit('setWallpaper', 'default')
         else store.commit('setWallpaper', 'bing')
         alert('设置成功（刷新生效）')
       },
@@ -157,7 +143,7 @@ export default {
         reader.onloadend = () => {
           localforage.setItem('01', reader.result, err => {
             if (err !== null) {
-              store.commit('setWallpaper', 'local')
+              store.commit('setWallpaper', 'default')
               return
             }
             store.commit('setWallpaper', 'customize')

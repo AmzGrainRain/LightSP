@@ -1,55 +1,52 @@
 <template>
-  <!-- 背景组件 -->
-  <vBackground :blur="cStatus.vBackground.blur" />
+  <main :style="`height: ${store.state.gl.contentHeight}%`">
+    <!-- 背景组件 -->
+    <vBackground :blur="cStatus.vBackground.blur" />
 
-  <!-- 天气组件 -->
-  <vWeather
-    title="点击查看详情"
-    @selectCity="mets.vWeatherSelectCity"
-  />
+    <!-- 天气组件 -->
+    <vWeather title="点击查看详情" v-show="store.state.weather.visible" />
 
-  <!-- 搜索栏 -->
-  <div class="search-box">
-    <vClock
-      title="点击打开设置"
-      @openSettings="cStatus.vSettings.show = true"
+    <!-- 搜索栏 -->
+    <div class="search-box">
+      <vClock
+        title="点击打开设置"
+        @click="store.commit('settingVisible')"
+      />
+      <div style="height: 16px"></div>
+      <vInput
+        placeholder="输入搜索内容"
+        title="按下回车直接搜索"
+        @updateEvent="mets.vSearchBoxInputUpdateEvent"
+      />
+    </div>
+
+    <!-- 装饰用的横线 -->
+    <hr v-show="data.result.length && data.keywords.length" />
+
+    <!-- 关键词联想列表 -->
+    <vList
+      :listData="data.result"
+      :selected="data.focus"
+      :keywords="data.keywords"
     />
-    <div style="height: 16px"></div>
-    <vInput
-      placeholder="输入搜索内容"
-      title="按下回车直接搜索"
-      @updateEvent="mets.vSearchBoxInputUpdateEvent"
-    />
-  </div>
 
-  <!-- 装饰用的横线 -->
-  <hr v-show="data.result.length && data.keywords.length" />
-
-  <!-- 关键词联想列表 -->
-  <vList
-    :listData="data.result"
-    :selected="data.focus"
-    :keywords="data.keywords"
-  />
-
-  <!-- 设置组件 -->
-  <transition name="fade">
-    <vSettings
-      v-show="cStatus.vSettings.show"
-      @close="cStatus.vSettings.show = false"
-    />
-  </transition>
+    <!-- 设置组件 -->
+    <transition name="fade">
+      <vSettings v-show="store.state.settings.show" />
+    </transition>
+  </main>
 </template>
 
 <script>
 import { watch, reactive, onBeforeMount } from 'vue'
+import { useStore } from 'vuex'
 import axios from 'axios'
 import vWeather from '@/components/weather.vue'
 import vBackground from '@/components/background.vue'
 import vClock from '@/components/clock.vue'
-import vInput from '@/components/searchBox.vue'
+import vInput from '@/components/input.vue'
 import vList from '@/components/list.vue'
-import vSettings from '@/components/settings'
+import vSettings from '@/components/settings/index.vue'
 export default {
   components: {
     vWeather,
@@ -65,13 +62,8 @@ export default {
      *  组件数据
      *
      */
+    const store = useStore()
     const cStatus = reactive({
-      vSwitchLocation: {
-        show: false
-      },
-      vSettings: {
-        show: false
-      },
       vBackground: {
         blur: false
       }
@@ -91,10 +83,6 @@ export default {
       // vInput组件 - 内容更新事件 - 关键词联想
       vSearchBoxInputUpdateEvent: (str) => {
         data.keywords = String(str)
-      },
-      // vWeather组件 - 右键事件 - 选择城市（天气）
-      vWeatherSelectCity: () => {
-        cStatus.vSwitchLocation.show = true
       }
     }
 
@@ -200,17 +188,25 @@ export default {
      *
      */
     onBeforeMount(() => {
+      // 跟随系统的深色模式
+      if (store.state.darkMode.autoSwitch && store.state.darkMode.followSystem) {
+        console.log('跟随系统')
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          store.commit('setDarkMode', true)
+        }
+      }
+      // 跟随时间的深色模式
+      const curDate = new Date()
+      if (curDate.getHours() > 20 && curDate.getHours() < 8) {
+        console.log('跟随时间')
+        store.commit('setDarkMode', true)
+      }
       // 打印信息
-      console.log(`
-        #      #####   #####
-        #      #       #   #                        LightSP - 轻起始页
-        #      #####   #####
-        #          #   #
-        #####  #####   #        开源地址: https://github.com/KiHanLee/LightSP/tree/firefox
-      `)
+      console.log('LightSP - 轻起始页')
+      console.log('https://github.com/KiHanLee/LightSP')
     })
 
-    return { data, mets, cStatus }
+    return { store, data, mets, cStatus }
   }
 }
 </script>
@@ -230,15 +226,12 @@ body
 main
   padding 1rem
   width 40rem
-  height 85%
   @media screen and (min-width: 1280px)
     width 48rem
 .fade-enter-active,
 .fade-leave-active
-  transition opacity .2s
-.fade-enter-from,
-.fade-leave-to
-  opacity 0
+  transform translateX(-100%)
+  transition all .3s cubic-bezier(1, 0, 0, 1)
 </style>
 
 <style lang="stylus" scoped>
