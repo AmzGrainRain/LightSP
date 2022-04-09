@@ -4,7 +4,7 @@
     id="vBackground"
     class="object-fit-cover"
     :style="`
-      filter: ${props.blur ? 'blur(4px)' : ''} ${store.state.darkMode.darkWallpaper ? 'brightness(.8)' : ''}
+      filter: ${store.state.wallpaper.focusBlur && props.blur ? 'blur(4px)' : ''} ${store.state.darkMode.darkWallpaper ? 'brightness(.8)' : ''}
     `"
     :src="currentBackground"
     alt="bg"
@@ -26,9 +26,6 @@ export default {
     const store = useStore()
     const backgroundEl = ref(null)
     const currentBackground = ref('')
-
-    console.log(props.blur)
-    console.log(store.state.darkMode.darkWallpaper)
 
     // 是否启用了默认壁纸
     if (store.state.wallpaper.default) {

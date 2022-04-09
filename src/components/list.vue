@@ -55,7 +55,7 @@ a
     background-color #fff9 !important
 .show
   height calc(100% - 12rem) !important
-.vSelected
+.selected
   text-indent .5rem !important
   background-color #fffa !important
 .dark-mode
