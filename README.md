@@ -1,12 +1,12 @@
-# LightSP - 轻起始页（在线演示版）
+# LightSP - 轻起始页（网页端）
 
 ## 扩展介绍
 基于vue3构建的一个简易起始页。[点击体验](https://www.kihanlee.site/archive/lightsp/)
 
 ## 兼容性
 使用JSONP发送跨域请求，IE兼容性未知。</br>
-火狐浏览器请移步[这里](https://github.com/KiHanLee/LightSP/tree/firefox)。</br>
-基于Chromium内核且支持扩展的浏览器请移步[这里](https://github.com/KiHanLee/LightSP/tree/chromium)。
+使用火狐浏览器的用户请移步[这里](https://github.com/KiHanLee/LightSP/tree/firefox)。</br>
+使用基于Chromium内核且支持扩展的浏览器的用户请移步[这里](https://github.com/KiHanLee/LightSP/tree/chromium)。
 
 ## 初始化 & 启动
 ```

@@ -2,17 +2,21 @@
   <div
     id="vList"
     class="m-t overflow-x-hide overflow-y-auto transition scrollbar-hide"
-    :class="{ vShow: listData.length && keywords.length }"
+    :class="{'show': listData.length && keywords.length}"
   >
     <ul class="m-tb-0 m-lr-auto w-90">
       <li class="m-b transition" v-for="(item, index) in listData" :key="index">
         <a
           class="d-inline-block p-lr-lg w-100 transition"
-          :class="{ 'vSelected': selected === index, 'blur': store.state.gl.blur }"
+          :class="{
+            'selected': selected === index,
+            'blur': store.state.gl.blur,
+            'dark-mode': store.state.darkMode.enabled
+          }"
           :style="`border-radius: ${store.state.gl.fillet}px`"
           :href="item.url"
-          >{{ item.text }}</a
-        >
+        >{{ item.text }}
+        </a>
       </li>
     </ul>
   </div>
@@ -48,10 +52,15 @@ a
   background-color #fff6
   &:hover
     text-indent .5rem
-    background-color #fffa
-.vShow
+    background-color #fff9 !important
+.show
   height calc(100% - 12rem) !important
 .vSelected
   text-indent .5rem !important
   background-color #fffa !important
+.dark-mode
+  color #fff
+  background-color #1d1f21ad
+  &:hover
+    background-color #1d1f21c9 !important
 </style>

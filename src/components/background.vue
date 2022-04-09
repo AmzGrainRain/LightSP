@@ -1,9 +1,11 @@
 <template>
   <img
+    ref="backgroundEl"
     id="vBackground"
     class="object-fit-cover"
-    :class="{'vBlur': blur && store.state.wallpaper.focusBlur}"
-    ref="backgroundEl"
+    :style="`
+      filter: ${props.blur ? 'blur(4px)' : ''} ${store.state.darkMode.darkWallpaper ? 'brightness(.8)' : ''}
+    `"
     :src="currentBackground"
     alt="bg"
   />
@@ -20,23 +22,16 @@ export default {
       default: false
     }
   },
-  setup () {
-    /**
-     *
-     *  组件数据
-     *
-     */
+  setup (props) {
     const store = useStore()
     const backgroundEl = ref(null)
     const currentBackground = ref('')
 
-    /**
-     *
-     *  初始化
-     *
-     */
+    console.log(props.blur)
+    console.log(store.state.darkMode.darkWallpaper)
+
     // 是否启用了默认壁纸
-    if (store.state.wallpaper.local) {
+    if (store.state.wallpaper.default) {
       currentBackground.value = './assets/background.jpg'
     }
     // 是否启用了必应壁纸
@@ -56,9 +51,9 @@ export default {
     }
     // 是否启用自定义壁纸
     if (store.state.wallpaper.customize) {
-      localforage.getItem('01', (err, value) => {
+      localforage.getItem('CustomizeWallpaper', (err, value) => {
         if (err !== null) {
-          store.commit('setWallpaper', 'local')
+          store.commit('setWallpaper', 'default')
           alert('加载自定义背景失败，已自动设置为默认背景。（刷新生效）')
           return
         }
@@ -66,11 +61,6 @@ export default {
       })
     }
 
-    /**
-     *
-     *  生命周期钩子
-     *
-     */
     onMounted(() => {
       /**
        *
@@ -94,7 +84,7 @@ export default {
       }
     })
 
-    return { store, backgroundEl, currentBackground }
+    return { props, store, backgroundEl, currentBackground }
   }
 }
 </script>
@@ -109,6 +99,4 @@ export default {
   transform scale(1.2)
   transition all .1s
   z-index -1
-.vBlur
-  filter blur(3px)
 </style>
