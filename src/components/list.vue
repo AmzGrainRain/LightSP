@@ -7,7 +7,7 @@
     <ul class="m-tb-0 m-lr-auto w-90">
       <li class="m-b transition" v-for="(item, index) in listData" :key="index">
         <a
-          class="d-inline-block p-lr-lg w-100 transition"
+          class="d-inline-block p-lr-lg w-100 transition text-overflow-ellipsis"
           :class="{
             'selected': selected === index,
             'blur': store.state.gl.blur,

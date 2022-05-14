@@ -93,7 +93,7 @@ export default {
   left 0
   width 100vw
   height 100vh
-  transform scale(1.2)
+  // transform scale(1.2)
   transition all .1s
   z-index -1
 </style>
