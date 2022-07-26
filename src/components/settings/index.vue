@@ -26,7 +26,7 @@
     <sWeather />
     <hr>
     <button id="reset" class="m-b w-100 border-none border-radius transition pointer" type="button" @click="reset()">恢复默认设置</button>
-    <button id="close" class="w-100 border-none border-radius transition pointer" type="button" @click="store.commit('settingVisible')">关闭</button>
+    <button id="close" class="w-100 border-none border-radius transition pointer" type="button" @click="emit('close')">关闭</button>
   </div>
 </template>
 
@@ -45,16 +45,16 @@ export default {
     sDarkMode,
     sWeather
   },
-  setup () {
+  setup (props, { emit }) {
     const store = useStore()
     const reset = () => {
-      if (prompt('输入 "confirm" 确认您的操作.') === 'confirm') {
+      if (prompt('输入 "confirm" 确认您的操作: ') === 'confirm') {
         localStorage.removeItem('LightSP')
         location.reload()
       }
     }
 
-    return { store, reset }
+    return { emit, store, reset }
   }
 }
 </script>

@@ -6,10 +6,11 @@ const gl = {
   state: {
     blur: false, // 全局模糊
     fillet: 16, // 全局圆角
-    contentHeight: 85, // 内容高度
+    contentHeight: 14, // 内容高度
     color: '#000', // 字体颜色
     bgColor: '#fffc', // 背景色
-    frColor: '#8881' // 前景色
+    frColor: '#8881', // 前景色
+    searchEngines: '' // 自定义搜索引擎
   },
   mutations: {
     // 设置毛玻璃效果
@@ -27,21 +28,25 @@ const gl = {
     // 设置内容高度
     setContentHeight (state, status) {
       state.contentHeight = status
+    },
+    // 设置默认搜索引擎
+    setSearchEngines (state, url) {
+      state.searchEngines = url
     }
   }
 }
 
-/* 设置组件 */
-const settings = {
-  state: {
-    show: false // 显示
-  },
-  mutations: {
-    settingVisible (state) {
-      state.show = !state.show
-    }
-  }
-}
+// /* 设置组件 */
+// const settings = {
+//   state: {
+//     show: false // 显示
+//   },
+//   mutations: {
+//     settingVisible (state) {
+//       state.show = !state.show
+//     }
+//   }
+// }
 
 /* 壁纸组件 - 不可禁用 */
 const wallpaper = {
@@ -185,7 +190,7 @@ const weather = {
 export default createStore({
   modules: {
     gl,
-    settings,
+    // settings,
     wallpaper,
     clock,
     darkMode,

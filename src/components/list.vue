@@ -1,7 +1,7 @@
 <template>
   <div
     id="vList"
-    class="m-t overflow-x-hide overflow-y-auto transition scrollbar-hide"
+    class="m-t w-100 overflow-x-hide overflow-y-auto transition scrollbar-hide"
     :class="{'show': listData.length && keywords.length}"
   >
     <ul class="m-tb-0 m-lr-auto w-90">
@@ -54,7 +54,9 @@ a
     text-indent .5rem
     background-color #fff9 !important
 .show
-  height calc(100% - 12rem) !important
+  // height calc(100% - 12rem) !important
+  // height fit-content !important
+  height 522px !important;
 .selected
   text-indent .5rem !important
   background-color #fffa !important

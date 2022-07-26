@@ -1,38 +1,31 @@
 <template>
-  <main :style="`height: ${store.state.gl.contentHeight}%`">
+  <main class="d-flex m-auto overflow-hide">
     <!-- 背景组件 -->
     <vBackground :blur="cStatus.vBackground.blur" />
 
-    <!-- 天气组件 -->
-    <vWeather title="点击查看详情" v-show="store.state.weather.visible" />
-
     <!-- 搜索栏 -->
-    <div class="search-box">
-      <vClock
-        title="点击打开设置"
-        @click="store.commit('settingVisible')"
-      />
-      <div style="height: 16px"></div>
-      <vInput
-        placeholder="输入搜索内容"
-        title="按下回车直接搜索"
-        @updateEvent="mets.vSearchBoxInputUpdateEvent"
-      />
+    <div class="search-box w-100">
+      <vClock title="点击打开设置" @click="cStatus.vSettings = true" />
+      <div style="height: 1rem"></div>
+      <vInput placeholder="输入搜索内容" title="按下回车直接搜索" @updateEvent="mets.vSearchBoxInputUpdateEvent" />
     </div>
 
     <!-- 装饰用的横线 -->
     <hr v-show="data.result.length && data.keywords.length" />
 
     <!-- 关键词联想列表 -->
-    <vList
-      :listData="data.result"
-      :selected="data.focus"
-      :keywords="data.keywords"
-    />
+    <vList :listData="data.result" :selected="data.focus" :keywords="data.keywords" />
+
+    <div class="transition" :style="`
+      height: ${cStatus.seat ? `${store.state.gl.contentHeight}` : '0'}rem
+    `"></div>
+
+    <!-- 天气组件 -->
+    <vWeather title="点击查看详情" v-show="store.state.weather.visible" />
 
     <!-- 设置组件 -->
     <transition name="fade">
-      <vSettings v-show="store.state.settings.show" />
+      <vSettings v-show="cStatus.vSettings" @close="cStatus.vSettings = false" />
     </transition>
   </main>
 </template>
@@ -66,7 +59,9 @@ export default {
     const cStatus = reactive({
       vBackground: {
         blur: false
-      }
+      },
+      vSettings: false,
+      seat: true
     })
     const data = reactive({
       keywords: '',
@@ -107,17 +102,19 @@ export default {
       // 回车事件
       if (e.key === 'Enter') {
         if (data.focus === false) {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
+          if (store.state.gl.searchEngines !== '') window.location.href = store.state.gl.searchEngines.replace('关键词', data.keywords)
+          else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
           return
         }
         if (data.result?.[data.focus]) {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.focus].text}`
+          if (store.state.gl.searchEngines !== '') window.location.href = store.state.gl.searchEngines.replace('关键词', data.result[data.focus].text)
+          else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.focus].text}`
           return
         }
-        if (data.keywords.length) {
-          window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
-          return
-        }
+        // if (data.keywords.length) {
+        //   window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
+        //   return
+        // }
         e.preventDefault()
       }
       // Ctrl + F: 快速翻译
@@ -150,9 +147,11 @@ export default {
     watch(() => data.keywords, (newVal, oldVal) => {
       if (!String(newVal).length) {
         cStatus.vBackground.blur = false
+        cStatus.seat = true
         return
       }
       cStatus.vBackground.blur = true
+      cStatus.seat = false
       // 获取百度关键词联想数据
       jsonp('https://www.baidu.com/sugrec', {
         callbackName: '_JSONP',
@@ -215,18 +214,16 @@ export default {
 <style lang="stylus">
 @import '~@/common/stylus/style.styl'
 body
-  display flex
-  justify-content center
-  align-items center
-  width 100%
-  height 100vh
   color #fff
   font 16px/1.2 "PingFang SC", "Microsoft YaHei", sans-serif
   background-color #000
-  overflow hidden
 main
   padding 1rem
+  flex-flow column nowrap
+  justify-content center
+  align-items center
   width 40rem
+  height 100vh
   @media screen and (min-width: 1280px)
     width 48rem
 .fade-enter-active,
@@ -247,8 +244,6 @@ hr
 .search-box
   padding .5rem 0
   display flex
-  justify-content flex-end
   align-items center
   flex-flow column wrap
-  height 12rem
 </style>
