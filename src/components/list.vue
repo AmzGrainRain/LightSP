@@ -1,10 +1,10 @@
 <template>
   <div
     id="vList"
-    class="m-t w-100 overflow-x-hide overflow-y-auto transition scrollbar-hide"
+    class="w-100 h-0 overflow-x-hide overflow-y-auto transition scrollbar-hide"
     :class="{'show': listData.length && keywords.length}"
   >
-    <ul class="m-tb-0 m-lr-auto w-90">
+    <ul class="m-tb-0 m-lr-auto">
       <li class="m-b transition" v-for="(item, index) in listData" :key="index">
         <a
           class="d-inline-block p-lr-lg w-100 transition text-overflow-ellipsis"
@@ -43,8 +43,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-#vList
-  height 0rem
+// #vList
+//   max-height 522px
+ul li:last-child
+  margin 0
 a
   height 2.5rem
   line-height 2.5rem
@@ -54,9 +56,8 @@ a
     text-indent .5rem
     background-color #fff9 !important
 .show
-  // height calc(100% - 12rem) !important
-  // height fit-content !important
-  height 522px !important;
+  // height calc(100vh - 48px - 140px)
+  height calc(100vh - 188px)
 .selected
   text-indent .5rem !important
   background-color #fffa !important

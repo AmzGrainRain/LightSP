@@ -1,31 +1,46 @@
 <template>
-  <main class="d-flex m-auto overflow-hide">
+  <main class="p-mx d-flex overflow-hide">
     <!-- 背景组件 -->
     <vBackground :blur="cStatus.vBackground.blur" />
 
     <!-- 搜索栏 -->
-    <div class="search-box w-100">
+    <div
+      class="search-box transition"
+      :style="`padding-bottom: ${cStatus.seat ? `${store.state.gl.contentHeight}` : '0'}rem`"
+    >
+      <!-- 日期组件 -->
       <vClock title="点击打开设置" @click="cStatus.vSettings = true" />
+
+      <!-- 占位元素 -->
       <div style="height: 1rem"></div>
-      <vInput placeholder="输入搜索内容" title="按下回车直接搜索" @updateEvent="mets.vSearchBoxInputUpdateEvent" />
+
+      <!-- 输入框 -->
+      <vInput
+        placeholder="输入搜索内容"
+        title="按下回车直接搜索"
+        @updateEvent="mets.vSearchBoxInputUpdateEvent"
+      />
+
+      <!-- 装饰用的横线 -->
+      <hr class="w-95" v-show="data.result.length && data.keywords.length" />
+
+      <!-- 关键词联想列表 -->
+      <vList
+        :listData="data.result"
+        :selected="data.focus"
+        :keywords="data.keywords"
+      />
     </div>
-
-    <!-- 装饰用的横线 -->
-    <hr v-show="data.result.length && data.keywords.length" />
-
-    <!-- 关键词联想列表 -->
-    <vList :listData="data.result" :selected="data.focus" :keywords="data.keywords" />
-
-    <div class="transition" :style="`
-      height: ${cStatus.seat ? `${store.state.gl.contentHeight}` : '0'}rem
-    `"></div>
 
     <!-- 天气组件 -->
     <vWeather title="点击查看详情" v-show="store.state.weather.visible" />
 
     <!-- 设置组件 -->
     <transition name="fade">
-      <vSettings v-show="cStatus.vSettings" @close="cStatus.vSettings = false" />
+      <vSettings
+        v-show="cStatus.vSettings"
+        @close="cStatus.vSettings = false"
+      />
     </transition>
   </main>
 </template>
@@ -89,32 +104,48 @@ export default {
     document.addEventListener('keydown', (e) => {
       // 上箭头
       if (e.key === 'ArrowUp') {
-        if (data.focus !== false) data.focus = data.focus - 1 < 0 ? data.result.length - 1 < 0 ? 0 : data.result.length - 1 : data.focus - 1
-        else data.focus = 0
+        if (data.focus !== false) {
+          data.focus =
+            data.focus - 1 < 0
+              ? data.result.length - 1 < 0
+                ? 0
+                : data.result.length - 1
+              : data.focus - 1
+        } else data.focus = 0
         e.preventDefault()
       }
       // 下箭头
       if (e.key === 'ArrowDown') {
-        if (data.focus !== false) data.focus = data.focus + 1 > data.result.length - 1 ? 0 : data.focus + 1
-        else data.focus = 0
+        if (data.focus !== false) {
+          data.focus =
+            data.focus + 1 > data.result.length - 1 ? 0 : data.focus + 1
+        } else data.focus = 0
         e.preventDefault()
       }
       // 回车事件
       if (e.key === 'Enter') {
         if (data.focus === false) {
-          if (store.state.gl.searchEngines !== '') window.location.href = store.state.gl.searchEngines.replace('关键词', data.keywords)
-          else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
+          if (store.state.gl.searchEngines !== '') {
+            window.location.href = store.state.gl.searchEngines.replace(
+              '关键词',
+              data.keywords
+            )
+          } else { window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}` }
           return
         }
         if (data.result?.[data.focus]) {
-          if (store.state.gl.searchEngines !== '') window.location.href = store.state.gl.searchEngines.replace('关键词', data.result[data.focus].text)
-          else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.focus].text}`
+          if (store.state.gl.searchEngines !== '') {
+            window.location.href = store.state.gl.searchEngines.replace(
+              '关键词',
+              data.result[data.focus].text
+            )
+          } else {
+            window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${
+              data.result[data.focus].text
+            }`
+          }
           return
         }
-        // if (data.keywords.length) {
-        //   window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keywords}`
-        //   return
-        // }
         e.preventDefault()
       }
       // Ctrl + F: 快速翻译
@@ -144,43 +175,46 @@ export default {
      *  监听动态数据变化
      *
      */
-    watch(() => data.keywords, (newVal, oldVal) => {
-      if (!String(newVal).length) {
-        cStatus.vBackground.blur = false
-        cStatus.seat = true
-        return
-      }
-      cStatus.vBackground.blur = true
-      cStatus.seat = false
-      // 获取百度关键词联想数据
-      jsonp('https://www.baidu.com/sugrec', {
-        callbackName: '_JSONP',
-        ie: 'utf-8',
-        prod: 'pc',
-        from: 'pc_web',
-        wd: data.keywords,
-        json: 1,
-        bs: 'jsonp'
-      }).then(res => {
-        // 结果为空时
-        if (!res?.g.length) {
-          data.result = []
+    watch(
+      () => data.keywords,
+      (newVal, oldVal) => {
+        if (!String(newVal).length) {
+          cStatus.vBackground.blur = false
+          cStatus.seat = true
           return
         }
-        // 反之
-        const tmp = []
-        if (res.g.length) {
-          for (let i = 0, len = res.g.length; i < len; i++) {
-            tmp.push({
-              text: res.g[i].q,
-              url: `https://www.baidu.com/s?ie=utf-8&wd=${res.g[i].q}`
-            })
+        cStatus.vBackground.blur = true
+        cStatus.seat = false
+        // 获取百度关键词联想数据
+        jsonp('https://www.baidu.com/sugrec', {
+          callbackName: '_JSONP',
+          ie: 'utf-8',
+          prod: 'pc',
+          from: 'pc_web',
+          wd: data.keywords,
+          json: 1,
+          bs: 'jsonp'
+        }).then((res) => {
+          // 结果为空时
+          if (!res?.g.length) {
+            data.result = []
+            return
           }
-        }
-        if (tmp.length) data.result = tmp
-        else data.result = []
-      })
-    })
+          // 反之
+          const tmp = []
+          if (res.g.length) {
+            for (let i = 0, len = res.g.length; i < len; i++) {
+              tmp.push({
+                text: res.g[i].q,
+                url: `https://www.baidu.com/s?ie=utf-8&wd=${res.g[i].q}`
+              })
+            }
+          }
+          if (tmp.length) data.result = tmp
+          else data.result = []
+        })
+      }
+    )
 
     /**
      *
@@ -189,7 +223,10 @@ export default {
      */
     onBeforeMount(() => {
       // 跟随系统的深色模式
-      if (store.state.darkMode.autoSwitch && store.state.darkMode.followSystem) {
+      if (
+        store.state.darkMode.autoSwitch &&
+        store.state.darkMode.followSystem
+      ) {
         console.log('跟随系统')
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
           store.commit('setDarkMode', true)
@@ -217,15 +254,13 @@ body
   color #fff
   font 16px/1.2 "PingFang SC", "Microsoft YaHei", sans-serif
   background-color #000
+  overflow hidden
 main
-  padding 1rem
   flex-flow column nowrap
   justify-content center
   align-items center
-  width 40rem
+  width 100vw
   height 100vh
-  @media screen and (min-width: 1280px)
-    width 48rem
 .fade-enter-active,
 .fade-leave-active
   transform translateX(-100%)
@@ -233,17 +268,17 @@ main
 </style>
 
 <style lang="stylus" scoped>
-hr
-  display block
-  margin 0 auto
-  padding 0 1rem
-  width 85%
-  height 1px
-  border 0
-  border-top 1px solid #fff8
 .search-box
-  padding .5rem 0
   display flex
   align-items center
   flex-flow column wrap
+  width 45rem
+  @media screen and (max-width: 1024px)
+    width 80%
+  @media screen and (max-width: 512px)
+    width 95%
+  hr
+    display block
+    border 0
+    border-top 1px solid #fff8
 </style>

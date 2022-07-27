@@ -2,7 +2,7 @@
   <input
     id="vInput"
     type="text"
-    class="p-lr w-90 text-center text-size-sm border-none transition"
+    class="p-lr w-100 text-center text-size-sm border-none transition"
     :class="{
       'blur': store.state.gl.blur,
       'dark-mode': store.state.darkMode.enabled

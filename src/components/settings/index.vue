@@ -27,6 +27,7 @@
     <hr>
     <button id="reset" class="m-b w-100 border-none border-radius transition pointer" type="button" @click="reset()">恢复默认设置</button>
     <button id="close" class="w-100 border-none border-radius transition pointer" type="button" @click="emit('close')">关闭</button>
+    <hr>
   </div>
 </template>
 
