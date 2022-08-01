@@ -1,9 +1,59 @@
+<script setup lang="ts">
+import { reactive } from 'vue'
+import { useIndexStore } from '../store'
+import { useWeatherStore } from '../store/weather'
+
+/**
+ * Props
+ */
+interface Props {
+  Title: string
+}
+defineProps<Props>()
+
+/**
+ * Data
+ */
+interface Reactive {
+  show: boolean
+  link: string
+  icon: string
+  text: string
+  temp: string
+}
+const weather = reactive<Reactive>({
+  show: false,
+  link: '',
+  icon: '',
+  text: '',
+  temp: ''
+})
+const store = {
+  global: useIndexStore(),
+  weather: useWeatherStore()
+}
+fetch(`${store.weather.api}?key=${store.weather.apiKey}&location=${store.weather.location_id}`)
+  .then((ori) => ori.json())
+  .then((res) => {
+    weather.link = res.fxLink
+    weather.temp = res.now.temp
+    weather.icon = res.now.icon
+    weather.text = res.now.text
+    weather.show = true
+  })
+  .catch((err) => {
+    weather.show = false
+    console.log(err)
+  })
+</script>
+
+
 <template>
   <a
     id="vWeather"
     class="d-block p-tb-sm p-lr transition pointer"
-    :style="`border-radius: ${store.state.gl.fillet}px`"
-    :title="title"
+    :style="`border-radius: ${store.global.fillet}px`"
+    :title="Title"
     :href="weather.link"
     target="_blank"
   >
@@ -13,52 +63,9 @@
   </a>
 </template>
 
-<script>
-import axios from 'axios'
-import { useStore } from 'vuex'
-import { reactive } from 'vue'
-export default {
-  props: {
-    title: String
-  },
-  setup () {
-    /**
-     *
-     *  组件数据
-     *
-     */
-    const store = useStore()
-    const weather = reactive({
-      show: false,
-      link: '',
-      icon: '',
-      text: '',
-      temp: ''
-    })
-    // 请求天气数据
-    axios.get('https://devapi.qweather.com/v7/weather/now', {
-      params: {
-        key: '4c54684fdabd4827b1ced33761912043',
-        location: store.state.weather.location_id
-      }
-    }).then(res => {
-      weather.link = res.data.fxLink // 天气详情链接
-      weather.temp = res.data.now.temp // 温度
-      weather.icon = res.data.now.icon // 天气图标
-      weather.text = res.data.now.text // 天气描述
-      weather.show = true
-    }).catch(err => {
-      weather.show = false
-      console.log(err)
-    })
-
-    return { store, weather }
-  }
-}
-</script>
 
 <style lang="stylus" scoped>
-@import url('~@/assets/weather/qweather-icons.css')
+@import url('../assets/weather/qweather-icons.css')
 #vWeather
   position absolute
   top 1rem

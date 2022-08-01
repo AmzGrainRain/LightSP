@@ -1,19 +1,45 @@
+<script setup lang="ts">
+import { useIndexStore } from '../store'
+import { useDarkModeStore } from '../store/darkMode'
+
+/**
+ * Props
+ */
+interface Props {
+  ListData: any[]
+  Keywords: string
+  Selected: boolean | number
+}
+defineProps<Props>()
+
+/**
+ * Data
+ */
+const store = {
+  global: useIndexStore(),
+  darkMode: useDarkModeStore()
+}
+</script>
+
+
 <template>
   <div
     id="vList"
     class="w-100 h-0 overflow-x-hide overflow-y-auto transition scrollbar-hide"
-    :class="{'show': listData.length && keywords.length}"
+    :style="{
+      height: (ListData.length && Keywords.length ? `calc(100vh - 188px - ${store.global.contentHeight}rem)` : 0)
+    }"
   >
     <ul class="m-tb-0 m-lr-auto">
-      <li class="m-b transition" v-for="(item, index) in listData" :key="index">
+      <li class="m-b transition" v-for="(item, index) in ListData" :key="index">
         <a
           class="d-inline-block p-lr-lg w-100 transition text-overflow-ellipsis"
           :class="{
-            'selected': selected === index,
-            'blur': store.state.gl.blur,
-            'dark-mode': store.state.darkMode.enabled
+            'selected': Selected === index,
+            'blur': store.global.blur,
+            'dark-mode': store.darkMode.enabled
           }"
-          :style="`border-radius: ${store.state.gl.fillet}px`"
+          :style="`border-radius: ${store.global.fillet}px`"
           :href="item.url"
         >{{ item.text }}
         </a>
@@ -22,25 +48,6 @@
   </div>
 </template>
 
-<script>
-import { useStore } from 'vuex'
-export default {
-  props: {
-    listData: Array,
-    keywords: String,
-    selected: [Boolean, Number]
-  },
-  setup () {
-    /**
-     *
-     *  组件数据
-     *
-     */
-    const store = useStore()
-    return { store }
-  }
-}
-</script>
 
 <style lang="stylus" scoped>
 // #vList
@@ -55,9 +62,6 @@ a
   &:hover
     text-indent .5rem
     background-color #fff9 !important
-.show
-  // height calc(100vh - 48px - 140px)
-  height calc(100vh - 188px)
 .selected
   text-indent .5rem !important
   background-color #fffa !important

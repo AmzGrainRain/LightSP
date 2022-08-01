@@ -1,25 +1,81 @@
+<script setup lang="ts">
+import { reactive, watch } from 'vue'
+import { useIndexStore } from '../../store'
+import { useDarkModeStore } from '../../store/darkMode'
+import vSwitch from '../switch.vue'
+
+/**
+ * Data
+ */
+const store = {
+  global: useIndexStore(),
+  darkMode: useDarkModeStore()
+}
+interface Reactive {
+  slider: {
+    fillet: number
+  }
+  content: {
+    height: number
+  }
+  searchEngines: string
+}
+const data = reactive<Reactive>({
+  slider: {
+    fillet: store.global.fillet
+  },
+  content: {
+    height: store.global.contentHeight
+  },
+  searchEngines: store.global.searchEngines
+})
+
+/**
+ * Watch
+ */
+watch(
+  () => data.slider.fillet,
+  (newVal, oldVal) => {
+    store.global.setGlobalFillet(newVal)
+  }
+)
+watch(
+  () => data.content.height,
+  (newVal, oldVal) => {
+    store.global.setContentHeight(newVal)
+  }
+)
+watch(
+  () => data.searchEngines,
+  (newVal, oldVal) => {
+    store.global.setSearchEngines(newVal)
+  }
+)
+</script>
+
+
 <template>
   <ul>
     <li
       class="border-radius"
       :style="`background-color: ${
-        store.state.darkMode.enabled
-          ? store.state.darkMode.frColor
-          : store.state.gl.frColor
+        store.darkMode.enabled
+          ? store.darkMode.frColor
+          : store.global.frColor
       }`"
     >
       <span>全局毛玻璃效果</span>
       <vSwitch
-        @click="store.commit('setGlobalBlur', null)"
-        :active="store.state.gl.blur"
+        @click="store.global.setGlobalBlur(null)"
+        :active="store.global.blur"
       />
     </li>
     <li
       class="border-radius"
       :style="`background-color: ${
-        store.state.darkMode.enabled
-          ? store.state.darkMode.frColor
-          : store.state.gl.frColor
+        store.darkMode.enabled
+          ? store.darkMode.frColor
+          : store.global.frColor
       }`"
     >
       <span>调整全局圆角</span>
@@ -28,9 +84,9 @@
     <li
       class="border-radius"
       :style="`background-color: ${
-        store.state.darkMode.enabled
-          ? store.state.darkMode.frColor
-          : store.state.gl.frColor
+        store.darkMode.enabled
+          ? store.darkMode.frColor
+          : store.global.frColor
       }`"
     >
       <span>调整内容高度</span>
@@ -39,9 +95,23 @@
     <li
       class="border-radius"
       :style="`background-color: ${
-        store.state.darkMode.enabled
-          ? store.state.darkMode.frColor
-          : store.state.gl.frColor
+        store.darkMode.enabled
+          ? store.darkMode.frColor
+          : store.global.frColor
+      }`"
+    >
+      <span>自适应内容高度</span>
+      <vSwitch
+        @click="store.global.setAdaptiveContentHeight(null)"
+        :active="store.global.adaptiveContentHeight"
+      />
+    </li>
+    <li
+      class="border-radius"
+      :style="`background-color: ${
+        store.darkMode.enabled
+          ? store.darkMode.frColor
+          : store.global.frColor
       }`"
     >
       <span>自定义搜索引擎</span>
@@ -56,40 +126,6 @@
   </ul>
 </template>
 
-<script>
-import { reactive, watch } from 'vue'
-import { useStore } from 'vuex'
-import vSwitch from '@/components/switch'
-export default {
-  components: {
-    vSwitch
-  },
-  setup () {
-    const store = useStore()
-    const data = reactive({
-      slider: {
-        fillet: store.state.gl.fillet
-      },
-      content: {
-        height: store.state.gl.contentHeight
-      },
-      searchEngines: store.state.gl.searchEngines
-    })
-
-    watch(() => data.slider.fillet, (newVal, oldVal) => {
-      store.commit('setGlobalFillet', newVal)
-    })
-    watch(() => data.content.height, (newVal, oldVal) => {
-      store.commit('setContentHeight', newVal)
-    })
-    watch(() => data.searchEngines, (newVal, oldVal) => {
-      store.commit('setSearchEngines', newVal)
-    })
-
-    return { store, data }
-  }
-}
-</script>
 
 <style lang="stylus" scoped>
 li

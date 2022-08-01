@@ -1,50 +1,58 @@
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useIndexStore } from '../store'
+import { useDarkModeStore } from '../store/darkMode'
+
+/**
+ * Props
+ */
+interface Props {
+  // ClassSlot?: string
+  // StyleSlot?: string
+  Placeholder?: string
+  Title?: string
+}
+defineProps<Props>()
+
+/**
+ * Emits
+ */
+const emit = defineEmits(['updateEvent'])
+
+/**
+ * Data
+ */
+const store = {
+  global: useIndexStore(),
+  darkMode: useDarkModeStore()
+}
+const text = ref('')
+
+/**
+ * Watch
+ */
+watch(text, (newVal, oldVal) => {
+  emit('updateEvent', newVal)
+})
+</script>
+
+
 <template>
   <input
     id="vInput"
     type="text"
     class="p-lr w-100 text-center text-size-sm border-none transition"
     :class="{
-      'blur': store.state.gl.blur,
-      'dark-mode': store.state.darkMode.enabled
+      'blur': store.global.blur,
+      'dark-mode': store.darkMode.enabled
     }"
-    :style="`border-radius: ${store.state.gl.fillet}px`"
-    :placeholder="placeholder"
-    :title="title"
+    :style="`border-radius: ${store.global.fillet}px`"
+    :placeholder="Placeholder"
+    :title="Title"
     v-model="text"
   />
 </template>
 
-<script>
-import { ref, watch } from 'vue'
-import { useStore } from 'vuex'
-export default {
-  props: {
-    ClassSlot: String,
-    StyleSlot: String,
-    placeholder: String,
-    title: String
-  },
-  setup (props, { emit }) {
-    /**
-     *
-     *  组件数据
-     *
-    */
-    const store = useStore()
-    const text = ref('')
-
-    /**
-     *
-     *  监听变化
-     *
-     */
-    watch(text, (newVal, oldVal) => {
-      emit('updateEvent', newVal)
-    })
-    return { store, text }
-  }
-}
-</script>
 
 <style lang="stylus" scoped>
 input

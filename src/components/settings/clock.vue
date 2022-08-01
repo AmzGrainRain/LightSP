@@ -1,29 +1,32 @@
+<script setup lang="ts">
+import vSwitch from '../switch.vue'
+import { useIndexStore } from "../../store"
+import { useClockStore } from "../../store/clock"
+import { useDarkModeStore } from "../../store/darkMode"
+
+/**
+ * Data
+ */
+const store = {
+  global: useIndexStore(),
+  clock: useClockStore(),
+  darkMode: useDarkModeStore()
+}
+</script>
+
+
 <template>
   <ul id="sClock">
     <li
       class="border-radius"
-      :style="`background-color: ${store.state.darkMode.enabled ? store.state.darkMode.frColor : store.state.gl.frColor}`"
+      :style="`background-color: ${store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}`"
     >
       <span>显示日期</span>
-      <vSwitch @click="store.commit('setDateVisible', null)" :active="store.state.clock.dateVisible" />
+      <vSwitch @click="store.clock.setDateVisible(null)" :active="store.clock.dateVisible" />
     </li>
   </ul>
 </template>
 
-<script>
-import { useStore } from 'vuex'
-import vSwitch from '@/components/switch'
-export default {
-  components: {
-    vSwitch
-  },
-  setup () {
-    const store = useStore()
-
-    return { store }
-  }
-}
-</script>
 
 <style lang="stylus" scoped>
 li

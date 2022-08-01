@@ -1,3 +1,16 @@
+<script setup lang="ts">
+/**
+ * Props
+ */
+interface Props {
+  active: boolean
+}
+withDefaults(defineProps<Props>(), {
+  active: false
+})
+</script>
+
+
 <template>
   <div
     id="vSwitch"
@@ -14,22 +27,6 @@
   </div>
 </template>
 
-<script>
-import { useStore } from 'vuex'
-export default {
-  props: {
-    active: {
-      type: Boolean,
-      default: false
-    }
-  },
-  setup () {
-    const store = useStore()
-
-    return { store }
-  }
-}
-</script>
 
 <style lang="stylus" scoped>
 #vSwitch

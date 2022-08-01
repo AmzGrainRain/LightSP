@@ -1,3 +1,5 @@
+China-City-List v3.0 update by 2021-11-29,,,,,,,,,,,,,
+Location_ID,Location_Name_EN,Location_Name_ZH,Country_Code,Country_Name_EN,Country_Name_ZH,Adm1_Name_EN,Adm1_Name_ZH,Adm2_Name_EN,Adm2_Name_ZH,Timezone,Latitude,Longitude,Adcode
 101010100,Beijing,北京,CN,China,中国,Beijing,北京市,Beijing,北京市,Asia/Shanghai,39.904987,116.405289,110000
 101010200,Haidian,海淀,CN,China,中国,Beijing,北京市,Beijing,北京市,Asia/Shanghai,39.956074,116.310318,110108
 101010300,Chaoyang,朝阳,CN,China,中国,Beijing,北京市,Beijing,北京市,Asia/Shanghai,39.921490,116.486412,110105
