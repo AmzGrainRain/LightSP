@@ -88,12 +88,9 @@ onMounted(() => {
     ref="backgroundEl"
     id="vBackground"
     class="object-fit-cover"
-    :style="`
-      filter: ${
-        store.wallpaper.focusBlur && props.Blur ? 'blur(4px)' : ''} ${
-        store.darkMode.darkWallpaper ? 'brightness(.8)' : ''
-      }
-    `"
+    :style="{
+      'filter': `${store.wallpaper.focusBlur && props.Blur ? 'blur(4px)' : ''} ${store.darkMode.darkWallpaper ? 'brightness(.8)' : ''}`
+    }"
     :src="currentBackground"
     alt="bg"
   />

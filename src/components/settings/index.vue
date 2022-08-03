@@ -39,13 +39,11 @@ const reset = () => {
   <div
     id="vSettings"
     class="p-tb-sm p-lr-ex transition"
-    :class="{
-      'blur': store.global.blur
+    :class="{'blur': store.global.blur}"
+    :style="{
+      'color': store.darkMode.enabled ? store.darkMode.color : store.global.color,
+      'background-color': store.darkMode.enabled ? store.darkMode.bgColor : store.global.bgColor
     }"
-    :style="`
-      color: ${store.darkMode.enabled ? store.darkMode.color : store.global.color};
-      background-color: ${store.darkMode.enabled ? store.darkMode.bgColor : store.global.bgColor}
-    `"
   >
     <!-- 全局设置 -->
     <sGlobal />
@@ -63,8 +61,7 @@ const reset = () => {
     <sWeather />
     <hr>
     <button id="reset" class="m-b w-100 border-none border-radius transition pointer" type="button" @click="reset()">恢复默认设置</button>
-    <button id="close" class="w-100 border-none border-radius transition pointer" type="button" @click="emit('close')">关闭</button>
-    <hr>
+    <button id="close" class="m-b w-100 border-none border-radius transition pointer" type="button" @click="emit('close')">关闭</button>
   </div>
 </template>
 

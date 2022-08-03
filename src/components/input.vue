@@ -46,7 +46,7 @@ watch(text, (newVal, oldVal) => {
       'blur': store.global.blur,
       'dark-mode': store.darkMode.enabled
     }"
-    :style="`border-radius: ${store.global.fillet}px`"
+    :style="{'borderRadius': store.global.fillet + 'px'}"
     :placeholder="Placeholder"
     :title="Title"
     v-model="text"

@@ -19,7 +19,7 @@ const store = {
   <ul id="sClock">
     <li
       class="border-radius"
-      :style="`background-color: ${store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>显示日期</span>
       <vSwitch @click="store.clock.setDateVisible(null)" :active="store.clock.dateVisible" />

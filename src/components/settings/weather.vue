@@ -77,11 +77,7 @@ watch(
   <ul>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>显示天气组件</span>
       <vSwitch
@@ -91,11 +87,7 @@ watch(
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>设置天气位置</span>
       <input
@@ -108,11 +100,7 @@ watch(
     <li
       class="border-radius"
       v-show="data.hit.length"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <ul
         id="hit-list"

@@ -47,11 +47,7 @@ const methods = {
   <ul>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>背景聚焦模糊效果</span>
       <vSwitch
@@ -61,11 +57,7 @@ const methods = {
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>背景视差效果</span>
       <vSwitch
@@ -75,11 +67,7 @@ const methods = {
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>使用必应壁纸</span>
       <vSwitch
@@ -89,11 +77,7 @@ const methods = {
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>自定义壁纸</span>
       <input type="button" value="+" @click="base64file.click" />

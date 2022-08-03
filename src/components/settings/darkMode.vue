@@ -18,9 +18,7 @@ const store = {
     <li
       v-show="!store.darkMode.followSystem"
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>深色模式</span>
       <vSwitch
@@ -30,9 +28,7 @@ const store = {
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>深色模式（跟随系统）</span>
       <vSwitch
@@ -42,9 +38,7 @@ const store = {
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>深色壁纸</span>
       <vSwitch

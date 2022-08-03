@@ -58,11 +58,7 @@ watch(
   <ul>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>全局毛玻璃效果</span>
       <vSwitch
@@ -72,33 +68,21 @@ watch(
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>调整全局圆角</span>
       <input type="range" min="0" max="18" v-model="data.slider.fillet" />
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>调整内容高度</span>
       <input type="range" min="0" max="30" v-model="data.content.height" />
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>自适应内容高度</span>
       <vSwitch
@@ -108,11 +92,7 @@ watch(
     </li>
     <li
       class="border-radius"
-      :style="`background-color: ${
-        store.darkMode.enabled
-          ? store.darkMode.frColor
-          : store.global.frColor
-      }`"
+      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
       <span>自定义搜索引擎</span>
       <input

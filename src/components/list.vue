@@ -39,7 +39,7 @@ const store = {
             'blur': store.global.blur,
             'dark-mode': store.darkMode.enabled
           }"
-          :style="`border-radius: ${store.global.fillet}px`"
+          :style="{'borderRadius': store.global.fillet + 'px'}"
           :href="item.url"
         >{{ item.text }}
         </a>
@@ -50,8 +50,6 @@ const store = {
 
 
 <style lang="stylus" scoped>
-// #vList
-//   max-height 522px
 ul li:last-child
   margin 0
 a
