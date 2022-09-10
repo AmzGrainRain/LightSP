@@ -152,7 +152,7 @@ document.addEventListener('keydown', (e: any): void => {
  * Watch
  */
 watch(
-  () => data.keyword,
+  () => data.keyword, 
   (newVal, oldVal) => {
     if (!newVal.length) {
       components.background.blur = false
@@ -213,7 +213,7 @@ onBeforeMount(() => {
     'padding-top': (store.global.adaptiveContentHeight ? 0 : `${store.global.contentHeight}rem`)
   }">
     <!-- 背景组件 -->
-    <vBackground :blur="components.background.blur" />
+    <vBackground :Blur="components.background.blur" />
 
     <!-- 搜索栏 -->
     <div

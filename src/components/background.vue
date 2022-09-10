@@ -88,9 +88,10 @@ onMounted(() => {
     ref="backgroundEl"
     id="vBackground"
     class="object-fit-cover"
-    :style="{
-      'filter': `${store.wallpaper.focusBlur && props.Blur ? 'blur(4px)' : ''} ${store.darkMode.darkWallpaper ? 'brightness(.8)' : ''}`
-    }"
+    :style="`
+      transform: ${store.wallpaper.focusBlur && props.Blur ? 'scale(1.2)' : ''};
+      filter: ${store.wallpaper.focusBlur && props.Blur ? 'blur(4px)' : ''} ${store.darkMode.darkWallpaper ? 'brightness(.8)' : ''}
+    `"
     :src="currentBackground"
     alt="bg"
   />
@@ -104,7 +105,6 @@ onMounted(() => {
   left 0
   width 100vw
   height 100vh
-  // transform scale(1.2)
-  transition all .1s
+  transition all .3s cubic-bezier(0.2, 0.73, 0.61, 0.95);
   z-index -1
 </style>
