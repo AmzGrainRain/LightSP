@@ -5,7 +5,6 @@ export const useWallpaperStore = defineStore('wallpaper', {
     default: true, // 使用默认壁纸
     bing: false, // 使用必应壁纸
     customize: false, // 自定义壁纸
-    parallax: false, // 视差效果
     focusBlur: false // 聚焦模糊
   }),
   getters: {},
@@ -31,15 +30,15 @@ export const useWallpaperStore = defineStore('wallpaper', {
       location.reload()
     },
     // 设置视差效果
-    setWallpaperParallax(status: boolean | null) {
-      if (status === null) {
-        this.parallax = !this.parallax
-        location.reload()
-        return
-      }
-      this.parallax = status
-      location.reload()
-    },
+    // setWallpaperParallax(status: boolean | null) {
+    //   if (status === null) {
+    //     this.parallax = !this.parallax
+    //     location.reload()
+    //     return
+    //   }
+    //   this.parallax = status
+    //   location.reload()
+    // },
     // 设置聚焦模糊
     setWallpaperFocusBlur(status: boolean | null) {
       if (status === null) {

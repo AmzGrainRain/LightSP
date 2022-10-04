@@ -25,20 +25,24 @@ const store = {
   weather: useWeatherStore(),
   darkMode: useDarkModeStore()
 }
-let _csvFile = csvFile.split('\n')
+
+/**
+ * 处理 csv 数据
+ */
+const csvData = csvFile.split('\n')
 let tmp = ''
-_csvFile.forEach((e: any) => {
+csvData.forEach((e: any) => {
   /*
     e.split(',')[0] = id
     e.split(',')[2] = 县
     e.split(',')[7] = 省
     e.split(',')[9] = 市
   */
-  tmp += `${e.split(',')[7]}-${e.split(',')[9]}-${e.split(',')[2]}-${
-    e.split(',')[0]
-  }\n`
+  const item: any[] = e.split(',')
+  tmp += `${item[7]}-${item[9]}-${item[2]}-${item[0]}\n`
 })
 data.cityData = tmp.split('\n')
+tmp = ''
 
 /**
  * Methods
@@ -65,7 +69,7 @@ watch(
     data.hit = []
     // 将命中的数据添加到命中列表
     data.cityData.forEach((e: any) => {
-      if (e.indexOf(newVal) !== -1) {
+      if (e.indexOf(newVal.replace(/[省|市|区]/g, '')) !== -1) {
         data.hit.push(e)
       }
     })
@@ -94,6 +98,7 @@ watch(
         class="w-50 text-size-m text-center border-none border-radius-sm"
         type="text"
         placeholder="输入您所在的城市"
+        title="请不要输入完整的位置"
         v-model="data.keyword"
       />
     </li>
@@ -104,7 +109,7 @@ watch(
     >
       <ul
         id="hit-list"
-        class="overflow-x-hide overflow-y-auto border-radius"
+        class="w-100 overflow-x-hide overflow-y-auto border-radius"
         v-show="data.hit.length"
       >
         <li

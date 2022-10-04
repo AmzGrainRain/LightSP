@@ -1,5 +1,3 @@
-China-City-List v3.0 update by 2021-11-29,,,,,,,,,,,,,
-Location_ID,Location_Name_EN,Location_Name_ZH,Country_Code,Country_Name_EN,Country_Name_ZH,Adm1_Name_EN,Adm1_Name_ZH,Adm2_Name_EN,Adm2_Name_ZH,Timezone,Latitude,Longitude,Adcode
 101010100,Beijing,北京,CN,China,中国,Beijing,北京市,Beijing,北京市,Asia/Shanghai,39.904987,116.405289,110000
 101010200,Haidian,海淀,CN,China,中国,Beijing,北京市,Beijing,北京市,Asia/Shanghai,39.956074,116.310318,110108
 101010300,Chaoyang,朝阳,CN,China,中国,Beijing,北京市,Beijing,北京市,Asia/Shanghai,39.921490,116.486412,110105
@@ -3184,23 +3182,23 @@ Location_ID,Location_Name_EN,Location_Name_ZH,Country_Code,Country_Name_EN,Count
 101310302,Xisha,西沙,CN,China,中国,Hainan,海南省,Sansha,三沙市,Asia/Shanghai,16.204546,111.792946,460301
 101310304,Nansha,南沙,CN,China,中国,Hainan,海南省,Sansha,三沙市,Asia/Shanghai,9.900863,115.530174,460302
 101320101,Hong Kong,香港,CN,China,中国,Hong Kong SAR,香港特别行政区,Hongkong,香港特别行政区,Asia/Shanghai,22.306999,114.177002,810000
-101320102,Kowloon,九龙,CN,China,中国,Hong Kong SAR,香港特别行政区,Hongkong,香港特别行政区,Asia/Shanghai,22.312372,114.193047,
-101320103,New Territories,新界,CN,China,中国,Hong Kong SAR,香港特别行政区,Hongkong,香港特别行政区,Asia/Shanghai,22.381001,114.188004,
+101320102,Kowloon,九龙,CN,China,中国,Hong Kong SAR,香港特别行政区,Hongkong,香港特别行政区,Asia/Shanghai,22.312372,114.193047
+101320103,New Territories,新界,CN,China,中国,Hong Kong SAR,香港特别行政区,Hongkong,香港特别行政区,Asia/Shanghai,22.381001,114.188004
 101330101,Macao,澳门,CN,China,中国,Macao SAR,澳门特别行政区,Macao,澳门特别行政区,Asia/Shanghai,22.202000,113.543999,820000
-101330102,Taipa Island,氹仔岛,CN,China,中国,Macao SAR,澳门特别行政区,Macao,澳门特别行政区,Asia/Shanghai,22.160664,113.582565,
-101330103,Coloane Island,路环岛,CN,China,中国,Macao SAR,澳门特别行政区,Macao,澳门特别行政区,Asia/Shanghai,22.132681,113.572266,
+101330102,Taipa Island,氹仔岛,CN,China,中国,Macao SAR,澳门特别行政区,Macao,澳门特别行政区,Asia/Shanghai,22.160664,113.582565
+101330103,Coloane Island,路环岛,CN,China,中国,Macao SAR,澳门特别行政区,Macao,澳门特别行政区,Asia/Shanghai,22.132681,113.572266
 101340101,Taipei,台北,CN,China,中国,Taiwan,台湾省,Taipei,台北市,Asia/Shanghai,25.040001,121.515999,710000
-101340102,Taoyuan,桃园,CN,China,中国,Taiwan,台湾省,Taipei,桃园市,Asia/Shanghai,24.997999,121.306000,
-101340103,Hsinchu,新竹,CN,China,中国,Taiwan,台湾省,Taipei,新竹市,Asia/Shanghai,24.809000,120.958000,
-101340104,Yilan,宜兰,CN,China,中国,Taiwan,台湾省,Taipei,宜兰市,Asia/Shanghai,24.757000,121.740997,
-101340201,Kaohsiung,高雄,CN,China,中国,Taiwan,台湾省,Kaohsiung,高雄市,Asia/Shanghai,22.618999,120.276001,
-101340202,Chiayi,嘉义,CN,China,中国,Taiwan,台湾省,Gaoxiong,嘉义市,Asia/Shanghai,23.487000,120.441002,
-101340203,Tainan,台南,CN,China,中国,Taiwan,台湾省,Gaoxiong,台南市,Asia/Shanghai,23.004000,120.199997,
-101340204,Taitung,台东,CN,China,中国,Taiwan,台湾省,Gaoxiong,台东市,Asia/Shanghai,22.764000,121.151001,
-101340205,Pingtung,屏东,CN,China,中国,Taiwan,台湾省,Gaoxiong,屏东市,Asia/Shanghai,22.681999,120.485001,
-101340401,Taichung,台中,CN,China,中国,Taiwan,台湾省,Taizhong,台中市,Asia/Shanghai,24.143999,120.669998,
-101340402,Miaoli,苗栗,CN,China,中国,Taiwan,台湾省,Taizhong,苗栗市,Asia/Shanghai,24.558001,120.811996,
-101340403,Changhua,彰化,CN,China,中国,Taiwan,台湾省,Taizhong,彰化市,Asia/Shanghai,24.077000,120.535004,
-101340404,Nantou,南投,CN,China,中国,Taiwan,台湾省,Taizhong,南投市,Asia/Shanghai,23.916000,120.684998,
-101340405,Hualien,花莲,CN,China,中国,Taiwan,台湾省,Taizhong,花莲市,Asia/Shanghai,23.983000,121.602997,
-101340406,Yunlin,云林,CN,China,中国,Taiwan,台湾省,Taizhong,云林市,Asia/Shanghai,23.718000,120.538002,
+101340102,Taoyuan,桃园,CN,China,中国,Taiwan,台湾省,Taipei,桃园市,Asia/Shanghai,24.997999,121.306000
+101340103,Hsinchu,新竹,CN,China,中国,Taiwan,台湾省,Taipei,新竹市,Asia/Shanghai,24.809000,120.958000
+101340104,Yilan,宜兰,CN,China,中国,Taiwan,台湾省,Taipei,宜兰市,Asia/Shanghai,24.757000,121.740997
+101340201,Kaohsiung,高雄,CN,China,中国,Taiwan,台湾省,Kaohsiung,高雄市,Asia/Shanghai,22.618999,120.276001
+101340202,Chiayi,嘉义,CN,China,中国,Taiwan,台湾省,Gaoxiong,嘉义市,Asia/Shanghai,23.487000,120.441002
+101340203,Tainan,台南,CN,China,中国,Taiwan,台湾省,Gaoxiong,台南市,Asia/Shanghai,23.004000,120.199997
+101340204,Taitung,台东,CN,China,中国,Taiwan,台湾省,Gaoxiong,台东市,Asia/Shanghai,22.764000,121.151001
+101340205,Pingtung,屏东,CN,China,中国,Taiwan,台湾省,Gaoxiong,屏东市,Asia/Shanghai,22.681999,120.485001
+101340401,Taichung,台中,CN,China,中国,Taiwan,台湾省,Taizhong,台中市,Asia/Shanghai,24.143999,120.669998
+101340402,Miaoli,苗栗,CN,China,中国,Taiwan,台湾省,Taizhong,苗栗市,Asia/Shanghai,24.558001,120.811996
+101340403,Changhua,彰化,CN,China,中国,Taiwan,台湾省,Taizhong,彰化市,Asia/Shanghai,24.077000,120.535004
+101340404,Nantou,南投,CN,China,中国,Taiwan,台湾省,Taizhong,南投市,Asia/Shanghai,23.916000,120.684998
+101340405,Hualien,花莲,CN,China,中国,Taiwan,台湾省,Taizhong,花莲市,Asia/Shanghai,23.983000,121.602997
+101340406,Yunlin,云林,CN,China,中国,Taiwan,台湾省,Taizhong,云林市,Asia/Shanghai,23.718000,120.538002

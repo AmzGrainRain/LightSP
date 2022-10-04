@@ -19,6 +19,7 @@ withDefaults(defineProps<Props>(), {
     <input
       type="checkbox"
       class="position-absolute m-0 w-100 h-100 pointer"
+      placeholder="朴实无华的按钮"
       :checked="active"
     />
     <i

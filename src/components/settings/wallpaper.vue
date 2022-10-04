@@ -59,16 +59,6 @@ const methods = {
       class="border-radius"
       :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
     >
-      <span>背景视差效果</span>
-      <vSwitch
-        @click="store.wallpaper.setWallpaperParallax(null)"
-        :active="store.wallpaper.parallax"
-      />
-    </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
       <span>使用必应壁纸</span>
       <vSwitch
         @click="methods.useBingWallpaperAPI()"

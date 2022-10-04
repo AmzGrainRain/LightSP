@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useWallpaperStore } from '../store/wallpaper'
 import { useDarkModeStore } from '../store/darkMode'
 import localforage from 'localforage'
@@ -56,30 +56,6 @@ if (store.wallpaper.customize) {
     currentBackground.value = value
   })
 }
-
-/**
- * Hooks
- */
-onMounted(() => {
-  /**
-   * Background parallax
-   */
-  if (store.wallpaper.parallax) {
-    // Get the abscissa center point (page width divided by 2)
-    const offsetW = document.body.offsetWidth / 2
-    // Get the vertical coordinate center point (page height divided by 2)
-    const offsetH = document.body.offsetHeight
-    // Mouse movement event
-    document.body.onmousemove = (e: any) => {
-      // Subtract the abscissa of the mouse from the center point
-      const mX = offsetW - e.clientX
-      // Center point minus mouse ordinate
-      const mY = offsetH - e.clientY
-      // Change the position of img tag（ × The smaller the value of, the lower the sensitivity)
-      backgroundEl.value.style.transform = `scale(1.2) translateX(${mX * 0.02}px) translateY(${mY * 0.03}px)`
-    }
-  }
-})
 </script>
 
 

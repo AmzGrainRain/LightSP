@@ -223,7 +223,7 @@ onBeforeMount(() => {
       }"
     >
       <!-- 日期组件 -->
-      <vClock Title="点击打开设置" @click="components.settings = true" />
+      <vClock Title="点击打开设置" @click="components.settings = !components.settings" />
       <!-- 占位元素 -->
       <div style="height: 1rem"></div>
       <!-- 输入框 -->
@@ -271,15 +271,4 @@ onBeforeMount(() => {
     width 80%
   @media screen and (max-width: 512px)
     width 95%
-
-@keyframes hideHr {
-  from {
-    opacity 1
-    margin .5rem
-  }
-  to {
-    opacity 0
-    margin 0
-  }
-}
 </style>

@@ -21,9 +21,16 @@ const store = {
 }
 
 /**
- * Methods
+ * Feedback
  */
-const reset = () => {
+const feedback = (): void => {
+  window.open('https://github.com/KiHanLee/LightSP/issues/new')
+}
+
+/**
+ * Reset
+ */
+const reset = (): void => {
   if (prompt('输入 "confirm" 确认您的操作: ') === 'confirm') {
     localStorage.removeItem('LightSP')
     localStorage.removeItem('LightSP-weather')
@@ -60,8 +67,9 @@ const reset = () => {
     <!-- 天气设置 -->
     <sWeather />
     <hr>
-    <button id="reset" class="m-b w-100 border-none border-radius transition pointer" type="button" @click="reset()">恢复默认设置</button>
-    <button id="close" class="m-b w-100 border-none border-radius transition pointer" type="button" @click="emit('close')">关闭</button>
+    <input id="feedback" type="button" value="反馈" class="m-b w-100 border-none border-radius transition pointer" @click="feedback()">
+    <input id="reset" type="button" value="恢复默认设置" class="m-b w-100 border-none border-radius transition pointer" @click="reset()">
+    <input id="close" type="button" value="关闭" class="m-b w-100 border-none border-radius transition pointer" @click="emit('close')">
   </div>
 </template>
 
@@ -74,16 +82,18 @@ const reset = () => {
   left 0
   justify-content center
   align-items center
-  width 320px
+  width 330px
   height 100vh
   overflow hidden auto
 hr
   border 0
   border-top 1px solid #444
+#feedback
 #reset
 #close
   height 32px
   background-color #f88a
+#feedback:hover
 #reset:hover
 #close:hover
   background-color #f55

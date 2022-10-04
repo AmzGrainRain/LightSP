@@ -52,7 +52,7 @@ fetch(`${store.weather.api}?key=${store.weather.apiKey}&location=${store.weather
   <a
     id="vWeather"
     class="d-block p-tb-sm p-lr transition pointer"
-    :style="`border-radius: ${store.global.fillet}px`"
+    :style="`border-radius: ${store.global.fillet - 4}px`"
     :title="Title"
     :href="weather.link"
     target="_blank"
