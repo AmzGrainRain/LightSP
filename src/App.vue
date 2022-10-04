@@ -37,14 +37,18 @@ interface componentsReactive {
   background: {
     blur: boolean
   }
-  settings: boolean
+  settings: {
+    show: boolean
+  }
   contentHeight: boolean
 }
 const components = reactive<componentsReactive>({
   background: {
     blur: false
   },
-  settings: false,
+  settings: {
+    show: false
+  },
   contentHeight: true
 })
 
@@ -67,26 +71,26 @@ document.addEventListener('keydown', (e: any): void => {
     switch (e.key) {
       case 'ArrowUp':
         if (data.focus !== false) {
-          // // 判断当前的焦点是否是第一个
-          // if (data.focus - 1 < 0) {
-          //   // 判断关键词是否为空
-          //   if (data.result.length === 0) {
-          //     // 隐藏焦点
-          //     data.focus = 0
-          //   } else {
-          //     // 正常逻辑
-          //     data.focus = data.result.length - 1
-          //   }
-          // } else {
-          //   data.focus = 0
-          // }
+          // 判断当前的焦点是否是第一个
+          if (data.focus - 1 < 0) {
+            // 判断关键词是否为空
+            if (data.result.length === 0) {
+              // 隐藏焦点
+              data.focus = 0
+            } else {
+              // 正常逻辑
+              data.focus = data.result.length - 1
+            }
+          } else {
+            data.focus = 0
+          }
 
-          data.focus =
-            data.focus === 0
-              ? data.result.length === 0
-                ? 0
-                : data.result.length - 1
-              : data.focus - 1
+          // data.focus =
+          //   data.focus === 0
+          //     ? data.result.length === 0
+          //       ? 0
+          //       : data.result.length - 1
+          //     : data.focus - 1
         } else data.focus = 0
         e.preventDefault()
         break
@@ -125,6 +129,10 @@ document.addEventListener('keydown', (e: any): void => {
     }
   } else {
     switch (e.key) {
+      case 's':
+        components.settings.show = !components.settings.show
+        e.preventDefault()
+        break
       // Ctrl + F: Fast translation
       case 'f':
         window.location.href = `https://fanyi.baidu.com/#en/zh/${data.keyword}`
@@ -223,7 +231,7 @@ onBeforeMount(() => {
       }"
     >
       <!-- 日期组件 -->
-      <vClock Title="点击打开设置" @click="components.settings = !components.settings" />
+      <vClock Title="点击打开设置" @click="components.settings.show = !components.settings.show" />
       <!-- 占位元素 -->
       <div style="height: 1rem"></div>
       <!-- 输入框 -->
@@ -246,12 +254,10 @@ onBeforeMount(() => {
     <vWeather Title="点击查看详情" v-show="store.weather.enabled" />
 
     <!-- 设置组件 -->
-    <transition name="fade">
-      <vSettings
-        v-show="components.settings"
-        @close="components.settings = false"
-      />
-    </transition>
+    <vSettings
+      :show="components.settings.show"
+      @close="components.settings.show = false"
+    />
   </div>
 </template>
 
