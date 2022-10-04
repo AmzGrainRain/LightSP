@@ -22,6 +22,13 @@ npm run build
 - 前往[发布页](https://github.com/KiHanLee/LightSP/releases)下载最新发布的版本。
 - 将文件解压缩到服务器站点目录内即可。
 
+## 快捷键
+使用上下箭头在关键词列表内切换选中项
+- ctrl + f 翻译
+- ctrl + b 必应搜索
+- ctrl + g 谷歌搜索
+- ctrl + d 百度开发者搜索
+
 ## 个性化
 - 毛玻璃效果
 - 全局圆角调整
