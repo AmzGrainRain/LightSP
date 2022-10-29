@@ -130,11 +130,11 @@ hr
 #reset
 #close
   height 32px
-  background-color #f88a
+  background-color #8883
 #feedback:hover
 #reset:hover
 #close:hover
-  background-color #f55
+  background-color #8296ff
 .show
   transform translateX(0) !important
   >div

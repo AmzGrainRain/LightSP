@@ -15,14 +15,12 @@ defineProps<Props>()
  * Data
  */
 interface Reactive {
-  show: boolean
   link: string
   icon: string
   text: string
   temp: string
 }
 const weather = reactive<Reactive>({
-  show: false,
   link: '',
   icon: '',
   text: '',
@@ -39,12 +37,12 @@ fetch(`${store.weather.api}?key=${store.weather.apiKey}&location=${store.weather
     weather.temp = res.now.temp
     weather.icon = res.now.icon
     weather.text = res.now.text
-    weather.show = true
   })
   .catch((err) => {
-    weather.show = false
     console.log(err)
   })
+
+
 </script>
 
 
@@ -56,11 +54,11 @@ fetch(`${store.weather.api}?key=${store.weather.apiKey}&location=${store.weather
     :title="Title"
     :href="weather.link"
     target="_blank"
-    v-show="weather.show"
+    v-show="store.weather.enabled"
   >
     <i :class="`qi-${weather.icon}`"></i>
     <div style="display: inline-block; width: .4rem"></div>
-    <span>{{ `${weather.temp}°C&nbsp;|&nbsp;${weather.text}` }}</span>
+    <span v-show="weather.link.length != 0">{{ `${weather.temp}°C&nbsp;|&nbsp;${weather.text}` }}</span>
   </a>
 </template>
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { watch, reactive, onBeforeMount } from 'vue'
 import { useIndexStore } from './store'
-import { useWeatherStore } from './store/weather'
 import { useDarkModeStore } from './store/darkMode'
 import { jsonp } from 'vue-jsonp'
 import vWeather from './components/weather.vue'
@@ -16,7 +15,6 @@ import vSettings from './components/settings/index.vue'
  */
 const store: any = {
   global: useIndexStore(),
-  weather: useWeatherStore(),
   darkMode: useDarkModeStore()
 }
 
@@ -251,7 +249,7 @@ onBeforeMount(() => {
     </div>
 
     <!-- 天气组件 -->
-    <vWeather Title="点击查看详情" v-show="store.weather.enabled" />
+    <vWeather Title="点击查看详情" />
 
     <!-- 设置组件 -->
     <vSettings
