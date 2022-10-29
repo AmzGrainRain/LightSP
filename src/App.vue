@@ -209,7 +209,7 @@ onBeforeMount(() => {
   }
 
   console.log('LightSP - 轻起始页')
-  console.log('https://github.com/KiHanLee/LightSP')
+  console.log('https://github.com/AmzGrainRain/LightSP')
 })
 </script>
 
