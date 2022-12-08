@@ -2,14 +2,13 @@ import { defineStore } from 'pinia'
 
 export const useWallpaperStore = defineStore('wallpaper', {
   state: () => ({
-    default: true, // 使用默认壁纸
-    bing: false, // 使用必应壁纸
+    default: true, // 默认壁纸
+    bing: false, // 必应壁纸
     customize: false, // 自定义壁纸
     focusBlur: false // 聚焦模糊
   }),
   getters: {},
   actions: {
-    // 设置壁纸
     setWallpaper(params: string) {
       this.default = false
       this.bing = false
@@ -22,6 +21,10 @@ export const useWallpaperStore = defineStore('wallpaper', {
           this.bing = true
           break
         case 'customize':
+          if (!localStorage.getItem('CustomizeWallpaper')) {
+            alert('应用失败！您还没有设置一个壁纸。')
+            return
+          }
           this.customize = true
           break
         default:
@@ -29,17 +32,7 @@ export const useWallpaperStore = defineStore('wallpaper', {
       }
       location.reload()
     },
-    // 设置视差效果
-    // setWallpaperParallax(status: boolean | null) {
-    //   if (status === null) {
-    //     this.parallax = !this.parallax
-    //     location.reload()
-    //     return
-    //   }
-    //   this.parallax = status
-    //   location.reload()
-    // },
-    // 设置聚焦模糊
+
     setWallpaperFocusBlur(status: boolean | null) {
       if (status === null) {
         this.focusBlur = !this.focusBlur

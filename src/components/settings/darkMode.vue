@@ -12,43 +12,22 @@ const store = {
 }
 </script>
 
-
 <template>
   <ul id="sDarkMode">
-    <li
-      v-show="!store.darkMode.followSystem"
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li v-show="!store.darkMode.followSystem" class="border-radius">
       <span>深色模式</span>
-      <vSwitch
-        @click="store.darkMode.setDarkModeStatus(null)"
-        :active="store.darkMode.enabled"
-      />
+      <vSwitch @click="store.darkMode.setDarkModeStatus(null)" :active="store.darkMode.enabled" />
     </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>深色模式（跟随系统）</span>
-      <vSwitch
-        @click="store.darkMode.setFollowSystem(null)"
-        :active="store.darkMode.followSystem"
-      />
+      <vSwitch @click="store.darkMode.setFollowSystem(null)" :active="store.darkMode.followSystem" />
     </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>深色壁纸</span>
-      <vSwitch
-        @click="store.darkMode.setDarkWallpaper(null)"
-        :active="store.darkMode.darkWallpaper"
-      />
+      <vSwitch @click="store.darkMode.setDarkWallpaper(null)" :active="store.darkMode.darkWallpaper" />
     </li>
   </ul>
 </template>
-
 
 <style lang="stylus" scoped>
 li
@@ -57,4 +36,5 @@ li
   display flex
   justify-content space-between
   align-items center
+  background-color #8881
 </style>

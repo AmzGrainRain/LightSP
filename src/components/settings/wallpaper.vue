@@ -20,23 +20,22 @@ const base64file = ref(null) as any
  * Methods
  */
 const methods = {
-  // 使用必应壁纸
-  useBingWallpaperAPI: () => {
+  useBingWallpaper: () => {
     if (store.wallpaper.bing) store.wallpaper.setWallpaper('default')
     else store.wallpaper.setWallpaper('bing')
   },
-  // 使用自定义壁纸
+
   useCustomizeWallpaper: () => {
+    if (store.wallpaper.customize) store.wallpaper.setWallpaper('default')
+    else store.wallpaper.setWallpaper('customize')
+  },
+
+  setCustomizeWallpaper: () => {
     const reader = new FileReader()
     reader.readAsDataURL(base64file.value.files[0])
     reader.onloadend = () => {
       localforage.setItem('CustomizeWallpaper', reader.result, (err) => {
-        if (err !== null) {
-          store.wallpaper.setWallpaper('default')
-          alert('应用失败！已为您切换为默认壁纸。（刷新生效）')
-          return
-        }
-        store.wallpaper.setWallpaper('customize')
+        if (err !== null) alert('应用失败！已为您切换为默认壁纸。（即将自动刷新）')
       })
     }
   }
@@ -45,38 +44,22 @@ const methods = {
 
 <template>
   <ul>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>背景聚焦模糊效果</span>
-      <vSwitch
-        @click="store.wallpaper.setWallpaperFocusBlur(null)"
-        :active="store.wallpaper.focusBlur"
-      />
+      <vSwitch @click="store.wallpaper.setWallpaperFocusBlur(null)" :active="store.wallpaper.focusBlur" />
     </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>使用必应壁纸</span>
-      <vSwitch
-        @click="methods.useBingWallpaperAPI()"
-        :active="store.wallpaper.bing"
-      />
+      <vSwitch @click="methods.useBingWallpaper()" :active="store.wallpaper.bing" />
     </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
-      <span>自定义壁纸</span>
+    <li class="border-radius">
+      <span>使用自定义壁纸</span>
+      <vSwitch @click="methods.useCustomizeWallpaper()" :active="store.wallpaper.customize" />
+    </li>
+    <li class="border-radius">
+      <span>设置自定义壁纸</span>
       <input type="button" value="+" @click="base64file.click" />
-      <input
-        ref="base64file"
-        type="file"
-        @change="methods.useCustomizeWallpaper"
-        v-show="false"
-      />
+      <input ref="base64file" type="file" @change="methods.setCustomizeWallpaper()" v-show="false" />
     </li>
   </ul>
 </template>
@@ -88,5 +71,5 @@ li
   display flex
   justify-content space-between
   align-items center
-  background-color #fff1
+  background-color #8881
 </style>

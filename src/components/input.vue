@@ -36,27 +36,23 @@ watch(text, (newVal, oldVal) => {
 })
 </script>
 
-
 <template>
   <input
     id="vInput"
     type="text"
     class="p-lr w-100 text-center text-size-sm border-none transition"
-    :class="{
-      'blur': store.global.blur,
-      'dark-mode': store.darkMode.enabled
-    }"
-    :style="{'borderRadius': store.global.fillet + 'px'}"
+    :class="{ 'dark-mode': store.darkMode.enabled }"
     :placeholder="Placeholder"
     :title="Title"
     v-model="text"
   />
 </template>
 
-
 <style lang="stylus" scoped>
 input
   height 2.5rem
+  backdrop-filter blur(var(--blur))
+  border-radius var(--fillet)
   background-color #fff9
 .dark-mode
   color #fff

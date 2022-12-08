@@ -36,10 +36,8 @@ const store = {
           class="d-inline-block p-lr-lg w-100 transition text-overflow-ellipsis"
           :class="{
             'selected': Selected === index,
-            'blur': store.global.blur,
             'dark-mode': store.darkMode.enabled
           }"
-          :style="{'borderRadius': store.global.fillet + 'px'}"
           :href="item.url"
         >{{ item.text }}
         </a>
@@ -56,6 +54,8 @@ a
   height 2.5rem
   line-height 2.5rem
   text-shadow 0 0 .3rem #333
+  backdrop-filter blur(var(--blur))
+  border-radius var(--fillet)
   background-color #fff6
   &:hover
     text-indent .5rem

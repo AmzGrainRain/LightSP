@@ -31,7 +31,7 @@ if (store.wallpaper.default) {
 }
 // Use bing wallpaper
 if (store.wallpaper.bing) {
-  fetch('https://www.kihanlee.site/api/wallpaper', {
+  fetch('https://www.amzgr.cc/api/wallpaper', {
     method: 'POST',
     mode: 'cors',
     headers: {
@@ -50,7 +50,7 @@ if (store.wallpaper.customize) {
   localforage.getItem('CustomizeWallpaper', (err: any, value: any) => {
     if (err !== null) {
       store.wallpaper.setWallpaper('default')
-      alert('加载自定义背景失败，已自动设置为默认背景。（刷新生效）')
+      alert('加载自定义背景失败，已自动设置为默认背景。')
       return
     }
     currentBackground.value = value

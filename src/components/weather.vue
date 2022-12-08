@@ -50,7 +50,6 @@ fetch(`${store.weather.api}?key=${store.weather.apiKey}&location=${store.weather
   <a
     id="vWeather"
     class="d-block p-tb-sm p-lr transition pointer"
-    :style="`border-radius: ${store.global.fillet - 4}px`"
     :title="Title"
     :href="weather.link"
     target="_blank"
@@ -69,6 +68,7 @@ fetch(`${store.weather.api}?key=${store.weather.apiKey}&location=${store.weather
   position absolute
   top 1rem
   right 1rem
+  border-radius calc(var(--fillet) - 4px)
   &:hover
     background-color #fff3
 </style>

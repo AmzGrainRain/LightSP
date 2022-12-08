@@ -9,6 +9,7 @@ export const useIndexStore = defineStore('global', {
     color: '#000', // 字体颜色
     bgColor: '#fffc', // 背景色
     frColor: '#8881', // 前景色
+    listFrColor: '', //
     searchEngines: '' // 自定义搜索引擎
   }),
   getters: {},

@@ -54,16 +54,7 @@ const reset = (): void => {
   <div
     id="vSettings"
     class="p-tb-sm p-lr-ex"
-    :class="{
-      blur: store.global.blur,
-      show: props.show
-    }"
-    :style="{
-      color: store.darkMode.enabled ? store.darkMode.color : store.global.color,
-      'background-color': store.darkMode.enabled
-        ? store.darkMode.bgColor
-        : store.global.bgColor
-    }"
+    :class="{ show: props.show }"
   >
     <div>
       <!-- 全局设置 -->
@@ -81,27 +72,9 @@ const reset = (): void => {
       <!-- 天气设置 -->
       <sWeather />
       <hr />
-      <input
-        id="feedback"
-        type="button"
-        value="反馈"
-        class="m-b w-100 border-none border-radius transition pointer"
-        @click="feedback()"
-      />
-      <input
-        id="reset"
-        type="button"
-        value="恢复默认设置"
-        class="m-b w-100 border-none border-radius transition pointer"
-        @click="reset()"
-      />
-      <input
-        id="close"
-        type="button"
-        value="关闭"
-        class="m-b w-100 border-none border-radius transition pointer"
-        @click="emit('close')"
-      />
+      <input id="feedback" type="button" value="反馈" class="m-b w-100 border-none border-radius transition pointer" @click="feedback()" />
+      <input id="reset" type="button" value="恢复默认设置" class="m-b w-100 border-none border-radius transition pointer" @click="reset()" />
+      <input id="close" type="button" value="关闭" class="m-b w-100 border-none border-radius transition pointer" @click="emit('close')" />
     </div>
   </div>
 </template>
@@ -117,6 +90,9 @@ const reset = (): void => {
   align-items center
   width 330px
   height 100vh
+  color var(--color)
+  backdrop-filter blur(var(--blur))
+  background-color var(--bg-color)
   overflow hidden auto
   transform translateX(-100%)
   transition transform .7s cubic-bezier(0, 1, .3, 1)
@@ -130,7 +106,8 @@ hr
 #reset
 #close
   height 32px
-  background-color #8883
+  color inherit
+  background-color #8881
 #feedback:hover
 #reset:hover
 #close:hover

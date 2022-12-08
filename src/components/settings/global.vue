@@ -53,47 +53,25 @@ watch(
 )
 </script>
 
-
 <template>
   <ul>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>全局毛玻璃效果</span>
-      <vSwitch
-        @click="store.global.setGlobalBlur(null)"
-        :active="store.global.blur"
-      />
+      <vSwitch @click="store.global.setGlobalBlur(null)" :active="store.global.blur" />
     </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>调整全局圆角</span>
       <input type="range" min="0" max="18" v-model="data.slider.fillet" />
     </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>调整内容高度</span>
       <input type="range" min="0" max="30" v-model="data.content.height" />
     </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>自适应内容高度</span>
-      <vSwitch
-        @click="store.global.setAdaptiveContentHeight(null)"
-        :active="store.global.adaptiveContentHeight"
-      />
+      <vSwitch @click="store.global.setAdaptiveContentHeight(null)" :active="store.global.adaptiveContentHeight" />
     </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>自定义搜索引擎</span>
       <input
         class="w-50 text-size-m text-center border-none border-radius-sm"
@@ -106,7 +84,6 @@ watch(
   </ul>
 </template>
 
-
 <style lang="stylus" scoped>
 li
   margin 14px 0
@@ -114,5 +91,5 @@ li
   display flex
   justify-content space-between
   align-items center
-  background-color #fff1
+  background-color #8881
 </style>

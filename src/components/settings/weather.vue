@@ -79,45 +79,17 @@ watch(
 
 <template>
   <ul>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>显示天气组件</span>
-      <vSwitch
-        @click="store.weather.setWeatherStatus(null)"
-        :active="store.weather.enabled"
-      />
+      <vSwitch @click="store.weather.setWeatherStatus(null)" :active="store.weather.enabled" />
     </li>
-    <li
-      class="border-radius"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
+    <li class="border-radius">
       <span>设置天气位置</span>
-      <input
-        class="w-50 text-size-m text-center border-none border-radius-sm"
-        type="text"
-        placeholder="输入您所在的城市"
-        title="请不要输入完整的位置"
-        v-model="data.keyword"
-      />
+      <input class="w-50 text-size-m text-center border-none border-radius-sm" type="text" placeholder="输入您所在的城市" title="请不要输入完整的位置" v-model="data.keyword" />
     </li>
-    <li
-      class="border-radius"
-      v-show="data.hit.length"
-      :style="{'background-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor}"
-    >
-      <ul
-        id="hit-list"
-        class="w-100 overflow-x-hide overflow-y-auto border-radius"
-        v-show="data.hit.length"
-      >
-        <li
-          class="m-b-sm p-lr text-center border-radius pointer"
-          v-for="(item, index) in data.hit"
-          :key="index"
-          @click="methods.setLocation(item.substring(item.length - 9))"
-        >
+    <li class="border-radius" v-show="data.hit.length">
+      <ul id="hit-list" class="w-100 overflow-x-hide overflow-y-auto border-radius" v-show="data.hit.length">
+        <li class="m-b-sm p-lr text-center border-radius pointer" v-for="(item, index) in data.hit" :key="index" @click="methods.setLocation(item.substring(item.length - 9))">
           {{ item.substring(0, item.length - 10) }}
         </li>
       </ul>
@@ -132,7 +104,7 @@ li
   display flex
   justify-content space-between
   align-items center
-  background-color #fff2
+  background-color #8881
 #hit-list
   height 256px
   li
