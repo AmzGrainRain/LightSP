@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import localforage from 'localforage'
+import { getItem as lfGet } from 'localforage'
 
 export const useWallpaperStore = defineStore('wallpaper', {
   state: () => ({
@@ -22,7 +22,7 @@ export const useWallpaperStore = defineStore('wallpaper', {
           this.bing = true
           break
         case 'customize':
-          if (!localforage.getItem('CustomizeWallpaper')) {
+          if (!lfGet('CustomizeWallpaper')) {
             alert('应用失败！您还没有设置一个壁纸。')
             return
           }

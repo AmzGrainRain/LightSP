@@ -1,8 +1,8 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { useWallpaperStore } from '../store/wallpaper'
 import { useDarkModeStore } from '../store/darkMode'
-import localforage from 'localforage'
+import { getItem as lfGet } from 'localforage'
 import bgURL from '../assets/background.jpg'
 
 interface Props {
@@ -20,43 +20,46 @@ const store = {
 const backgroundEl = ref(null) as any
 const currentBackground = ref('')
 
-// 使用默认壁纸？
-if (store.wallpaper.default) {
-  currentBackground.value = bgURL
-}
-// 使用必应壁纸？
-if (store.wallpaper.bing) {
-  fetch('https://www.amzgr.cc/api/wallpaper', {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  })
-    .then((ori) => ori.json())
-    .then((res) => {
-      if (res?.url) currentBackground.value = res.url
+onBeforeMount(() => {
+  // 使用默认壁纸？
+  if (store.wallpaper.default) {
+    currentBackground.value = bgURL
+  }
+  // 使用必应壁纸？
+  if (store.wallpaper.bing) {
+    fetch('https://www.amzgr.cc/api/wallpaper', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
     })
-    .catch((err) => console.log(err))
-}
-// 使用自定义壁纸？
-if (store.wallpaper.customize) {
-  localforage.getItem('CustomizeWallpaper', (err: any, value: any) => {
-    if (err !== null) {
-      store.wallpaper.setWallpaper('default')
-      alert('加载自定义背景失败，已自动切换为默认背景。')
-      return
-    }
-    currentBackground.value = value
-  })
-}
+      .then((ori) => ori.json())
+      .then((res) => {
+        if (res?.url) currentBackground.value = res.url
+      })
+      .catch((err) => console.log(err))
+  }
+  // 使用自定义壁纸？
+  if (store.wallpaper.customize) {
+    lfGet('CustomizeWallpaper', (err: any, value: any) => {
+      if (err || !value) {
+        store.wallpaper.setWallpaper('default')
+        if (!value) alert('自定义图片不存在，已自动切换为默认背景。')
+        else alert('加载自定义背景失败，已自动切换为默认背景。')
+        return
+      }
+      currentBackground.value = value
+    })
+  }
+})
 </script>
 
 <template>
   <img
     ref='backgroundEl'
     id='vBackground'
-    class='object-fit-cover'
+    class='penetrate object-fit-cover'
     :style="`
       transform: ${store.wallpaper.focusBlur && props.Blur ? 'scale(1.2)' : ''};
       filter: ${store.wallpaper.focusBlur && props.Blur ? 'blur(4px)' : ''} ${store.darkMode.darkWallpaper ? 'brightness(.8)' : ''}
@@ -73,6 +76,6 @@ if (store.wallpaper.customize) {
   left 0
   width 100vw
   height 100vh
-  transition all .3s cubic-bezier(0.2, 0.73, 0.61, 0.95);
+  transition all .3s cubic-bezier(0.2, 0.73, 0.61, 0.95)
   z-index -1
 </style>

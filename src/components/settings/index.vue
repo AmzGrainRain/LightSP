@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { useIndexStore } from '../../store'
 import { useDarkModeStore } from '../../store/darkMode'
+import { clear as lfClear } from 'localforage'
 import sGlobal from './global.vue'
 import sWallpaper from './wallpaper.vue'
 import sClock from './clock.vue'
@@ -24,12 +25,14 @@ const feedback = (): void => {
 
 const reset = (): void => {
   if (prompt('输入 "confirm" 确认您的操作: ') === 'confirm') {
-    localStorage.removeItem('LightSP')
-    localStorage.removeItem('LightSP-weather')
-    localStorage.removeItem('LightSP-darkMode')
-    localStorage.removeItem('LightSP-wallpaper')
-    localStorage.removeItem('LightSP-global')
-    location.reload()
+    lfClear().then(() => {
+      localStorage.removeItem('LightSP')
+      localStorage.removeItem('LightSP-weather')
+      localStorage.removeItem('LightSP-darkMode')
+      localStorage.removeItem('LightSP-wallpaper')
+      localStorage.removeItem('LightSP-global')
+      location.reload()
+    })
   }
 }
 </script>

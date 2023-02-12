@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useIndexStore } from '../../store'
 import { useWallpaperStore } from '../../store/wallpaper'
 import { useDarkModeStore } from '../../store/darkMode'
-import localforage from 'localforage'
+import { setItem as lfSet } from 'localforage'
 import vSwitch from '../switch.vue'
 
 const store = {
@@ -18,9 +18,11 @@ const setCustomizeWallpaper = () => {
   reader.readAsDataURL(fileChecker.value.files[0])
   reader.onloadend = () => {
     console.log(reader.result)
-    localforage.setItem('CustomizeWallpaper', reader.result, (err) => {
+    lfSet('CustomizeWallpaper', reader.result, (err) => {
       if (err !== null) console.log('[Error] setCustomizeWallpaper: localforage.setItem')
-      if (store.wallpaper.customize) {
+      if (store.wallpaper.customize) location.reload()
+      else {
+        store.wallpaper.setWallpaper('customize')
         location.reload()
       }
     })
