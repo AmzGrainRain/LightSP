@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { watch, reactive, onBeforeMount } from 'vue'
+<script setup lang='ts'>
+import { watch, reactive, onBeforeMount, ref } from 'vue'
 import { useIndexStore } from './store'
 import { useDarkModeStore } from './store/darkMode'
 import { jsonp } from 'vue-jsonp'
@@ -10,17 +10,11 @@ import vInput from './components/input.vue'
 import vList from './components/list.vue'
 import vSettings from './components/settings/index.vue'
 
-/**
- * store
- */
 const store: any = {
   global: useIndexStore(),
   darkMode: useDarkModeStore()
 }
 
-/**
- * Current view reactive data
- */
 interface dataReactive {
   keyword: string
   result: any
@@ -32,116 +26,87 @@ const data = reactive<dataReactive>({
   focus: false
 })
 
-/**
- * Sub-Components reactive data
- */
-interface componentsReactive {
-  background: {
-    blur: boolean
-  }
-  settings: {
-    show: boolean
-  }
-  contentHeight: boolean
-}
-const components = reactive<componentsReactive>({
-  background: {
-    blur: false
-  },
-  settings: {
-    show: false
-  },
-  contentHeight: true
-})
+const backgroundBlur = ref(false)
+const showSettings = ref(false)
+const contentHeight = ref(true)
 
-/**
- * Methods
- */
-const methods = {
-  // vInput - Content update event (keyword Association)
-  vSearchBoxKeywordUpdate: (keyword: string): void => {
-    data.keyword = keyword
-  }
+// 输入框组件内容更新事件
+const vInputUpdateHook = (keyword: string): void => {
+  data.keyword = keyword
 }
 
-/**
- * Shortcut key
- */
+// 快捷键
 document.addEventListener('keydown', (e: any): void => {
-  // No Ctrl key pressed
-  if (!e.ctrlKey) {
+  if (e.ctrlKey) {
     switch (e.key) {
-      case 'ArrowUp':
-        if (data.focus !== false) {
-          data.focus = data.focus === 0 ? (data.result.length === 0 ? 0 : data.result.length - 1) : data.focus - 1
-        } else data.focus = 0
-        e.preventDefault()
-        break
-      case 'ArrowDown':
-        if (data.focus !== false) {
-          data.focus = data.focus + 1 > data.result.length - 1 ? 0 : data.focus + 1
-        } else data.focus = 0
-        e.preventDefault()
-        break
-      case 'Enter':
-        if (data.focus === false) {
-          if (store.global.searchEngines !== '') {
-            window.location.href = store.global.searchEngines.replace('关键词', data.keyword)
-          } else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keyword}`
-          e.preventDefault()
-          break
-        }
-        if (data.result?.[data.focus]) {
-          if (store.global.searchEngines !== '') {
-            window.location.href = store.global.searchEngines.replace('关键词', data.result[data.focus].text)
-          } else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.focus].text}`
-          e.preventDefault()
-          break
-        }
-    }
-  } else {
-    switch (e.key) {
+      // show settings
       case 's':
-        components.settings.show = !components.settings.show
+        showSettings.value = !showSettings.value
         e.preventDefault()
         break
-      // Ctrl + F: Fast translation
+      // translation
       case 'f':
         window.location.href = `https://fanyi.baidu.com/#en/zh/${data.keyword}`
         e.preventDefault()
         break
-      // Ctrl + B: Bing Search
+      // bing search
       case 'b':
         window.location.href = `https://cn.bing.com/search?q=${data.keyword}`
         e.preventDefault()
         break
-      // Ctrl + G: Google search
+      // google search
       case 'g':
         window.location.href = `https://www.google.com/search?q=${data.keyword}`
         e.preventDefault()
         break
-      // Ctrl + D: Baidu developer search
+      // baidu developer search
       case 'd':
         window.location.href = `https://kaifa.baidu.com/searchPage?wd=${data.keyword}&module=SEARCH`
         e.preventDefault()
     }
+    return
+  }
+  switch (e.key) {
+    case 'ArrowUp':
+      if (data.focus !== false) {
+        data.focus = data.focus === 0 ? (data.result.length === 0 ? 0 : data.result.length - 1) : data.focus - 1
+      } else data.focus = 0
+      e.preventDefault()
+      break
+    case 'ArrowDown':
+      if (data.focus !== false) {
+        data.focus = data.focus + 1 > data.result.length - 1 ? 0 : data.focus + 1
+      } else data.focus = 0
+      e.preventDefault()
+      break
+    case 'Enter':
+      if (data.focus === false) {
+        if (store.global.searchEngines !== '') {
+          window.location.href = store.global.searchEngines.replace('关键词', data.keyword)
+        } else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keyword}`
+        e.preventDefault()
+        break
+      }
+      if (data.result?.[data.focus]) {
+        if (store.global.searchEngines !== '') {
+          window.location.href = store.global.searchEngines.replace('关键词', data.result[data.focus].text)
+        } else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.focus].text}`
+        e.preventDefault()
+        break
+      }
   }
 })
 
-/**
- * Watch
- */
-watch(
-  () => data.keyword,
-  (newVal, oldVal) => {
+// 关键词联想
+watch(() => data.keyword, (newVal, oldVal) => {
     if (!newVal.length) {
-      components.background.blur = false
-      components.contentHeight = true
+      backgroundBlur.value = false
+      contentHeight.value = true
       return
     }
-    components.background.blur = true
-    components.contentHeight = false
-    // Get 'Baidu' keyword Lenovo data
+
+    backgroundBlur.value = true
+    contentHeight.value = false
     jsonp('https://www.baidu.com/sugrec', {
       callbackName: 'JSONP',
       ie: 'utf-8',
@@ -151,11 +116,12 @@ watch(
       json: 1,
       bs: 'jsonp'
     }).then((res) => {
-      // Empty result processing
+      // Empty result
       if (!res?.g?.length) {
         data.result = []
         return
       }
+
       const tmp = []
       if (res.g.length) {
         for (let i = 0, len = res.g.length; i < len; i++) {
@@ -172,14 +138,14 @@ watch(
 )
 
 onBeforeMount(() => {
-  // Follow the dark mode of the system
+  // 跟随系统的深色模式
   if (store.darkMode.followSystem) {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       store.darkMode.setDarkModeStatus(true)
     } else store.darkMode.setDarkModeStatus(false)
   }
 
-  // Repostry information
+  // 打印开源仓库信息
   console.log('LightSP - 轻起始页')
   console.log('https://github.com/AmzGrainRain/LightSP')
 })
@@ -187,50 +153,55 @@ onBeforeMount(() => {
 
 <template>
   <div
-    id="app"
-    class="p-mx d-flex overflow-hide"
+    id='app'
+    class='p-mx d-flex overflow-hide'
     :style="{
       'justify-content': store.global.adaptiveContentHeight ? 'center' : 'unset',
-      'padding-top': store.global.adaptiveContentHeight ? 0 : `${store.global.contentHeight}rem`
+      'padding-top': store.global.adaptiveContentHeight ? 0 : `${store.global.contentHeight}rem`,
+      '--fillet': `${store.global.fillet}px`,
+      '--color': store.darkMode.enabled ? store.darkMode.color : store.global.color,
+      '--bg-color': store.darkMode.enabled ? store.darkMode.bgColor : store.global.bgColor,
+      '--fr-color': store.darkMode.enabled ? store.darkMode.frColor : store.global.frColor
     }"
   >
     <!-- 背景组件 -->
-    <vBackground :Blur="components.background.blur" />
+    <vBackground :Blur='backgroundBlur' />
 
     <!-- 搜索栏 -->
     <div
-      class="search-box transition"
+      class='search-box transition'
       :style="{
-        'padding-bottom': store.global.adaptiveContentHeight ? (components.contentHeight ? `${store.global.contentHeight}rem` : 0) : ''
+        'padding-bottom': store.global.adaptiveContentHeight ? (contentHeight ? `${store.global.contentHeight}rem` : 0) : ''
       }"
     >
       <!-- 日期组件 -->
-      <vClock Title="点击打开设置" @click="components.settings.show = !components.settings.show" />
+      <vClock Title='点击打开设置' @click='showSettings = !showSettings' />
       <!-- 占位元素 -->
-      <div style="height: 1rem"></div>
+      <div style='height: 1rem'></div>
       <!-- 输入框 -->
-      <vInput Placeholder="输入搜索内容" Title="按下回车直接搜索" @updateEvent="methods.vSearchBoxKeywordUpdate" />
+      <vInput Placeholder='输入搜索内容' Title='按下回车直接搜索' @updateEvent='vInputUpdateHook' />
       <!-- 占位元素 -->
-      <div style="height: 0.8rem"></div>
+      <div style='height: 0.8rem'></div>
       <!-- 关键词联想列表 -->
-      <vList :ListData="data.result" :Selected="data.focus" :Keywords="data.keyword" />
+      <vList :ListData='data.result' :Selected='data.focus' :Keywords='data.keyword' />
     </div>
 
     <!-- 天气组件 -->
-    <vWeather Title="点击查看详情" />
+    <vWeather Title='点击查看详情' />
 
     <!-- 设置组件 -->
-    <vSettings :show="components.settings.show" @close="components.settings.show = false" />
+    <vSettings :show='showSettings' @close='showSettings = false' />
   </div>
 </template>
 
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 #app
   flex-flow column nowrap
   justify-content center
   align-items center
   width 100vw
   height 100vh
+
 .search-box
   display flex
   align-items center

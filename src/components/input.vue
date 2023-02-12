@@ -1,36 +1,21 @@
-<script setup lang="ts">
+<script setup lang='ts'>
 import { ref, watch } from 'vue'
 import { useIndexStore } from '../store'
 import { useDarkModeStore } from '../store/darkMode'
 
-/**
- * Props
- */
 interface Props {
-  // ClassSlot?: string
-  // StyleSlot?: string
   Placeholder?: string
   Title?: string
 }
+
 defineProps<Props>()
-
-/**
- * Emits
- */
 const emit = defineEmits(['updateEvent'])
-
-/**
- * Data
- */
 const store = {
   global: useIndexStore(),
   darkMode: useDarkModeStore()
 }
-const text = ref('')
 
-/**
- * Watch
- */
+const text = ref('')
 watch(text, (newVal, oldVal) => {
   emit('updateEvent', newVal)
 })
@@ -38,22 +23,25 @@ watch(text, (newVal, oldVal) => {
 
 <template>
   <input
-    id="vInput"
-    type="text"
-    class="p-lr w-100 text-center text-size-sm border-none transition"
-    :class="{ 'dark-mode': store.darkMode.enabled }"
-    :placeholder="Placeholder"
-    :title="Title"
-    v-model="text"
+    id='vInput'
+    type='text'
+    class='p-lr w-100 text-center text-size-sm border-none transition'
+    :class="{
+      'dark-mode': store.darkMode.enabled,
+      blur: store.global.blur
+    }"
+    :placeholder='Placeholder'
+    :title='Title'
+    v-model='text'
   />
 </template>
 
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 input
   height 2.5rem
-  backdrop-filter blur(var(--blur))
   border-radius var(--fillet)
   background-color #fff9
+
 .dark-mode
   color #fff
   background-color #1d1f21c9

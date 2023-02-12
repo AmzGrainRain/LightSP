@@ -6,7 +6,7 @@ import './style.styl'
 
 // 配置 localforage
 localforage.config({
-  name: 'base64img'
+  name: 'customBackgroundImage'
 })
 
 // Pinia 初始化 & Pinia 数据持久化
@@ -24,7 +24,4 @@ const piniaPlugin = () => {
 }
 store.use(piniaPlugin())
 
-// 挂载实例
-createApp(App)
-.use(store)
-.mount('main')
+createApp(App).use(store).mount('main')

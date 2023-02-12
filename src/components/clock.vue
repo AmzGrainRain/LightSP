@@ -1,24 +1,21 @@
-<script setup lang="ts">
+<script setup lang='ts'>
 import { reactive } from 'vue'
 import { useClockStore } from '../store/clock'
 
-/**
- * Props
- */
 interface Props {
   Title: string
 }
+
 withDefaults(defineProps<Props>(), {
   Title: ''
 })
 
-/**
- * Data
- */
+
 interface Reactive {
   date: string
   time: string
 }
+
 const data = reactive<Reactive>({
   date: 'xxxx-xx-xx xxx',
   time: '00:00:00'
@@ -26,9 +23,6 @@ const data = reactive<Reactive>({
 const store = useClockStore()
 const week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
 
-/**
- * Methods
- */
 const updateTime = () => {
   const t = new Date()
   const Y = t.getFullYear()
@@ -42,34 +36,32 @@ const updateTime = () => {
   data.time = `${h}:${m}:${s}`
 }
 
-/**
- * Init
- */
+
 updateTime()
 setInterval(() => {
   updateTime()
 }, 1000)
 </script>
 
-
 <template>
   <div
-    id="vClock"
-    :title="Title"
-    class="d-flex text-center pointer"
+    id='vClock'
+    :title='Title'
+    class='d-flex text-center pointer'
   >
-    <p v-show="store.dateVisible" class="date text-size-m">{{ data.date }}</p>
-    <p class="time p-t-sm">{{ data.time }}</p>
+    <p v-show='store.dateVisible' class='date text-size-m'>{{ data.date }}</p>
+    <p class='time p-t-sm'>{{ data.time }}</p>
   </div>
 </template>
 
-
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 #vClock
   flex-flow column wrap
   text-shadow 0 0 2px #000
+
 .date
   letter-spacing .1rem
+
 .time
   font-size 2.5rem
   letter-spacing .2rem

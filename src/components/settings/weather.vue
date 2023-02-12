@@ -1,37 +1,48 @@
-<script setup lang="ts">
-import { reactive, watch } from 'vue'
+<script setup lang='ts'>
+import { reactive, ref, watch } from 'vue'
 import { useIndexStore } from '../../store'
 import { useWeatherStore } from '../../store/weather'
 import { useDarkModeStore } from '../../store/darkMode'
-import vSwitch from '../switch.vue'
-// 获取城市列表 https://github.com/qwd/LocationList/blob/master/China-City-List-latest.csv
 import csvFile from '../../assets/weather/city_list.csv?raw'
+// 获取城市列表 https://github.com/qwd/LocationList/blob/master/China-City-List-latest.csv
 
-/**
- * Data
- */
-interface Reactive {
-  keyword: string // 天气设置输入框内容
-  cityData: any[] // 城市数据
-  hit: any[] // 命中结果
-}
-const data = reactive<Reactive>({
-  keyword: '',
-  cityData: [],
-  hit: []
-})
+import vSwitch from '../switch.vue'
+
 const store = {
   global: useIndexStore(),
   weather: useWeatherStore(),
   darkMode: useDarkModeStore()
 }
 
-/**
- * 处理 csv 数据
- */
-const csvData = csvFile.split('\n')
+// 天气设置输入框内容
+const keyword = ref<string>('')
+// 城市数据
+const cityData = ref<string[]>([])
+// 命中结果
+const hitList = ref<string[]>([])
+
+watch(keyword, (newVal, oldVal) => {
+  // 当输入框内容长度为0时隐藏结果列表
+  if (!keyword.value.length) {
+    hitList.value = []
+    return
+  }
+  // 清空命中列表内的旧数据
+  hitList.value = []
+  // 将命中的数据添加到命中列表
+  cityData.value.forEach((e: any) => {
+    if (e.indexOf(newVal.replace(/[省|市|区]/g, '')) !== -1) {
+      hitList.value.push(e)
+    }
+  })
+})
+
+const setLocation = (id: number | string) => {
+  store.weather.setWeatherLocation(id)
+}
+
 let tmp = ''
-csvData.forEach((e: any) => {
+csvFile.split('\n').forEach((e: any) => {
   /*
     e.split(',')[0] = id
     e.split(',')[2] = 县
@@ -41,55 +52,25 @@ csvData.forEach((e: any) => {
   const item: any[] = e.split(',')
   tmp += `${item[7]}-${item[9]}-${item[2]}-${item[0]}\n`
 })
-data.cityData = tmp.split('\n')
+cityData.value = tmp.split('\n')
 tmp = ''
-
-/**
- * Methods
- */
-const methods = {
-  // 更新天气位置
-  setLocation: (id: number | string) => {
-    store.weather.setWeatherLocation(id)
-  }
-}
-
-/**
- * Watch
- */
-watch(
-  () => data.keyword,
-  (newVal, oldVal) => {
-    // 当输入框内容长度为0时隐藏结果列表
-    if (!data.keyword.length) {
-      data.hit = []
-      return
-    }
-    // 清空命中列表内的旧数据
-    data.hit = []
-    // 将命中的数据添加到命中列表
-    data.cityData.forEach((e: any) => {
-      if (e.indexOf(newVal.replace(/[省|市|区]/g, '')) !== -1) {
-        data.hit.push(e)
-      }
-    })
-  }
-)
 </script>
 
 <template>
   <ul>
-    <li class="border-radius">
+    <li>
       <span>显示天气组件</span>
-      <vSwitch @click="store.weather.setWeatherStatus(null)" :active="store.weather.enabled" />
+      <vSwitch @click='store.weather.setWeatherStatus(null)' :active='store.weather.enabled' />
     </li>
-    <li class="border-radius">
+    <li>
       <span>设置天气位置</span>
-      <input class="w-50 text-size-m text-center border-none border-radius-sm" type="text" placeholder="输入您所在的城市" title="请不要输入完整的位置" v-model="data.keyword" />
+      <input class='w-50 text-size-m text-center border-none border-radius-sm' type='text'
+             placeholder='输入您所在的城市' title='请不要输入完整的位置' v-model='keyword' />
     </li>
-    <li class="border-radius" v-show="data.hit.length">
-      <ul id="hit-list" class="w-100 overflow-x-hide overflow-y-auto border-radius" v-show="data.hit.length">
-        <li class="m-b-sm p-lr text-center border-radius pointer" v-for="(item, index) in data.hit" :key="index" @click="methods.setLocation(item.substring(item.length - 9))">
+    <li v-show='hitList.length'>
+      <ul id='hit-list' class='w-100 overflow-x-hide overflow-y-auto border-radius' v-show='hitList.length'>
+        <li class='m-b-sm p-lr text-center border-radius pointer' v-for='(item, index) in hitList' :key='index'
+            @click='setLocation(item.substring(item.length - 9))'>
           {{ item.substring(0, item.length - 10) }}
         </li>
       </ul>
@@ -97,18 +78,22 @@ watch(
   </ul>
 </template>
 
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 li
   margin 14px 0
   padding 8px 10px
   display flex
   justify-content space-between
   align-items center
+  border-radius calc(var(--fillet) - 4px)
   background-color #8881
+
 #hit-list
   height 256px
+
   li
     font-size 12px
+
     &:first-child
       margin-top 0 !important
 </style>

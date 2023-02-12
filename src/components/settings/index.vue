@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang='ts'>
 import { useIndexStore } from '../../store'
 import { useDarkModeStore } from '../../store/darkMode'
 import sGlobal from './global.vue'
@@ -7,37 +7,21 @@ import sClock from './clock.vue'
 import sDarkMode from './darkMode.vue'
 import sWeather from './weather.vue'
 
-/**
- * Props
- */
 interface Props {
   show: boolean
 }
+
 const props = defineProps<Props>()
-
-/**
- * Emits
- */
 const emit = defineEmits(['close'])
-
-/**
- * Data
- */
 const store = {
   global: useIndexStore(),
   darkMode: useDarkModeStore()
 }
 
-/**
- * Feedback
- */
 const feedback = (): void => {
   window.open('https://github.com/KiHanLee/LightSP/issues/new')
 }
 
-/**
- * Reset
- */
 const reset = (): void => {
   if (prompt('输入 "confirm" 确认您的操作: ') === 'confirm') {
     localStorage.removeItem('LightSP')
@@ -52,9 +36,12 @@ const reset = (): void => {
 
 <template>
   <div
-    id="vSettings"
-    class="p-tb-sm p-lr-ex"
-    :class="{ show: props.show }"
+    id='vSettings'
+    class='p-tb-sm p-lr-ex'
+    :class='{
+      show: props.show,
+      blur: store.global.blur
+    }'
   >
     <div>
       <!-- 全局设置 -->
@@ -72,16 +59,20 @@ const reset = (): void => {
       <!-- 天气设置 -->
       <sWeather />
       <hr />
-      <input id="feedback" type="button" value="反馈" class="m-b w-100 border-none border-radius transition pointer" @click="feedback()" />
-      <input id="reset" type="button" value="恢复默认设置" class="m-b w-100 border-none border-radius transition pointer" @click="reset()" />
-      <input id="close" type="button" value="关闭" class="m-b w-100 border-none border-radius transition pointer" @click="emit('close')" />
+      <input id='feedback' type='button' value='反馈' class='m-b w-100 border-none transition pointer'
+             @click='feedback()' />
+      <input id='reset' type='button' value='恢复默认设置'
+             class='m-b w-100 border-none border-radius transition pointer' @click='reset()' />
+      <input id='close' type='button' value='关闭' class='m-b w-100 border-none transition pointer'
+             @click="emit('close')" />
     </div>
   </div>
 </template>
 
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 ::selection
   background transparent
+
 #vSettings
   position absolute
   top 0
@@ -91,29 +82,35 @@ const reset = (): void => {
   width 330px
   height 100vh
   color var(--color)
-  backdrop-filter blur(var(--blur))
   background-color var(--bg-color)
   overflow hidden auto
   transform translateX(-100%)
   transition transform .7s cubic-bezier(0, 1, .3, 1)
-  >div
+
+  > div
     opacity 0
     transition opacity .7s
+
 hr
   border 0
-  border-top 1px solid #444
+  border-top 1px solid #0003
+
 #feedback
 #reset
 #close
   height 32px
   color inherit
+  border-radius calc(var(--fillet) - 4px)
   background-color #8881
+
 #feedback:hover
 #reset:hover
 #close:hover
   background-color #8296ff
+
 .show
   transform translateX(0) !important
-  >div
+
+  > div
     opacity 1 !important
 </style>
