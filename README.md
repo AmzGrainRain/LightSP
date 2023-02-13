@@ -3,10 +3,13 @@
 ## 扩展介绍
 基于vue3构建的一个简易起始页。[体验在线版](https://www.amzgr.cc/archive/lightsp/)</br>
 启用后，此扩展会将空白页覆盖为起始页导航。</br>
-火狐扩展商店地址：https://addons.mozilla.org/zh-CN/firefox/addon/lightsp/
+
+## 分发渠道
+火狐: https://addons.mozilla.org/zh-CN/firefox/addon/lightsp-%E8%BD%BB%E8%B5%B7%E5%A7%8B%E9%A1%B5
+微软Edge: https://microsoftedge.microsoft.com/addons/detail/mianbaepkeclkoclkoikhlgdfpdelnfi
 
 ## 兼容性
-适用于火狐浏览器浏览器。
+Firefox、Edge浏览器、360安全浏览器、360极速浏览器
 
 ## 初始化 & 启动
 ```
