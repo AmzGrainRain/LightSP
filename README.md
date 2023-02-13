@@ -5,7 +5,7 @@
 启用后，此扩展会将空白页覆盖为起始页导航。</br>
 
 ## 分发渠道
-火狐: https://addons.mozilla.org/zh-CN/firefox/addon/lightsp-%E8%BD%BB%E8%B5%B7%E5%A7%8B%E9%A1%B5
+火狐: https://addons.mozilla.org/zh-CN/firefox/addon/lightsp-%E8%BD%BB%E8%B5%B7%E5%A7%8B%E9%A1%B5  
 微软Edge: https://microsoftedge.microsoft.com/addons/detail/mianbaepkeclkoclkoikhlgdfpdelnfi
 
 ## 兼容性
