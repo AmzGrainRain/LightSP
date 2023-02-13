@@ -6,7 +6,7 @@
 
 ## 分发渠道
 火狐: https://addons.mozilla.org/zh-CN/firefox/addon/lightsp-%E8%BD%BB%E8%B5%B7%E5%A7%8B%E9%A1%B5  
-微软Edge: https://microsoftedge.microsoft.com/addons/detail/mianbaepkeclkoclkoikhlgdfpdelnfi
+微软: https://microsoftedge.microsoft.com/addons/detail/mianbaepkeclkoclkoikhlgdfpdelnfi
 
 ## 兼容性
 Firefox、Edge浏览器、360安全浏览器、360极速浏览器
