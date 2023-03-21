@@ -80,6 +80,7 @@ img
   left 0
   width 100vw
   height 100vh
+  opacity 0
   transition all .3s cubic-bezier(0.2, 0.73, 0.61, 0.95)
   z-index -1
 
