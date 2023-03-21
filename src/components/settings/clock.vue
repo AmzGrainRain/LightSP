@@ -12,7 +12,7 @@ const store = {
 </script>
 
 <template>
-  <ul id='sClock'>
+  <ul>
     <li>
       <span>显示日期</span>
       <vSwitch @click='store.clock.setDateVisible(null)' :active='store.clock.dateVisible' />

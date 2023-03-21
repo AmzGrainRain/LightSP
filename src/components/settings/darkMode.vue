@@ -10,7 +10,7 @@ const store = {
 </script>
 
 <template>
-  <ul id='sDarkMode'>
+  <ul>
     <li v-show='!store.darkMode.followSystem'>
       <span>深色模式</span>
       <vSwitch @click='store.darkMode.setDarkModeStatus(null)' :active='store.darkMode.enabled' />

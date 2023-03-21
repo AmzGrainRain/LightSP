@@ -104,9 +104,9 @@ watch(() => data.keyword, (newVal, oldVal) => {
       contentHeight.value = true
       return
     }
-
     backgroundBlur.value = true
     contentHeight.value = false
+    
     jsonp('https://www.baidu.com/sugrec', {
       callbackName: 'JSONP',
       ie: 'utf-8',

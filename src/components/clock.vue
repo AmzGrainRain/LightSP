@@ -45,7 +45,6 @@ setInterval(() => {
 
 <template>
   <div
-    id='vClock'
     :title='Title'
     class='d-flex text-center pointer'
   >
@@ -55,7 +54,7 @@ setInterval(() => {
 </template>
 
 <style lang='stylus' scoped>
-#vClock
+div
   flex-flow column wrap
   text-shadow 0 0 2px #000
 

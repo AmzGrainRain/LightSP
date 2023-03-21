@@ -39,7 +39,7 @@ const reset = (): void => {
 
 <template>
   <div
-    id='vSettings'
+    id='settings'
     class='p-tb-sm p-lr-ex'
     :class='{
       show: props.show,
@@ -76,7 +76,7 @@ const reset = (): void => {
 ::selection
   background transparent
 
-#vSettings
+#settings
   position absolute
   top 0
   left 0
@@ -87,7 +87,7 @@ const reset = (): void => {
   color var(--color)
   background-color var(--bg-color)
   overflow hidden auto
-  transform translateX(-100%)
+  transform translateX(-101%)
   transition transform .7s cubic-bezier(0, 1, .3, 1)
 
   > div

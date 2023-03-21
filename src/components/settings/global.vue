@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { reactive, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useIndexStore } from '../../store'
 import { useDarkModeStore } from '../../store/darkMode'
 import vSwitch from '../switch.vue'

@@ -10,7 +10,6 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <div
-    id='vSwitch'
     class='position-relative w-100 h-100 border-solid border-radius-lg overflow-hide'
   >
     <input
@@ -26,7 +25,7 @@ withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang='stylus' scoped>
-#vSwitch
+div
   width 2.5rem
   height 1.25rem
   box-shadow inset 0 0 2px #888

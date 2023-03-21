@@ -23,7 +23,6 @@ watch(text, (newVal, oldVal) => {
 
 <template>
   <input
-    id='vInput'
     type='text'
     class='p-lr w-100 text-center text-size-sm border-none transition'
     :class="{

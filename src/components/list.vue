@@ -17,7 +17,6 @@ const store = {
 
 <template>
   <div
-    id='vList'
     class='w-100 h-0 overflow-x-hide overflow-y-auto transition scrollbar-hide'
     :style='{
       height: (ListData.length && Keywords.length ? `calc(100vh - 188px - ${store.global.contentHeight}rem)` : 0)
@@ -29,7 +28,8 @@ const store = {
           class='d-inline-block p-lr-lg w-100 transition text-overflow-ellipsis'
           :class="{
             'selected': Selected === index,
-            'dark-mode': store.darkMode.enabled
+            'dark-mode': store.darkMode.enabled,
+            blur: store.global.blur
           }"
           :href='item.url'
         >{{ item.text }}

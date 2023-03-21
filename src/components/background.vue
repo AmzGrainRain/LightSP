@@ -19,6 +19,7 @@ const store = {
 }
 const backgroundEl = ref(null) as any
 const currentBackground = ref('')
+const backgroundLoaded = ref(false)
 
 onBeforeMount(() => {
   // 使用默认壁纸？
@@ -58,19 +59,22 @@ onBeforeMount(() => {
 <template>
   <img
     ref='backgroundEl'
-    id='vBackground'
     class='penetrate object-fit-cover'
+    :class='{
+      fadeIn: backgroundLoaded
+    }'
     :style="`
       transform: ${store.wallpaper.focusBlur && props.Blur ? 'scale(1.2)' : ''};
       filter: ${store.wallpaper.focusBlur && props.Blur ? 'blur(4px)' : ''} ${store.darkMode.darkWallpaper ? 'brightness(.8)' : ''}
     `"
     :src='currentBackground'
+    @load='backgroundLoaded = true'
     alt='bg'
   />
 </template>
 
 <style lang='stylus' scoped>
-#vBackground
+img
   position absolute
   top 0
   left 0
@@ -78,4 +82,13 @@ onBeforeMount(() => {
   height 100vh
   transition all .3s cubic-bezier(0.2, 0.73, 0.61, 0.95)
   z-index -1
+
+.fadeIn
+  animation aniFadeIn 1s forwards
+
+@keyframes aniFadeIn
+  0%
+    opacity 0
+  100%
+    opacity 1
 </style>
