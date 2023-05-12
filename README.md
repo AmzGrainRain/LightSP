@@ -2,7 +2,7 @@
 
 ## 扩展介绍
 
-基于vue3构建的一个简易起始页。[体验在线版](https://www.amzgr.cc/archive/lightsp/)  
+基于vue3构建的一个简易起始页。[体验在线版](https://nas.amzgr.cc:81/archive/lightsp/)  
 启用后，此扩展会将空白页覆盖为起始页导航。
 
 ## 分发渠道
@@ -30,6 +30,7 @@ npm run build
 
 使用上下箭头在关键词列表内切换选中项
 
+- ctrl + s 设置面板
 - ctrl + f 翻译
 - ctrl + b 必应搜索
 - ctrl + g 谷歌搜索
