@@ -11,9 +11,10 @@ import sWeather from './weather.vue'
 interface Props {
   show: boolean
 }
-
 const props = defineProps<Props>()
+
 const emit = defineEmits(['close'])
+
 const store = {
   global: useIndexStore(),
   darkMode: useDarkModeStore()

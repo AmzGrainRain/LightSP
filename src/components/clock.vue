@@ -5,23 +5,21 @@ import { useClockStore } from '../store/clock'
 interface Props {
   Title: string
 }
-
 withDefaults(defineProps<Props>(), {
   Title: ''
 })
-
 
 interface Reactive {
   date: string
   time: string
 }
-
 const data = reactive<Reactive>({
   date: 'xxxx-xx-xx xxx',
   time: '00:00:00'
 })
+
 const store = useClockStore()
-const week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+const week: string[] = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
 
 const updateTime = () => {
   const t = new Date()
@@ -36,8 +34,10 @@ const updateTime = () => {
   data.time = `${h}:${m}:${s}`
 }
 
-
+// Show time in advance
 updateTime()
+
+// Refresh time
 setInterval(() => {
   updateTime()
 }, 1000)
@@ -56,7 +56,7 @@ setInterval(() => {
 <style lang='stylus' scoped>
 div
   flex-flow column wrap
-  text-shadow 0 0 2px #000
+  text-shadow 0 0 4px #0008
 
 .date
   letter-spacing .1rem

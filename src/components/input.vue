@@ -7,8 +7,8 @@ interface Props {
   Placeholder?: string
   Title?: string
 }
-
 defineProps<Props>()
+
 const emit = defineEmits(['updateEvent'])
 const store = {
   global: useIndexStore(),

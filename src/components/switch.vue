@@ -2,7 +2,6 @@
 interface Props {
   active: boolean
 }
-
 withDefaults(defineProps<Props>(), {
   active: false
 })

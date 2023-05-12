@@ -6,7 +6,6 @@ import { useWeatherStore } from '../store/weather'
 interface Props {
   Title: string
 }
-
 defineProps<Props>()
 const store = {
   global: useIndexStore(),
@@ -72,6 +71,9 @@ a
 
   &:hover
     background-color #fff3
+
+  span
+    text-shadow 0 0 4px #0008
 
 .slideIn
   animation aniSlideIn .5s forwards

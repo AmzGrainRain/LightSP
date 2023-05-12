@@ -7,8 +7,8 @@ interface Props {
   Keywords: string
   Selected: boolean | number
 }
-
 defineProps<Props>()
+
 const store = {
   global: useIndexStore(),
   darkMode: useDarkModeStore()

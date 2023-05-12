@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { onBeforeMount, ref } from 'vue'
 import { useWallpaperStore } from '../store/wallpaper'
 import { useDarkModeStore } from '../store/darkMode'
@@ -22,11 +22,11 @@ const currentBackground = ref('')
 const backgroundLoaded = ref(false)
 
 onBeforeMount(() => {
-  // 使用默认壁纸？
+  // Default
   if (store.wallpaper.default) {
     currentBackground.value = bgURL
   }
-  // 使用必应壁纸？
+  // Bing
   if (store.wallpaper.bing) {
     fetch('https://www.amzgr.cc/api/wallpaper', {
       method: 'POST',
@@ -41,7 +41,7 @@ onBeforeMount(() => {
       })
       .catch((err) => console.log(err))
   }
-  // 使用自定义壁纸？
+  // Custom
   if (store.wallpaper.customize) {
     lfGet('CustomizeWallpaper', (err: any, value: any) => {
       if (err || !value) {
@@ -58,30 +58,30 @@ onBeforeMount(() => {
 
 <template>
   <img
-    ref='backgroundEl'
-    class='penetrate object-fit-cover'
-    :class='{
+    ref="backgroundEl"
+    class="penetrate object-fit-cover"
+    :class="{
       fadeIn: backgroundLoaded
-    }'
+    }"
     :style="`
       transform: ${store.wallpaper.focusBlur && props.Blur ? 'scale(1.2)' : ''};
       filter: ${store.wallpaper.focusBlur && props.Blur ? 'blur(4px)' : ''} ${store.darkMode.darkWallpaper ? 'brightness(.8)' : ''}
     `"
-    :src='currentBackground'
-    @load='backgroundLoaded = true'
-    alt='bg'
+    :src="currentBackground"
+    @load="backgroundLoaded = true"
+    alt="bg"
   />
 </template>
 
-<style lang='stylus' scoped>
+<style lang="stylus" scoped>
 img
   position absolute
   top 0
   left 0
   width 100vw
   height 100vh
-  opacity 0
   transition all .3s cubic-bezier(0.2, 0.73, 0.61, 0.95)
+  opacity 0
   z-index -1
 
 .fadeIn
