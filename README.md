@@ -1,8 +1,8 @@
 # LightSP - 轻起始页（火狐浏览器）
 
 ## 扩展介绍
-基于vue3构建的一个简易起始页。[体验在线版](https://www.amzgr.cc/archive/lightsp/)</br>
-启用后，此扩展会将空白页覆盖为起始页导航。</br>
+基于vue3构建的一个简易起始页。[体验在线版](https://www.amzgr.cc/archive/lightsp/)  
+启用后，此扩展会将空白页覆盖为起始页导航。  
 
 ## 分发渠道
 火狐: https://addons.mozilla.org/zh-CN/firefox/addon/lightsp-%E8%BD%BB%E8%B5%B7%E5%A7%8B%E9%A1%B5  
@@ -23,6 +23,7 @@ npm run build
 
 ## 快捷键
 使用上下箭头在关键词列表内切换选中项
+
 - ctrl + f 翻译
 - ctrl + b 必应搜索
 - ctrl + g 谷歌搜索
