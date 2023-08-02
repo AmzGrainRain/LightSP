@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useIndexStore = defineStore('global', {
   state: () => ({
+    first: true,
     blur: false, // 全局模糊
     fillet: 16, // 全局圆角
     contentHeight: 14, // 内容高度
@@ -14,6 +15,10 @@ export const useIndexStore = defineStore('global', {
   }),
   getters: {},
   actions: {
+    // 设置首次打开的提示
+    setFirstStatus(status: boolean) {
+      this.first = status
+    },
     // 设置毛玻璃效果
     setGlobalBlur(status: boolean | null) {
       if (status === null) {

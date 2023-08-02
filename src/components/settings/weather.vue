@@ -93,6 +93,9 @@ li
 
   li
     font-size 12px
+    transition background-color .2s
+    &:hover
+      background-color #8883
 
     &:first-child
       margin-top 0 !important

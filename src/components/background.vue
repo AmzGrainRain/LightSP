@@ -28,7 +28,7 @@ onBeforeMount(() => {
   }
   // Bing
   if (store.wallpaper.bing) {
-    fetch('https://www.amzgr.cc/api/wallpaper', {
+    fetch('https://amzlab.site:81/api/wallpaper', {
       method: 'POST',
       mode: 'cors',
       headers: {

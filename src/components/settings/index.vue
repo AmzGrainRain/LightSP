@@ -2,16 +2,11 @@
 import { useIndexStore } from '../../store'
 import { useDarkModeStore } from '../../store/darkMode'
 import { clear as lfClear } from 'localforage'
-import sGlobal from './global.vue'
-import sWallpaper from './wallpaper.vue'
-import sClock from './clock.vue'
-import sDarkMode from './darkMode.vue'
-import sWeather from './weather.vue'
-
-interface Props {
-  show: boolean
-}
-const props = defineProps<Props>()
+import GlobalSetting from './global.vue'
+import WallpaperSetting from './wallpaper.vue'
+import ClockSetting from './clock.vue'
+import DarkModeSetting from './darkMode.vue'
+import WeatherSetting from './weather.vue'
 
 const emit = defineEmits(['close'])
 
@@ -21,7 +16,7 @@ const store = {
 }
 
 const feedback = (): void => {
-  window.open('https://github.com/KiHanLee/LightSP/issues/new')
+  window.open('https://github.com/AmzGrainRain/LightSP/issues/new')
 }
 
 const reset = (): void => {
@@ -41,34 +36,48 @@ const reset = (): void => {
 <template>
   <div
     id='settings'
-    class='p-tb-sm p-lr-ex'
+    class='overflow-hide'
     :class='{
-      show: props.show,
       blur: store.global.blur
     }'
   >
-    <div>
-      <!-- 全局设置 -->
-      <sGlobal />
-      <hr />
-      <!-- 壁纸设置 -->
-      <sWallpaper />
-      <hr />
-      <!-- 时钟设置 -->
-      <sClock />
-      <hr />
-      <!-- 深色模式设置 -->
-      <sDarkMode />
-      <hr />
-      <!-- 天气设置 -->
-      <sWeather />
-      <hr />
-      <input id='feedback' type='button' value='反馈' class='m-b w-100 border-none transition pointer'
-             @click='feedback()' />
-      <input id='reset' type='button' value='恢复默认设置'
-             class='m-b w-100 border-none border-radius transition pointer' @click='reset()' />
-      <input id='close' type='button' value='关闭' class='m-b w-100 border-none transition pointer'
-             @click="emit('close')" />
+    <div class='bar p-lr-ex'>
+      <h3>设置</h3>
+      <span class='p-lr p-tb-sm pointer' @click="emit('close')">关闭</span>
+    </div>
+    <div class='panel p-lr-lg p-t-lg'>
+      <h4>全局</h4>
+      <Global-Setting />
+
+      <h4>壁纸</h4>
+      <Wallpaper-Setting />
+
+      <h4>时钟</h4>
+      <Clock-Setting />
+
+      <h4>深色模式</h4>
+      <DarkMode-Setting />
+
+      <h4>天气</h4>
+      <Weather-Setting />
+
+      <h4>其他</h4>
+      <div class='other'>
+        <input
+          id='feedback'
+          class='m-b p-lr-lg border-none transition pointer'
+          type='button'
+          value='反馈'
+          @click='feedback()'
+        />
+        <input
+          id='reset'
+          class='m-b p-lr-lg border-none border-radius transition pointer'
+          type='button'
+          value='恢复默认设置'
+          @click='reset()'
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -78,43 +87,51 @@ const reset = (): void => {
   background transparent
 
 #settings
-  position absolute
+  position fixed
   top 0
   left 0
-  justify-content center
-  align-items center
-  width 330px
-  height 100vh
+  right 0
+  bottom 0
+  margin auto
+  width 420px
+  height 80vh
   color var(--color)
   background-color var(--bg-color)
-  overflow hidden auto
-  transform translateX(-101%)
-  transition transform .7s cubic-bezier(0, 1, .3, 1)
+  border-radius calc(var(--fillet) - 4px)
+  //opacity 0
+  //transition transform .7s cubic-bezier(0, 1, .3, 1)
 
-  > div
-    opacity 0
-    transition opacity .7s
+  div.bar
+    display flex
+    justify-content space-between
+    align-items center
+    height 3rem
+    box-shadow 0 1px .2rem #8884
 
-hr
-  border 0
-  border-top 1px solid #0003
+  div.panel
+    height calc(100% - 3rem)
+    overflow hidden auto
+
+    h4
+      padding-left .3rem
+
+    div.other
+      margin-top .5rem
+
+      input
+        margin-right 1rem
 
 #feedback
 #reset
-#close
-  height 32px
+  height 2rem
   color inherit
   border-radius calc(var(--fillet) - 4px)
   background-color #8881
 
 #feedback:hover
 #reset:hover
-#close:hover
   background-color #8296ff
 
 .show
-  transform translateX(0) !important
-
-  > div
-    opacity 1 !important
+  opacity 1 !important
 </style>

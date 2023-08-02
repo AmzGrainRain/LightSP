@@ -3,42 +3,39 @@ import { watch, reactive, onBeforeMount, ref } from 'vue'
 import { useIndexStore } from './store'
 import { useDarkModeStore } from './store/darkMode'
 import { jsonp } from 'vue-jsonp'
-import vWeather from './components/weather.vue'
-import vBackground from './components/background.vue'
-import vClock from './components/clock.vue'
-import vInput from './components/input.vue'
-import vList from './components/list.vue'
-import vSettings from './components/settings/index.vue'
+import WeatherComponent from './components/weather.vue'
+import BackgroundComponent from './components/background.vue'
+import ClockComponent from './components/clock.vue'
+import InputComponent from './components/input.vue'
+import ListComponent from './components/list.vue'
+import SettingsComponent from './components/settings/index.vue'
 
 const store = {
   global: useIndexStore(),
   darkMode: useDarkModeStore()
 }
 
-interface DataReactive {
+const data = reactive<{
   keyword: string
   result: any
   focusIndex: number
-}
-
-const data = reactive<DataReactive>({
-  keyword: '',
-  result: [],
-  focusIndex: -1
+}>({
+  keyword: '',    // 搜索框内容
+  result: [],     // 关键词联想列表
+  focusIndex: -1  // 关键词列表聚焦索引
 })
 
-const backgroundBlur = ref(false)
-const showSettings = ref(false)
-const contentHeight = ref(true)
+const backgroundBlur = ref(false) // 壁纸模糊
+const showSettings = ref(false)   // 显示设置
+const contentHeight = ref(true)   // 内容高度（自适应高度功能所需要的占位符高度）
 
-// 自定义事件
 const hooks = {
+  // 输入框内容更新事件
   vInputUpdate: (keyword: string): void => {
     data.keyword = keyword
   }
 }
 
-// 热键监听
 document.addEventListener('keydown', (e: KeyboardEvent): void => {
   // Ctrl 组合键
   if (e.ctrlKey) {
@@ -107,33 +104,39 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
       break
     }
     case 'Enter': {
+      // 编码关键词
+      let encodedKeyword = encodeURIComponent(data.keyword)
+
+      // 搜索引擎
+      let searchEngine = 'https://www.baidu.com/s?ie=utf-8&wd=关键词'
+
+      // 如果用户使用自定义的搜索引擎
+      if (store.global.searchEngines !== '') {
+        searchEngine = store.global.searchEngines
+      }
+
       // 使用搜索框内容进行检索
       if (data.focusIndex < 0) {
-        // 是否使用用户自定义的搜索引擎
-        if (store.global.searchEngines !== '') window.location.href = store.global.searchEngines.replace('关键词', data.keyword)
-        else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.keyword}`
-
+        // 编码关键词、跳转
+        window.location.href = searchEngine.replace('关键词', encodeURIComponent(data.keyword))
         e.preventDefault()
         break
       }
 
       // 使用关键词列表的聚焦项进行检索
       if (data.result?.[data.focusIndex]) {
-        // 是否使用用户自定义的搜索引擎
-        if (store.global.searchEngines !== '') {
-          window.location.href = store.global.searchEngines.replace('关键词', data.result[data.focusIndex].text)
-        } else window.location.href = `https://www.baidu.com/s?ie=utf-8&wd=${data.result[data.focusIndex].text}`
-
+        // 编码关键词、跳转
+        window.location.href = searchEngine.replace('关键词', encodeURIComponent(data.result[data.focusIndex].text))
         e.preventDefault()
       }
     }
   }
 })
 
-// 监听输入框内容变化
+// 监听关键词变化
 watch(
   () => data.keyword,
-  (newVal, oldVal) => {
+  (newVal) => {
     // 如果输入框为空则取消激活状态
     if (!newVal.length) {
       backgroundBlur.value = false
@@ -178,6 +181,12 @@ watch(
 )
 
 onBeforeMount(() => {
+  // 首次进入首页的帮助信息
+  if (store.global.first === true) {
+    alert('温馨提示：点击时间可以打开设置')
+    store.global.setFirstStatus(false)
+  }
+
   // 深色模式跟随系统
   if (store.darkMode.followSystem) {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -204,7 +213,7 @@ onBeforeMount(() => {
     }"
   >
     <!-- 背景组件 -->
-    <vBackground :Blur="backgroundBlur" />
+    <Background-Component :Blur="backgroundBlur" />
 
     <!-- 搜索栏 -->
     <div
@@ -214,22 +223,22 @@ onBeforeMount(() => {
       }"
     >
       <!-- 日期组件 -->
-      <vClock Title="点击打开设置" @click="showSettings = !showSettings" />
-      <!-- 占位元素 -->
+      <Clock-Component @click="showSettings = true" title="点击打开设置" />
       <div style="height: 1rem"></div>
       <!-- 输入框 -->
-      <vInput Placeholder="输入搜索内容" Title="按下回车直接搜索" @updateEvent="hooks.vInputUpdate" />
-      <!-- 占位元素 -->
+      <Input-Component Placeholder="输入搜索内容" Title="按下回车搜索" @updateEvent="hooks.vInputUpdate" />
       <div style="height: 0.8rem"></div>
       <!-- 关键词联想列表 -->
-      <vList :ListData="data.result" :Selected="data.focusIndex" :Keywords="data.keyword" />
+      <List-Component :ListData="data.result" :Selected="data.focusIndex" :Keywords="data.keyword" />
     </div>
 
     <!-- 天气组件 -->
-    <vWeather Title="点击查看详情" />
+    <Weather-Component Title="点击查看详情" />
 
     <!-- 设置组件 -->
-    <vSettings :show="showSettings" @close="showSettings = false" />
+    <transition name="fade">
+      <Settings-Component v-show='showSettings' @close="showSettings = false" />
+    </transition>
   </div>
 </template>
 
@@ -250,4 +259,21 @@ onBeforeMount(() => {
     width 80%
   @media screen and (max-width: 512px)
     width 95%
+
+.fade-enter-from
+.fade-leave-to
+  opacity 0
+  transform scale(.95)
+
+.fade-enter-active
+  transition all .5s cubic-bezier(0.15, 0.65, 0, 1)
+.fade-leave-active
+  // transition all .7s cubic-bezier(0,1,.3,1)
+  transition all .2s
+
+.fade-enter-to
+.fade-leave-from
+  opacity 1
+  transform scale(1)
+
 </style>

@@ -2,13 +2,6 @@
 import { reactive } from 'vue'
 import { useClockStore } from '../store/clock'
 
-interface Props {
-  Title: string
-}
-withDefaults(defineProps<Props>(), {
-  Title: ''
-})
-
 interface Reactive {
   date: string
   time: string
@@ -44,10 +37,7 @@ setInterval(() => {
 </script>
 
 <template>
-  <div
-    :title='Title'
-    class='d-flex text-center pointer'
-  >
+  <div class='d-flex text-center pointer'>
     <p v-show='store.dateVisible' class='date text-size-m'>{{ data.date }}</p>
     <p class='time p-t-sm'>{{ data.time }}</p>
   </div>
