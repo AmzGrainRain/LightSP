@@ -20,14 +20,14 @@ const data = reactive<{
   result: any
   focusIndex: number
 }>({
-  keyword: '',    // 搜索框内容
-  result: [],     // 关键词联想列表
-  focusIndex: -1  // 关键词列表聚焦索引
+  keyword: '', // 搜索框内容
+  result: [], // 关键词联想列表
+  focusIndex: -1 // 关键词列表聚焦索引
 })
 
 const backgroundBlur = ref(false) // 壁纸模糊
-const showSettings = ref(false)   // 显示设置
-const contentHeight = ref(true)   // 内容高度（自适应高度功能所需要的占位符高度）
+const showSettings = ref(false) // 显示设置
+const contentHeight = ref(true) // 内容高度（自适应高度功能所需要的占位符高度）
 
 const hooks = {
   // 输入框内容更新事件
@@ -71,7 +71,7 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
   }
 
   // 如果关键词列表为空或搜索框内容为空就没必要继续往下执行了
-  if (data.result.length == 0 || data.keyword == '') return
+  if (data.result.length === 0 || data.keyword === '') return
 
   // 关键词选择
   switch (e.key) {
@@ -104,21 +104,10 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
       break
     }
     case 'Enter': {
-      // 编码关键词
-      let encodedKeyword = encodeURIComponent(data.keyword)
-
-      // 搜索引擎
-      let searchEngine = 'https://www.baidu.com/s?ie=utf-8&wd=关键词'
-
-      // 如果用户使用自定义的搜索引擎
-      if (store.global.searchEngines !== '') {
-        searchEngine = store.global.searchEngines
-      }
-
       // 使用搜索框内容进行检索
       if (data.focusIndex < 0) {
         // 编码关键词、跳转
-        window.location.href = searchEngine.replace('关键词', encodeURIComponent(data.keyword))
+        window.location.href = store.global.searchEngines.replace('{}', encodeURIComponent(data.keyword))
         e.preventDefault()
         break
       }
@@ -126,7 +115,7 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
       // 使用关键词列表的聚焦项进行检索
       if (data.result?.[data.focusIndex]) {
         // 编码关键词、跳转
-        window.location.href = searchEngine.replace('关键词', encodeURIComponent(data.result[data.focusIndex].text))
+        window.location.href = store.global.searchEngines.replace('{}', encodeURIComponent(data.result[data.focusIndex].text))
         e.preventDefault()
       }
     }
@@ -183,19 +172,29 @@ watch(
 onBeforeMount(() => {
   // 首次进入首页的帮助信息
   if (store.global.first === true) {
-    alert('温馨提示：点击时间可以打开设置')
+    alert(`我发现这是你第一次打开此扩展，所以就弄出了这个弹窗（下次就不会了）。
+欢迎使用！！！（开发者很大声很真诚的说）
+
+下面是一些快捷键介绍：
+ctrl + s = 打开设置
+ctrl + f = 翻译
+ctrl + b = 使用必应搜索当前输入框的内容
+ctrl + g = 使用谷歌搜索当前输入框的内容
+ctrl + d = 使用百度开发者搜索当前输入框的内容
+
+当然你也可以点击时间来打开设置面板。
+
+最后，祝您搜索愉快~~~`)
     store.global.setFirstStatus(false)
   }
 
   // 深色模式跟随系统
-  if (store.darkMode.followSystem) {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      store.darkMode.setDarkModeStatus(true)
-    } else store.darkMode.setDarkModeStatus(false)
-  }
+  store.darkMode.setDarkModeStatus(store.darkMode.followSystem && window.matchMedia('(prefers-color-scheme: dark)').matches)
 
+  // 控制台输出开源信息
   console.log('轻起始页 - LightSP')
   console.log('https://github.com/AmzGrainRain/LightSP')
+  console.log('本项目使用 MIT 协议开源')
 })
 </script>
 
@@ -237,7 +236,7 @@ onBeforeMount(() => {
 
     <!-- 设置组件 -->
     <transition name="fade">
-      <Settings-Component v-show='showSettings' @close="showSettings = false" />
+      <Settings-Component v-show="showSettings" @close="showSettings = false" />
     </transition>
   </div>
 </template>
@@ -275,5 +274,4 @@ onBeforeMount(() => {
 .fade-leave-from
   opacity 1
   transform scale(1)
-
 </style>

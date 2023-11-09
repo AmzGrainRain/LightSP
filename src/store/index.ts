@@ -2,16 +2,16 @@ import { defineStore } from 'pinia'
 
 export const useIndexStore = defineStore('global', {
   state: () => ({
-    first: true,
-    blur: false, // 全局模糊
+    first: true, // 首次使用？
+    blur: true, // 全局模糊
     fillet: 16, // 全局圆角
-    contentHeight: 14, // 内容高度
-    adaptiveContentHeight: false, // 自适应内容高度
+    contentHeight: 18, // 内容高度
+    adaptiveContentHeight: true, // 自适应内容高度
     color: '#000', // 字体颜色
     bgColor: '#fffc', // 背景色
     frColor: '#8881', // 前景色
-    listFrColor: '', //
-    searchEngines: '' // 自定义搜索引擎
+    listFrColor: '', // 列表前景色
+    searchEngines: 'https://www.baidu.com/s?ie=utf-8&wd={}' // 搜索引擎
   }),
   getters: {},
   actions: {

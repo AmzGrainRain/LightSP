@@ -93,7 +93,7 @@ const reset = (): void => {
   right 0
   bottom 0
   margin auto
-  width 420px
+  width 430px
   height 80vh
   color var(--color)
   background-color var(--bg-color)

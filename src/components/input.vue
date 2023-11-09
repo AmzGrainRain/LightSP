@@ -27,7 +27,7 @@ watch(text, (newVal, oldVal) => {
     class='p-lr w-100 text-center text-size-sm border-none transition'
     :class="{
       'dark-mode': store.darkMode.enabled,
-      blur: store.global.blur
+      'blur': store.global.blur
     }"
     :placeholder='Placeholder'
     :title='Title'
@@ -40,6 +40,9 @@ input
   height 2.5rem
   border-radius var(--fillet)
   background-color #fff9
+
+  &::selection
+    background-color #000
 
 .dark-mode
   color #fff

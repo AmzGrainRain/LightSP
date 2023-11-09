@@ -6,7 +6,7 @@ export const useWallpaperStore = defineStore('wallpaper', {
     default: true, // 默认壁纸
     bing: false, // 必应壁纸
     customize: false, // 自定义壁纸
-    focusBlur: false // 聚焦模糊
+    focusBlur: true // 聚焦模糊
   }),
   getters: {},
   actions: {
