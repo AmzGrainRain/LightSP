@@ -1,0 +1,11 @@
+{
+    "extName": {
+        "message": "LightSP"
+    },
+    "extDefaultTitle": {
+        "message": "Wish you have a good mood every time you search~"
+    },
+    "extDescription": {
+        "message": "The simple start page developed based on Vue3."
+    }
+}
