@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useDarkModeStore = defineStore('darkMode', {
   state: () => ({
-    enabled: false, // 组件状态
+    enabled: true, // 组件状态
     darkWallpaper: false, // 深色壁纸
     followSystem: false, // 跟随系统
     followTime: true, // 跟随时间

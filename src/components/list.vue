@@ -2,12 +2,11 @@
 import { useIndexStore } from '../store'
 import { useDarkModeStore } from '../store/darkMode'
 
-interface Props {
+defineProps<{
   ListData: any[]
   Keywords: string
   Selected: boolean | number
-}
-defineProps<Props>()
+}>()
 
 const store = {
   global: useIndexStore(),

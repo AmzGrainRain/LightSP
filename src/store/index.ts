@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 
 export const useIndexStore = defineStore('global', {
   state: () => ({
-    first: true, // 首次使用？
+    version: '3.1.3', // 版本号
+    first: true, // 首次使用
     blur: true, // 全局模糊
     fillet: 16, // 全局圆角
     contentHeight: 18, // 内容高度

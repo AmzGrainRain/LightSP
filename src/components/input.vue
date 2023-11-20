@@ -3,11 +3,10 @@ import { ref, watch } from 'vue'
 import { useIndexStore } from '../store'
 import { useDarkModeStore } from '../store/darkMode'
 
-interface Props {
+defineProps<{
   Placeholder?: string
   Title?: string
-}
-defineProps<Props>()
+}>()
 
 const emit = defineEmits(['updateEvent'])
 const store = {
@@ -16,7 +15,7 @@ const store = {
 }
 
 const text = ref('')
-watch(text, (newVal, oldVal) => {
+watch(text, (newVal) => {
   emit('updateEvent', newVal)
 })
 </script>

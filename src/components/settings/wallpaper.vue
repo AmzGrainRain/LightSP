@@ -38,9 +38,13 @@ const setCustomizeWallpaper = () => {
     </li>
     <li>
       <span>使用默认壁纸</span>
-      <vSwitch @click='store.wallpaper.setWallpaper("default")' :active='store.wallpaper.default' />
+      <select v-model="store.wallpaper.default" class="p-lr-sm">
+        <option :value="0">v3.1.3</option>
+        <option :value="1">v3.1.2</option>
+        <option :value="2">v3.1.1</option>
+      </select>
     </li>
-    <li>
+    <li v-if="false">
       <span>使用必应壁纸</span>
       <vSwitch @click='store.wallpaper.setWallpaper("bing")' :active='store.wallpaper.bing' />
     </li>

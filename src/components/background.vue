@@ -3,7 +3,6 @@ import { onBeforeMount, ref } from 'vue'
 import { useWallpaperStore } from '../store/wallpaper'
 import { useDarkModeStore } from '../store/darkMode'
 import { getItem as lfGet } from 'localforage'
-import bgURL from '../assets/background.jpg'
 
 interface Props {
   Blur: boolean
@@ -22,11 +21,11 @@ const currentBackground = ref('')
 const backgroundLoaded = ref(false)
 
 onBeforeMount(() => {
-  // Default
-  if (store.wallpaper.default) {
-    currentBackground.value = bgURL
+  if (store.wallpaper.default !== -1) {
+    currentBackground.value = new URL(`../assets/${store.wallpaper.internalWallpaper[store.wallpaper.default]}`, import.meta.url).href
+    console.log(currentBackground.value)
   }
-  // Bing
+
   if (store.wallpaper.bing) {
     fetch('https://amzlab.site:81/api/wallpaper', {
       method: 'POST',
@@ -41,7 +40,7 @@ onBeforeMount(() => {
       })
       .catch((err) => console.log(err))
   }
-  // Custom
+
   if (store.wallpaper.customize) {
     lfGet('CustomizeWallpaper', (err: any, value: any) => {
       if (err || !value) {

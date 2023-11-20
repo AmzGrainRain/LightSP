@@ -3,10 +3,9 @@ import { ref, onBeforeMount, reactive } from 'vue'
 import { useIndexStore } from '../store'
 import { useWeatherStore } from '../store/weather'
 
-interface Props {
+defineProps<{
   Title: string
-}
-defineProps<Props>()
+}>()
 const store = {
   global: useIndexStore(),
   weather: useWeatherStore()

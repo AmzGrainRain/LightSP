@@ -15,12 +15,21 @@ const store = {
   darkMode: useDarkModeStore()
 }
 
+const hotkeyHelp = (): void => {
+  alert(`快捷键介绍：
+ctrl + s = 打开设置
+ctrl + f = 翻译
+ctrl + b = 使用必应搜索当前输入框的内容
+ctrl + g = 使用谷歌搜索当前输入框的内容
+ctrl + d = 使用百度开发者搜索当前输入框的内容`)
+}
+
 const feedback = (): void => {
   window.open('https://github.com/AmzGrainRain/LightSP/issues/new')
 }
 
 const reset = (): void => {
-  if (prompt('输入 "confirm" 确认您的操作: ') === 'confirm') {
+  if (confirm('您确定要清除所有自定义设置吗？')) {
     lfClear().then(() => {
       localStorage.removeItem('LightSP')
       localStorage.removeItem('LightSP-weather')
@@ -64,6 +73,13 @@ const reset = (): void => {
       <h4>其他</h4>
       <div class='other'>
         <input
+          id='hotkey-help'
+          class='m-b p-lr-lg border-none transition pointer'
+          type='button'
+          value='快捷键'
+          @click='hotkeyHelp()'
+        />
+        <input
           id='feedback'
           class='m-b p-lr-lg border-none transition pointer'
           type='button'
@@ -77,6 +93,10 @@ const reset = (): void => {
           value='恢复默认设置'
           @click='reset()'
         />
+        <span
+          id='version'
+          class='m-b p-lr-lg border-none border-radius transition pointer'
+        >版本号: {{ store.global.version }}</span>
       </div>
     </div>
   </div>
@@ -121,6 +141,7 @@ const reset = (): void => {
       input
         margin-right 1rem
 
+#hotkey-help
 #feedback
 #reset
   height 2rem
@@ -128,9 +149,8 @@ const reset = (): void => {
   border-radius calc(var(--fillet) - 4px)
   background-color #8881
 
-#feedback:hover
-#reset:hover
-  background-color #8296ff
+  &:hover
+    background-color #8296ff
 
 .show
   opacity 1 !important

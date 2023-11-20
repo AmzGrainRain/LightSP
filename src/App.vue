@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, reactive, onBeforeMount, ref } from 'vue'
+import { watch, reactive, onBeforeMount, ref, onActivated, onBeforeUnmount, onMounted } from 'vue'
 import { useIndexStore } from './store'
 import { useDarkModeStore } from './store/darkMode'
 import { jsonp } from 'vue-jsonp'
@@ -70,10 +70,6 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
     return
   }
 
-  // 如果关键词列表为空或搜索框内容为空就没必要继续往下执行了
-  if (data.result.length === 0 || data.keyword === '') return
-
-  // 关键词选择
   switch (e.key) {
     case 'ArrowUp': {
       // 初始化 focusIndex
@@ -104,20 +100,27 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
       break
     }
     case 'Enter': {
+      let keyword = ''
+
       // 使用搜索框内容进行检索
-      if (data.focusIndex < 0) {
-        // 编码关键词、跳转
-        window.location.href = store.global.searchEngines.replace('{}', encodeURIComponent(data.keyword))
-        e.preventDefault()
-        break
-      }
+      if (data.focusIndex < 0) keyword = encodeURIComponent(data.keyword)
 
       // 使用关键词列表的聚焦项进行检索
       if (data.result?.[data.focusIndex]) {
-        // 编码关键词、跳转
-        window.location.href = store.global.searchEngines.replace('{}', encodeURIComponent(data.result[data.focusIndex].text))
-        e.preventDefault()
+        keyword = encodeURIComponent(data.result[data.focusIndex].text)
       }
+
+      data.keyword = ''
+      data.result = []
+      window.location.href = store.global.searchEngines.replace('{}', keyword)
+      e.preventDefault()
+      break
+    }
+    case 'Escape': {
+      console.log(123)
+      showSettings.value = false
+      e.preventDefault()
+      break
     }
   }
 })
@@ -138,28 +141,22 @@ watch(
 
     // 百度关键词 API
     jsonp('https://www.baidu.com/sugrec', {
-      callbackName: 'JSONP',
+      callbackQuery: 'cb',
+      callbackName: 'jsonp_callback',
       ie: 'utf-8',
       prod: 'pc',
       from: 'pc_web',
       wd: data.keyword,
-      json: 1,
-      bs: 'jsonp'
+      json: 1
     }).then((res: any) => {
-      // 若结果为空
-      if (!res?.g?.length) {
-        data.result = []
-        return
-      }
-
       data.result = []
-      if (res.g.length) {
-        for (let i = 0, len = res.g.length; i < len; i++) {
-          data.result.push({
-            text: res.g[i].q,
-            url: `https://www.baidu.com/s?ie=utf-8&wd=${res.g[i].q}`
-          })
-        }
+
+      if (!res?.g?.length) return
+      for (let i = 0, len = res.g.length; i < len; i++) {
+        data.result.push({
+          text: res.g[i].q,
+          url: `https://www.baidu.com/s?ie=utf-8&wd=${res.g[i].q}`
+        })
       }
 
       // 聚焦索引自适应
@@ -172,24 +169,14 @@ watch(
 onBeforeMount(() => {
   // 首次进入首页的帮助信息
   if (store.global.first === true) {
-    alert(`我发现这是你第一次打开此扩展，所以就弄出了这个弹窗（下次就不会了）。
-欢迎使用！！！（开发者很大声很真诚的说）
-
-下面是一些快捷键介绍：
-ctrl + s = 打开设置
-ctrl + f = 翻译
-ctrl + b = 使用必应搜索当前输入框的内容
-ctrl + g = 使用谷歌搜索当前输入框的内容
-ctrl + d = 使用百度开发者搜索当前输入框的内容
-
-当然你也可以点击时间来打开设置面板。
-
-最后，祝您搜索愉快~~~`)
+    alert(`欢迎使用！点击时间来打开设置面板。最后，祝您搜索愉快~~~`)
     store.global.setFirstStatus(false)
   }
 
   // 深色模式跟随系统
-  store.darkMode.setDarkModeStatus(store.darkMode.followSystem && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  store.darkMode.setDarkModeStatus(
+    store.darkMode.followSystem && window.matchMedia('(prefers-color-scheme: dark)').matches
+  )
 
   // 控制台输出开源信息
   console.log('轻起始页 - LightSP')
