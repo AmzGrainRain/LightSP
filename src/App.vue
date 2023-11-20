@@ -70,6 +70,14 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
     return
   }
 
+  if (e.key === 'Escape') {
+    showSettings.value = false
+    e.preventDefault()
+  }
+
+  // 如果关键词列表为空或搜索框内容为空就没必要继续往下执行了
+  if (data.result.length === 0 && data.keyword === '') return
+
   switch (e.key) {
     case 'ArrowUp': {
       // 初始化 focusIndex
@@ -113,12 +121,6 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
       data.keyword = ''
       data.result = []
       window.location.href = store.global.searchEngines.replace('{}', keyword)
-      e.preventDefault()
-      break
-    }
-    case 'Escape': {
-      console.log(123)
-      showSettings.value = false
       e.preventDefault()
       break
     }
@@ -174,9 +176,7 @@ onBeforeMount(() => {
   }
 
   // 深色模式跟随系统
-  store.darkMode.setDarkModeStatus(
-    store.darkMode.followSystem && window.matchMedia('(prefers-color-scheme: dark)').matches
-  )
+  store.darkMode.setDarkModeStatus(store.darkMode.followSystem && window.matchMedia('(prefers-color-scheme: dark)').matches)
 
   // 控制台输出开源信息
   console.log('轻起始页 - LightSP')
