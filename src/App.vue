@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { watch, reactive, onBeforeMount, ref, onActivated, onBeforeUnmount, onMounted } from 'vue'
+import { watch, reactive, onBeforeMount, ref } from 'vue'
 import { useIndexStore } from './store'
 import { useDarkModeStore } from './store/darkMode'
-import { jsonp } from 'vue-jsonp'
 import WeatherComponent from './components/weather.vue'
 import BackgroundComponent from './components/background.vue'
 import ClockComponent from './components/clock.vue'
@@ -142,17 +141,10 @@ watch(
     contentHeight.value = false
 
     // 百度关键词 API
-    jsonp('https://www.baidu.com/sugrec', {
-      callbackQuery: 'cb',
-      callbackName: 'jsonp_callback',
-      ie: 'utf-8',
-      prod: 'pc',
-      from: 'pc_web',
-      wd: data.keyword,
-      json: 1
-    }).then((res: any) => {
+    fetch(`https://www.baidu.com/sugrec?ie=utf-8&prod=pc&from=pc_web&json=1&wd=${data.keyword}`)
+    .then(ori => ori.json())
+    .then(res => {
       data.result = []
-
       if (!res?.g?.length) return
       for (let i = 0, len = res.g.length; i < len; i++) {
         data.result.push({
@@ -160,7 +152,6 @@ watch(
           url: `https://www.baidu.com/s?ie=utf-8&wd=${res.g[i].q}`
         })
       }
-
       // 聚焦索引自适应
       const len: number = data.result.length - 1
       if (data.focusIndex > len) data.focusIndex = len

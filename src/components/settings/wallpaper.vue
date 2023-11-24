@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useIndexStore } from '../../store'
 import { useWallpaperStore } from '../../store/wallpaper'
 import { useDarkModeStore } from '../../store/darkMode'
@@ -12,6 +12,11 @@ const store = {
   darkMode: useDarkModeStore()
 }
 const fileChecker = ref(null) as any
+
+const currentDefaultWallpaper = ref(store.wallpaper.default)
+watch(currentDefaultWallpaper, (newValue) => {
+  store.wallpaper.setWallpaper(newValue)
+})
 
 const setCustomizeWallpaper = () => {
   const reader = new FileReader()
@@ -38,10 +43,10 @@ const setCustomizeWallpaper = () => {
     </li>
     <li>
       <span>使用默认壁纸</span>
-      <select v-model="store.wallpaper.default" class="p-lr-sm">
-        <option :value="0">v3.1.3</option>
-        <option :value="1">v3.1.2</option>
-        <option :value="2">v3.1.1</option>
+      <select v-model="currentDefaultWallpaper" class="p-lr-sm">
+        <option :value="0">黑洞</option>
+        <option :value="1">扁平</option>
+        <option :value="2">自然</option>
       </select>
     </li>
     <li v-if="false">

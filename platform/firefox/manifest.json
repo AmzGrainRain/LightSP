@@ -27,9 +27,9 @@
   "description": "__MSG_extDescription__",
   "default_locale": "zh_CN",
   "permissions": [
+    "https://devapi.qweather.com/v7/weather/now",
     "https://www.baidu.com/sugrec",
-    "https://amzlab.site:81/api/wallpaper",
-    "https://cn.bing.com/HPImageArchive.aspx"
+    "https://amzlab.site:81/api/wallpaper"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"
