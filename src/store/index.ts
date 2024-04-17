@@ -1,52 +1,78 @@
 import { defineStore } from 'pinia'
 
+export enum SearchEngine {
+  Bing,
+  Baidu,
+  Google,
+  Sogo,
+  _360,
+  Custom
+}
+
 export const useIndexStore = defineStore('global', {
   state: () => ({
-    version: '3.1.3', // 版本号
-    first: true, // 首次使用
-    blur: true, // 全局模糊
-    fillet: 16, // 全局圆角
-    contentHeight: 18, // 内容高度
-    adaptiveContentHeight: true, // 自适应内容高度
-    color: '#000', // 字体颜色
-    bgColor: '#fffc', // 背景色
-    frColor: '#8881', // 前景色
-    listFrColor: '', // 列表前景色
-    searchEngines: 'https://www.baidu.com/s?ie=utf-8&wd={}' // 搜索引擎
+    version: '3.1.4',
+    first: true,
+    blur: {
+      enable: true,
+      factor: 22
+    },
+    showKeywordList: false,
+    borderRadius: 12,
+    adaptiveHeight: true,
+    offsetHeight: 0,
+    font: 'FusionPixel_12px',
+    colorStyle: {
+      text: '#000000',
+      background: { r: 255, g: 255, b: 255, a: 60 },
+      foreground: { r: 128, g: 128, b: 128, a: 5 },
+      theme: { r: 130, g: 150, b: 255, a: 100 }
+    },
+    searchEngine: {
+      index: SearchEngine.Bing,
+      list: [
+        { name: '必应搜索', url: 'https://www.bing.com/search?q={}' },
+        { name: '百度搜素', url: 'https://www.baidu.com/s?ie=utf-8&wd={}' },
+        { name: '谷歌搜索', url: 'https://www.google.com/search?q={}' },
+        { name: '360搜索', url: 'https://www.so.com/s?ie=utf-8&q={}' },
+        { name: '搜狗搜索', url: 'https://www.sogou.com/web?query={}' },
+        { name: '自定义', url: '' }
+      ]
+    },
+    openIn: 'self' as 'self' | 'newtab'
   }),
   getters: {},
   actions: {
-    // 设置首次打开的提示
-    setFirstStatus(status: boolean) {
-      this.first = status
+    setDefaultEngine(se: SearchEngine) {
+      this.searchEngine.index = se
     },
-    // 设置毛玻璃效果
-    setGlobalBlur(status: boolean | null) {
-      if (status === null) {
-        this.blur = !this.blur
+
+    setOpenIn(nv?: typeof this.openIn) {
+      if (!nv) {
+        this.openIn = this.openIn === 'newtab' ? 'self' : 'newtab'
         return
       }
-      this.blur = status
+
+      this.openIn = nv
     },
-    // 设置圆角数值
-    setGlobalFillet(status: number) {
-      this.fillet = status
+
+    getCurrentSearchUrl(keyword: string): string {
+      return this.searchEngine.list[this.searchEngine.index].url.replace('{}', keyword)
     },
-    // 设置内容高度
-    setContentHeight(status: number) {
-      this.contentHeight = status
+
+    getBackgroundColor(): string {
+      const bg = this.colorStyle.background
+      return `rgba(${bg.r} ${bg.g} ${bg.g} / ${bg.a}%)`
     },
-    // 设置自适应内容高度
-    setAdaptiveContentHeight(status: boolean | null) {
-      if (status === null) {
-        this.adaptiveContentHeight = !this.adaptiveContentHeight
-        return
-      }
-      this.adaptiveContentHeight = status
+
+    getForegroundColor(): string {
+      const bg = this.colorStyle.foreground
+      return `rgba(${bg.r} ${bg.g} ${bg.g} / ${bg.a}%)`
     },
-    // 设置默认搜索引擎
-    setSearchEngines(url: string) {
-      this.searchEngines = url
+
+    getThemeColor(): string {
+      const bg = this.colorStyle.theme
+      return `rgba(${bg.r} ${bg.g} ${bg.g} / ${bg.a}%)`
     }
   }
 })

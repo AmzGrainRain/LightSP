@@ -24,4 +24,4 @@ const piniaPlugin = () => {
 }
 store.use(piniaPlugin())
 
-createApp(App).use(store).mount('main')
+createApp(App).use(store).mount('body')

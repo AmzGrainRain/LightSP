@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { useIndexStore } from '../../store'
 import { useDarkModeStore } from '../../store/darkMode'
 import { clear as lfClear } from 'localforage'
@@ -44,17 +44,14 @@ const reset = (): void => {
 
 <template>
   <div
-    id='settings'
-    class='overflow-hide'
-    :class='{
-      blur: store.global.blur
-    }'
+    id="settings"
+    class="overflow-hide blur"
   >
-    <div class='bar p-lr-ex'>
+    <div class="bar p-lr-ex">
       <h3>设置</h3>
-      <span class='p-lr p-tb-sm pointer' @click="emit('close')">关闭</span>
+      <span class="p-lr p-tb-sm pointer" @click="emit('close')">关闭</span>
     </div>
-    <div class='panel p-lr-lg p-t-lg'>
+    <div class="panel p-lr-lg p-t-lg">
       <h4>全局</h4>
       <Global-Setting />
 
@@ -71,38 +68,37 @@ const reset = (): void => {
       <Weather-Setting />
 
       <h4>其他</h4>
-      <div class='other'>
+      <div class="other">
         <input
-          id='hotkey-help'
-          class='m-b p-lr-lg border-none transition pointer'
-          type='button'
-          value='快捷键'
-          @click='hotkeyHelp()'
+          id="hotkey-help"
+          class="m-b p-lr-lg border-none transition pointer"
+          type="button"
+          value="快捷键"
+          @click="hotkeyHelp()"
         />
         <input
-          id='feedback'
-          class='m-b p-lr-lg border-none transition pointer'
-          type='button'
-          value='反馈'
-          @click='feedback()'
+          id="feedback"
+          class="m-b p-lr-lg border-none transition pointer"
+          type="button"
+          value="反馈"
+          @click="feedback()"
         />
         <input
-          id='reset'
-          class='m-b p-lr-lg border-none border-radius transition pointer'
-          type='button'
-          value='恢复默认设置'
-          @click='reset()'
+          id="reset"
+          class="m-b p-lr-lg border-none border-radius transition pointer"
+          type="button"
+          value="恢复默认设置"
+          @click="reset()"
         />
-        <span
-          id='version'
-          class='m-b p-lr-lg border-none border-radius transition pointer'
-        >版本号: {{ store.global.version }}</span>
+        <span id="version" class="m-b p-lr-lg border-none border-radius transition pointer"
+          >版本号: {{ store.global.version }}</span
+        >
       </div>
     </div>
   </div>
 </template>
 
-<style lang='stylus' scoped>
+<style lang="stylus" scoped>
 ::selection
   background transparent
 
@@ -116,8 +112,9 @@ const reset = (): void => {
   width 430px
   height 80vh
   color var(--color)
+  border: 1px solid #888a;
   background-color var(--bg-color)
-  border-radius calc(var(--fillet) - 4px)
+  border-radius calc(var(--border-radius) - 4px)
   //opacity 0
   //transition transform .7s cubic-bezier(0, 1, .3, 1)
 
@@ -146,8 +143,9 @@ const reset = (): void => {
 #reset
   height 2rem
   color inherit
-  border-radius calc(var(--fillet) - 4px)
-  background-color #8881
+  font-family inherit
+  border-radius calc(var(--border-radius) - 4px)
+  background-color var(----bg-color)
 
   &:hover
     background-color #8296ff

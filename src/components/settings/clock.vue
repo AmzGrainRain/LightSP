@@ -1,8 +1,8 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { useIndexStore } from '../../store'
 import { useClockStore } from '../../store/clock'
 import { useDarkModeStore } from '../../store/darkMode'
-import vSwitch from '../switch.vue'
+import Switcher from '../Switcher.vue'
 
 const store = {
   global: useIndexStore(),
@@ -15,18 +15,18 @@ const store = {
   <ul>
     <li>
       <span>显示日期</span>
-      <vSwitch @click='store.clock.setDateVisible(null)' :active='store.clock.dateVisible' />
+      <Switcher @click="store.clock.setDateVisible(null)" :active="store.clock.dateVisible" />
     </li>
   </ul>
 </template>
 
-<style lang='stylus' scoped>
+<style lang="stylus" scoped>
 li
   margin 14px 0
   padding 8px 10px
   display flex
   justify-content space-between
   align-items center
-  border-radius calc(var(--fillet) - 4px)
-  background-color #8881
+  border-radius calc(var(--border-radius) - 4px)
+  background-color var(--fr-color)
 </style>

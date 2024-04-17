@@ -38,7 +38,7 @@ setInterval(() => {
 
 <template>
   <div class='d-flex text-center pointer'>
-    <p v-show='store.dateVisible' class='date text-size-m'>{{ data.date }}</p>
+    <p v-if='store.dateVisible' class='date text-size-m'>{{ data.date }}</p>
     <p class='time p-t-sm'>{{ data.time }}</p>
   </div>
 </template>
