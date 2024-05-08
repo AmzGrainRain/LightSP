@@ -1,47 +1,57 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue'
-import { useWallpaperStore, getWallpaperLoader } from '../store/wallpaper'
-import { useDarkModeStore } from '../store/darkMode'
+import { onMounted, ref } from 'vue';
+import { useWallpaperStore, GetWallpaperManager } from '../store/wallpaper';
+import { useDarkModeStore } from '../store/darkMode';
 
 interface Props {
-  Blur: boolean
+    Blur: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
-  Blur: false
-})
+    Blur: false
+});
 
 const store = {
-  wallpaper: useWallpaperStore(),
-  darkMode: useDarkModeStore()
-}
+    wallpaper: useWallpaperStore(),
+    darkMode: useDarkModeStore()
+};
 
-const backgroundEl = ref<HTMLImageElement | null>(null)
-const backgroundLoaded = ref(false)
+const backgroundEl = ref<HTMLImageElement | null>(null);
+const backgroundLoaded = ref(false);
+const wallpaperManager = GetWallpaperManager(store.wallpaper);
 
-onBeforeMount(async () => {
-  const wallpaperUrl = await getWallpaperLoader(store.wallpaper)?.getWallpaperUrl()
-  if (!wallpaperUrl) {
-    alert('加载背景失败')
-    return
-  }
+onMounted(async () => {
+    if (backgroundEl.value === null) {
+        alert('无法获取背景元素');
+        return;
+    }
 
-  backgroundEl.value?.setAttribute('src', wallpaperUrl)
-})
+    if (!wallpaperManager) {
+        alert('加载背景失败');
+        return;
+    }
+
+    const url = await wallpaperManager.getWallpaperURL();
+    if (!url) {
+        alert('获取壁纸 url 失败！');
+        return;
+    }
+
+    backgroundEl.value.setAttribute('src', url);
+});
 </script>
 
 <template>
-  <img
-    ref="backgroundEl"
-    class="penetrate object-fit-cover"
-    :class="{
-      fadeIn: backgroundLoaded,
-      focused: store.wallpaper.focusBlur && props.Blur,
-      'dark-mode': store.darkMode.darkWallpaper
-    }"
-
-    @load="backgroundLoaded = true"
-    alt="bg"
-  />
+    <img
+        ref="backgroundEl"
+        class="penetrate object-fit-cover"
+        :class="{
+            fadeIn: backgroundLoaded,
+            focused: store.wallpaper.focusBlur && props.Blur,
+            'dark-mode': store.darkMode.darkWallpaper
+        }"
+        @load="backgroundLoaded = true"
+        alt="bg"
+    />
 </template>
 
 <style lang="stylus" scoped>

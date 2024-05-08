@@ -1,0 +1,13 @@
+[Unit]
+Description=LightSP API Server
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=这里输入可执行文件所在的目录
+ExecStart=这里输入可执行文件的具体位置
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
