@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
+    "win-build": "powershell ./build.ps1",
+    "linux-build": "bash ./build.sh",
     "preview": "vite preview"
   },
   "dependencies": {

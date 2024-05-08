@@ -7,7 +7,7 @@ export const useWallpaperStore = defineStore('wallpaper', {
         default: {
             enable: true,
             index: 0,
-            wallpaper: ['3.1.4.jpg', '3.1.3.png', '3.1.2.jpg', '3.1.1.jpg']
+            wallpaper: ['3.1.5.jpg', '3.1.4.jpg', '3.1.3.png', '3.1.2.jpg', '3.1.1.jpg']
         },
         // 必应壁纸
         bing: {
