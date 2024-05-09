@@ -17,6 +17,10 @@ const store = {
       <span>显示日期</span>
       <Switcher @click="store.clock.setDateVisible(null)" :active="store.clock.dateVisible" />
     </li>
+    <li>
+      <span>时钟显秒</span>
+      <Switcher @click="store.clock.setSecondsVisible(null)" :active="store.clock.dateVisible" />
+    </li>
   </ul>
 </template>
 

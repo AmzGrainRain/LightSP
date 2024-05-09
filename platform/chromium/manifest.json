@@ -29,7 +29,7 @@
   "host_permissions": [
     "https://devapi.qweather.com/v7/weather/now",
     "https://www.baidu.com/sugrec",
-    "https://amzlab.site:81/api/wallpaper"
+    "https://khlee.site:3333/api/wallpaper"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"

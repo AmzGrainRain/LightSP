@@ -93,7 +93,6 @@ export class BingWallpaperManager implements WallpaperManager {
 
             const data = await response.json();
             if (data === null) return undefined;
-            console.log(data)
             return 'https://cn.bing.com/' + data.images[0].url;
         } catch (error) {
             console.error('Failed to fetch Bing wallpaper:', error);

@@ -90,7 +90,7 @@ const setCustomizeWallpaper = () => {
         <li>
             <span>自定义壁纸</span>
             <input type="button" value="+" @click="fileChecker?.click()" />
-            <input ref="fileChecker" type="file" @change="setCustomizeWallpaper()" v-show="false" />
+            <input ref="fileChecker" type="file" accept="image/*" @change="setCustomizeWallpaper()" v-show="false" />
         </li>
     </ul>
 </template>

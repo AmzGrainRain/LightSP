@@ -24,7 +24,9 @@ const updateTime = () => {
   const m = t.getMinutes() < 10 ? `0${t.getMinutes()}` : t.getMinutes()
   const s = t.getSeconds() < 10 ? `0${t.getSeconds()}` : t.getSeconds()
   data.date = `${Y}年${M}月${D}日 ${d}`
-  data.time = `${h}:${m}:${s}`
+  let tmp = `${h}:${m}`
+  if (store.secondsVisible) tmp += `:${s}`
+  data.time = tmp
 }
 
 // Show time in advance
