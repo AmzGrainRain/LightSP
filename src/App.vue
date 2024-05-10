@@ -220,20 +220,14 @@ onBeforeMount(() => {
 
         <div
             class="search-box transition"
-            :class="{
-                actived: !keywordIsEmpty() && !keywordListIsEmpty()
-            }"
+            :class="{ actived: !keywordIsEmpty() && !keywordListIsEmpty() }"
         >
             <Clock @click="showSettings = true" title="点击打开设置" />
             <div style="height: 1rem"></div>
             <SearchBox
                 Placeholder="输入搜索内容"
                 Title="按下回车搜索"
-                @updateEvent="
-                    (text: string): void => {
-                        keyword = text;
-                    }
-                "
+                @updateEvent="(text: string): void => { keyword = text; }"
             />
             <div style="height: 0.8rem"></div>
             <KeywordList
@@ -280,7 +274,7 @@ onBeforeMount(() => {
 
 <style lang="stylus">
 @font-face {
-    font-family: FusionPixel_12px;
+    font-family: FusionPixel;
     src: url('./assets/fusion-pixel.ttc');
 }
 

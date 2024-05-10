@@ -26,6 +26,7 @@ watch(text, (newVal) => {
 
 <style lang="stylus" scoped>
 input
+  --alpha 20
   font-family inherit
   height 2.5rem
   color var(--color)

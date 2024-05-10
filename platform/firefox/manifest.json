@@ -1,7 +1,7 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "__MSG_extName__",
-  "version": "3.1.5",
+  "version": "3.1.6",
   "browser_action": {
     "default_title": "__MSG_extDefaultTitle__",
     "default_icon": {
@@ -26,7 +26,7 @@
   "author": "AmzGrainRain",
   "description": "__MSG_extDescription__",
   "default_locale": "zh_CN",
-  "permissions": [
+  "host_permissions": [
     "https://devapi.qweather.com/v7/weather/now",
     "https://www.baidu.com/sugrec",
     "https://khlee.site:3333/api/wallpaper"

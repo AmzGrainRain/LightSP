@@ -21,7 +21,7 @@ export const useIndexStore = defineStore('global', {
         borderRadius: 12,
         adaptiveHeight: true,
         offsetHeight: 0,
-        font: 'FusionPixel_12px',
+        font: 'FusionPixel',
         colorStyle: {
             text: '#000000',
             background: { r: 255, g: 255, b: 255, a: 60 },

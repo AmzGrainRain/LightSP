@@ -14,9 +14,9 @@ defineProps<{
         }"
     >
         <ul class="m-tb-0 m-lr-auto">
-            <li class="m-b transition" v-for="(item, index) in ListData" :key="index">
+            <li class="m-b w-100 transition blur" v-for="(item, index) in ListData" :key="index">
                 <a
-                    class="d-inline-block p-lr-lg w-100 transition text-overflow-ellipsis blur"
+                    class="d-block p-lr-lg w-100 h-100 transition text-overflow-ellipsis"
                     :class="{
                         selected: Selected === index
                     }"
@@ -33,20 +33,21 @@ div.actived
     height 500px
 
 ul li
+    height 2.5rem
+    border 1px solid #8888
+    border-radius var(--border-radius)
+    background-color var(--bg-color)
+    overflow hidden
+
     &:last-child
         margin 0
 
     a
-        height 2.5rem
         line-height 2.5rem
         color var(--color)
-        border-radius var(--border-radius)
-        background-color var(--bg-color)
 
         &:hover
-            background-color #fffa
-
         &.selected
             text-indent .5rem
-            background-color #fffa
+            letter-spacing 2px
 </style>
