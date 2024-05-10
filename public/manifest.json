@@ -31,9 +31,9 @@
     "https://www.baidu.com/sugrec",
     "https://khlee.site:3333/api/wallpaper"
   ],
-  "permissions": [
-    "tabs"
-  ],
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
   "background": {
     "service_worker": "background.js"
   }
