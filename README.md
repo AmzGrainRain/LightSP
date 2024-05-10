@@ -3,6 +3,7 @@
 ## 扩展介绍
 
 一个简洁轻快的起始页
+
 启用后，此扩展会将空白页覆盖为起始页导航。
 
 ## 分发渠道
@@ -26,13 +27,13 @@ npm install && npm run dev
 Windows:
 
 ```powershell
-.\build.ps1
+npm run win-build
 ```
 
 Linux:
 
 ```bash
-./build.sh
+npm run linux-build
 ```
 
 ## 快捷键
@@ -45,7 +46,7 @@ Linux:
 - Ctrl + G 谷歌搜索
 - Ctrl + D 百度开发者搜索
 - Esc 关闭设置面板
-- 上下箭头切换后候选词列表
+- 上下箭头切换候选词列表
 
 ## 个性化
 

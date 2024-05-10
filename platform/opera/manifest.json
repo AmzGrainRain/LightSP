@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "version": "3.1.6",
-  "browser_action": {
+  "action": {
     "default_title": "__MSG_extDefaultTitle__",
     "default_icon": {
       "16": "/assets/ico_16x16.png",
@@ -31,9 +31,9 @@
     "https://www.baidu.com/sugrec",
     "https://khlee.site:3333/api/wallpaper"
   ],
-  "chrome_url_overrides": {
-    "newtab": "index.html"
-  },
+  "permissions": [
+    "tabs"
+  ],
   "background": {
     "service_worker": "background.js"
   }
