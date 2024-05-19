@@ -2,7 +2,7 @@ const redirectURLS = [
     "opera://startpage/",
     "browser://startpage/",
     "chrome://startpage/",
-    "about://blank",
+    "about:blank",
     ""
 ];
 

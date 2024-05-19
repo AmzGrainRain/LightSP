@@ -69,8 +69,8 @@ int main(void)
 
     hssl_ctx_opt_t param;
     memset(&param, 0, sizeof(param));
-    param.crt_file = certFile.c_str();
-    param.key_file = keyFile.c_str();
+    param.crt_file = certFile.string().c_str();
+    param.key_file = keyFile.string().c_str();
     param.endpoint = HSSL_SERVER;
     if (server.newSslCtx(&param) != 0)
     {
