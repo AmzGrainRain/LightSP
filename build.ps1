@@ -4,7 +4,7 @@ param()
 function Build_And_Package {
     param(
         [Parameter(Mandatory=$true)]
-        [ValidateSet('webpage', 'chromium', 'firefox', 'opera')]
+        [ValidateSet('webpage', 'chromium', 'firefox')]
         [string]$buildType
     )
 
@@ -30,8 +30,7 @@ Write-Host("THE FOLLOWING BUILD TYPES ARE CURRENTLY AVAILABLE:")
 Write-Host("1.Normal")
 Write-Host("2.Chromium Extension")
 Write-Host("3.Firefox Extension")
-Write-Host("4.Opera Extension")
-Write-Host("5.Package all available build types")
+Write-Host("4.Package all available build types")
 Write-Host("")
 
 [string]$buildType = ""
@@ -41,8 +40,7 @@ while (1) {
         1 { 'webpage' }
         2 { 'chromium' }
         3 { 'firefox' }
-        4 { 'opera' }
-        5 { 'all' }
+        4 { 'all' }
         default { 'error' }
     }
 
@@ -65,9 +63,6 @@ if ($buildType -eq 'all') {
     Copy-Item -Path "$packaged" -Destination "$outputPath/"
 
     $packaged = Build_And_Package -buildType 'firefox'
-    Copy-Item -Path "$packaged" -Destination "$outputPath/"
-
-    $packaged = Build_And_Package -buildType 'opera'
     Copy-Item -Path "$packaged" -Destination "$outputPath/"
 
     Remove-Item -Path "${PSScriptRoot}/dist" -Recurse -Force -ErrorAction SilentlyContinue
