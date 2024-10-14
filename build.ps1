@@ -1,6 +1,8 @@
 [CmdletBinding()]
 param()
 
+$osName = [System.Environment]::OSVersion.Platform
+
 function Build_And_Package {
     param(
         [Parameter(Mandatory=$true)]
@@ -19,7 +21,7 @@ function Build_And_Package {
     Remove-Item -Path $publicDirectory -Recurse -Force -ErrorAction SilentlyContinue
     Copy-Item -Path $platformDirectory -Destination $publicDirectory -Recurse -Force
 
-    if ($IsWindows) {
+    if ($osName -eq [System.PlatformID]::Win32NT) {
         $null = Start-Process -FilePath "npm.cmd" -ArgumentList "run build-src" -NoNewWindow -Wait -PassThru -WorkingDirectory $PSScriptRoot
     } else {
         $null = Start-Process -FilePath "npm" -ArgumentList "run build-src" -NoNewWindow -Wait -PassThru -WorkingDirectory $PSScriptRoot
