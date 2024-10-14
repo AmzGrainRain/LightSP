@@ -26,16 +26,8 @@ npm install && npm run dev
 
 ## 编译
 
-Windows:
-
 ```powershell
-npm run win-build
-```
-
-Linux:
-
-```bash
-npm run linux-build
+npm run build
 ```
 
 ## 快捷键
