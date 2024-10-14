@@ -11,12 +11,19 @@ function Build_And_Package {
     $buildDirectory = "${PSScriptRoot}\dist"
     $publicDirectory = "${PSScriptRoot}\public"
     $platformDirectory = "${PSScriptRoot}\platform\${buildType}"
+    if (-Not (Test-Path -Path $platformDirectory)) {
+        New-Item -ItemType Directory -Path $platformDirectory
+    }
 
     Remove-Item -Path $buildDirectory -Recurse -Force -ErrorAction SilentlyContinue
     Remove-Item -Path $publicDirectory -Recurse -Force -ErrorAction SilentlyContinue
     Copy-Item -Path $platformDirectory -Destination $publicDirectory -Recurse -Force
 
-    $null = Start-Process -FilePath "npm" -ArgumentList "run build" -NoNewWindow -Wait -PassThru -WorkingDirectory $PSScriptRoot
+    if ($IsWindows) {
+        $null = Start-Process -FilePath "npm.cmd" -ArgumentList "run build-src" -NoNewWindow -Wait -PassThru -WorkingDirectory $PSScriptRoot
+    } else {
+        $null = Start-Process -FilePath "npm" -ArgumentList "run build-src" -NoNewWindow -Wait -PassThru -WorkingDirectory $PSScriptRoot
+    }
 
     Compress-Archive -Path "$buildDirectory\*" -DestinationPath "$buildDirectory\$buildType.zip"
     Write-Host "build path: $buildDirectory"
