@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
-    "npm-check-updates": "^17.1.11",
+    "npm-check-updates": "^17.1.13",
     "stylus": "^0.64.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.3",
