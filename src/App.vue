@@ -184,6 +184,7 @@ const CheckVersion = () => {
             localStorage.removeItem('LightSP-weather');
             localStorage.removeItem('LightSP-darkMode');
             localStorage.removeItem('LightSP-wallpaper');
+            localStorage.removeItem('LightSP-particle');
             localStorage.removeItem('LightSP-global');
             location.reload();
         });
