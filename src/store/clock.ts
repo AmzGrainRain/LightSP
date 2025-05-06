@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 
 export const useClockStore = defineStore('clock', {
   state: () => ({
-    dateVisible: true, // 显示日期
-    secondsVisible: true // 显示秒数
+    dateVisible: false, // 显示日期
+    secondsVisible: false // 显示秒数
   }),
   getters: {},
   actions: {

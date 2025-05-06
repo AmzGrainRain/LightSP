@@ -4,7 +4,8 @@ import { useIndexStore } from './store';
 import { useDarkModeStore } from './store/darkMode';
 import { clear } from 'localforage';
 import Weather from './components/Weather.vue';
-import Background from './components/Background.vue';
+import Wallpaper from './components/Wallpaper.vue';
+// import Particle from './components/settings/particle.vue';
 import Clock from './components/Clock.vue';
 import SearchBox from './components/SearchBox.vue';
 import KeywordList from './components/KeywordList.vue';
@@ -172,9 +173,11 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
     }
 });
 
-onBeforeMount(() => {
-    // 版本号检查
-    if (store.global.version !== '3.1.6') {
+/**
+ * 检查版本号
+ */
+const CheckVersion = () => {
+    if (store.global.version !== '3.1.8') {
         alert('非常抱歉：持久化数据的数据结构发生改变，已还原个性化设置。');
         clear().then(() => {
             localStorage.removeItem('LightSP');
@@ -185,16 +188,32 @@ onBeforeMount(() => {
             location.reload();
         });
     }
+}
 
-    // 首次进入首页的帮助信息
+/**
+ * 首次进入
+ */
+const OnFirstEnter = () => {
     if (store.global.first) {
         store.global.first = false;
         alert(`欢迎使用！点击时间可以打开设置面板`);
         showSettings.value = true;
     }
+}
 
-    // 深色模式跟随系统
-    if (store.darkMode.followSystem) store.darkMode.setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+/**
+ * 深色模式跟随系统
+ */
+const DarkModeFollowSystem = () => {
+    if (store.darkMode.followSystem) {
+        store.darkMode.setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+}
+
+onBeforeMount(() => {
+    CheckVersion();
+    OnFirstEnter();
+    DarkModeFollowSystem();
 
     console.log('轻起始页 - https://github.com/AmzGrainRain/LightSP');
 });
@@ -216,7 +235,9 @@ onBeforeMount(() => {
             '--fr-color': store.darkMode.enabled ? store.darkMode.getForegroundColor() : store.global.getForegroundColor()
         }"
     >
-        <Background :Blur="backgroundBlur" />
+        <!-- <Particle /> -->
+
+        <Wallpaper :Blur="backgroundBlur" />
 
         <div
             class="search-box transition"
@@ -283,7 +304,7 @@ onBeforeMount(() => {
 
 .fade-enter-from
 .fade-leave-to
-    transform translateX(420px)
+    transform translateX(442px)
 
 .fade-enter-active
 .fade-leave-active

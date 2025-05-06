@@ -8,6 +8,7 @@ export const useWallpaperStore = defineStore('wallpaper', {
             enable: true,
             index: 0,
             wallpaper: [
+                '3.1.8.jpg',
                 '3.1.6.png',
                 '3.1.5.jpg',
                 '3.1.4.jpg',
@@ -94,7 +95,7 @@ export class BingWallpaperManager implements WallpaperManager {
 
     async getWallpaperURL(): Promise<string | undefined> {
         try {
-            const response = await fetch('https://khlee.site:3333/api/wallpaper', {
+            const response = await fetch('https://khlee.fun:3333/api/wallpaper', {
                 method: 'GET'
             });
 

@@ -3,7 +3,8 @@ import { useIndexStore } from '../../store';
 import { useDarkModeStore } from '../../store/darkMode';
 import { clear as lfClear } from 'localforage';
 import GlobalSetting from './global.vue';
-import WallpaperSetting from './wallpaper.vue';
+import BackgroundSetting from './background.vue';
+// import ParticleSetting from './particle.vue';
 import ClockSetting from './clock.vue';
 import DarkModeSetting from './darkMode.vue';
 import WeatherSetting from './weather.vue';
@@ -57,8 +58,11 @@ const reset = (): void => {
                 <h4>时钟</h4>
                 <Clock-Setting />
 
-                <h4>壁纸</h4>
-                <Wallpaper-Setting />
+                <h4>背景</h4>
+                <Background-Setting />
+
+                <!-- <h4>粒子</h4>
+                <Particle-Setting /> -->
 
                 <h4>深色模式</h4>
                 <DarkMode-Setting />
@@ -90,7 +94,7 @@ const reset = (): void => {
                         @click="reset()"
                     />
                     <span id="version" class="m-b p-lr-lg border-none border-radius transition pointer"
-                        >版本号: {{ store.global.version }}</span
+                        >v{{ store.global.version }}</span
                     >
                 </div>
             </div>
@@ -106,8 +110,12 @@ const reset = (): void => {
     position fixed
     top 0
     left 0
-    width 100vw
-    height 100vh
+    right 0
+    bottom 0
+    margin auto
+    width calc(100vw - 2rem)
+    height calc(100vh - 2rem)
+
 
     .inner
         float right

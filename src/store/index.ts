@@ -11,7 +11,7 @@ export enum SearchEngine {
 
 export const useIndexStore = defineStore('global', {
     state: () => ({
-        version: '3.1.6',
+        version: '3.1.8',
         first: true,
         blur: {
             enable: true,
@@ -31,7 +31,7 @@ export const useIndexStore = defineStore('global', {
         searchEngine: {
             index: SearchEngine.Bing,
             list: [
-                { name: '必应搜索', url: 'https://www.bing.com/search?q={}' },
+                { name: '必应搜索', url: 'https://cn.bing.com/search?form=QBLH&q={}' },
                 { name: '秘塔AI搜索', url: 'https://metaso.cn/?q={}' },
                 { name: '网盘搜索', url: 'https://miaosou.fun/info?searchKey={}' },
                 { name: '学术搜索', url: 'https://www.oalib.com/search?kw={}' },
@@ -43,7 +43,7 @@ export const useIndexStore = defineStore('global', {
                 { name: '自定义', url: '' }
             ]
         },
-        openIn: 'self' as 'self' | 'newtab'
+        openIn: 'newtab' as 'self' | 'newtab'
     }),
     getters: {},
     actions: {

@@ -65,7 +65,7 @@ tmp = ''
       <input
         class="w-50 text-size-m text-center border-none border-radius-sm"
         type="text"
-        placeholder="输入您所在的城市"
+        placeholder="城市名 (无需完整地址)"
         title="请不要输入完整的位置"
         v-model="keyword"
       />

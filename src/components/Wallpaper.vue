@@ -19,7 +19,7 @@ const backgroundEl = ref<HTMLImageElement | null>(null);
 const backgroundLoaded = ref(false);
 const wallpaperManager = GetWallpaperManager(store.wallpaper);
 
-onMounted(async () => {
+const SetWallpaper = async () => {
     if (backgroundEl.value === null) {
         alert('无法获取背景元素');
         return;
@@ -37,6 +37,10 @@ onMounted(async () => {
     }
 
     backgroundEl.value.setAttribute('src', url);
+};
+
+onMounted(async () => {
+    await SetWallpaper();
 });
 </script>
 
@@ -65,8 +69,11 @@ img
   opacity 0
   z-index -1
 
+#bg-particles
+  position absolute
+
 .focused
-  transform scale(1.2)
+  transform scale(1.1)
   filter blur(4px)
 
 .dark-mode

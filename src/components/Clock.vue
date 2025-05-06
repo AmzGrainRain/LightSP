@@ -49,6 +49,10 @@ setInterval(() => {
 div
   flex-flow column wrap
   text-shadow 0 0 4px #0008
+  transition transform 0.3s cubic-bezier(.14,.94,.36,1.38)
+
+  &:hover
+    transform scale(1.1)
 
 .date
   letter-spacing .1rem
