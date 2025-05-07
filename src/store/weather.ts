@@ -27,6 +27,7 @@ export const useWeatherStore = defineStore('weather', {
     // 设置天气位置
     setWeatherLocation(id: any) {
       this.location_id = id;
+      this.cache_time = -1;
       location.reload();
     }
   }

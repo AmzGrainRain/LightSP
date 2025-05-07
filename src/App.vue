@@ -177,13 +177,14 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
  * 检查版本号
  */
 const CheckVersion = () => {
-    if (store.global.version !== '3.1.8') {
+    if (store.global.version !== '3.1.8-hotfix') {
         alert('非常抱歉：持久化数据的数据结构发生改变，已还原个性化设置。');
         clear().then(() => {
             localStorage.removeItem('LightSP');
             localStorage.removeItem('LightSP-weather');
             localStorage.removeItem('LightSP-darkMode');
             localStorage.removeItem('LightSP-wallpaper');
+            localStorage.removeItem('LightSP-particle');
             localStorage.removeItem('LightSP-global');
             location.reload();
         });

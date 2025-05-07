@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extName__",
-  "version": "3.1.8",
+  "version": "3.1.8.1",
   "action": {
     "default_title": "__MSG_extDefaultTitle__",
     "default_icon": {
@@ -33,5 +33,16 @@
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"
-  }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{40cd8411-c8bc-4818-9851-c77080b40205}",
+      "strict_min_version": "58.0"
+    }
+  },
+  "web_accessible_resources": [
+      {
+         "resources": ["assets/*"]
+      }
+  ]
 }
