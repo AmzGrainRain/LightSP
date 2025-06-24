@@ -8,7 +8,7 @@
 
 ## 分发渠道
 
-[Firefox](https://addons.mozilla.org/zh-CN/firefox/addon/lightsp-%E8%BD%BB%E8%B5%B7%E5%A7%8B%E9%A1%B5)
+[Firefox](https://addons.mozilla.org/zh-CN/firefox/addon/lightstartpage/)
 
 [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/mianbaepkeclkoclkoikhlgdfpdelnfi)
 
