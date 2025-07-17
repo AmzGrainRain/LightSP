@@ -8,6 +8,7 @@ export const useWallpaperStore = defineStore('wallpaper', {
             enable: true,
             index: 0,
             wallpaper: [
+                '3.1.9.jpg',
                 '3.1.8.jpg',
                 '3.1.6.png',
                 '3.1.5.jpg',

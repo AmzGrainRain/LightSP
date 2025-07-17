@@ -177,8 +177,8 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
  * 检查版本号
  */
 const CheckVersion = () => {
-    if (store.global.version !== '3.1.8-hotfix') {
-        alert('非常抱歉：持久化数据的数据结构发生改变，已还原个性化设置。');
+    const resetStore = () => {
+        alert('非常抱歉！！！个性化数据结构发生改变，已还原个性化设置。');
         clear().then(() => {
             localStorage.removeItem('LightSP');
             localStorage.removeItem('LightSP-weather');
@@ -188,8 +188,15 @@ const CheckVersion = () => {
             localStorage.removeItem('LightSP-global');
             location.reload();
         });
+    };
+
+    if (store.global.version === '3.1.8.1') return;
+    if (store.global.version === '3.1.8-hotfix') return;
+
+    if (store.global.version !== '3.1.8-hotfix') {
+        resetStore();
     }
-}
+};
 
 /**
  * 首次进入
@@ -200,7 +207,7 @@ const OnFirstEnter = () => {
         alert(`欢迎使用！点击时间可以打开设置面板`);
         showSettings.value = true;
     }
-}
+};
 
 /**
  * 深色模式跟随系统
@@ -209,7 +216,7 @@ const DarkModeFollowSystem = () => {
     if (store.darkMode.followSystem) {
         store.darkMode.setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
     }
-}
+};
 
 onBeforeMount(() => {
     CheckVersion();
@@ -240,16 +247,17 @@ onBeforeMount(() => {
 
         <Wallpaper :Blur="backgroundBlur" />
 
-        <div
-            class="search-box transition"
-            :class="{ actived: !keywordIsEmpty() && !keywordListIsEmpty() }"
-        >
+        <div class="search-box transition" :class="{ actived: !keywordIsEmpty() && !keywordListIsEmpty() }">
             <Clock @click="showSettings = true" title="点击打开设置" />
             <div style="height: 1rem"></div>
             <SearchBox
                 Placeholder="输入搜索内容"
                 Title="按下回车搜索"
-                @updateEvent="(text: string): void => { keyword = text; }"
+                @updateEvent="
+                    (text: string): void => {
+                        keyword = text;
+                    }
+                "
             />
             <div style="height: 0.8rem"></div>
             <KeywordList
