@@ -190,11 +190,17 @@ const CheckVersion = () => {
         });
     };
 
-    if (store.global.version === '3.1.8.1') return;
-    if (store.global.version === '3.1.8-hotfix') return;
-
-    if (store.global.version !== '3.1.8-hotfix') {
-        resetStore();
+    switch (store.global.version) {
+        case '3.1.9.1':
+            break;
+        case '3.1.9':
+            break;
+        case '3.1.8-hotfix':
+            break;
+        case '3.1.8.1':
+            break;
+        default:
+            resetStore();   
     }
 };
 
@@ -303,11 +309,6 @@ onBeforeMount(() => {
 </style>
 
 <style lang="stylus">
-@font-face {
-    font-family: FusionPixel;
-    src: url('./assets/fusion-pixel.ttc');
-}
-
 .blur
     backdrop-filter var(--blur-factor)
 
