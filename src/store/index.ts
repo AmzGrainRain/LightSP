@@ -11,7 +11,7 @@ export enum SearchEngine {
 
 export const useIndexStore = defineStore('global', {
     state: () => ({
-        version: '3.1.9',
+        version: '3.2.0',
         first: true,
         blur: {
             enable: true,

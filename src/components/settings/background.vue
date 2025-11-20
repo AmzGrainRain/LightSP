@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useIndexStore } from '../../store';
-import { useWallpaperStore, DefaultWallpaperManager, BingWallpaperManager, CustomWallpaperManager } from '../../store/wallpaper';
+import { useWallpaperStore, DefaultWallpaperManager, BingWallpaperManager, BingRandomWallpaperManager, LocalWallpaperManager, WallpaperTypes, UrlWallpaperManager } from '../../store/wallpaper';
 import { useParticleStore } from '../../store/particle';
 import { useDarkModeStore } from '../../store/darkMode';
-import { setItem as lfSet } from 'localforage';
 import Switcher from '../Switcher.vue';
 
 const store = {
@@ -14,60 +13,101 @@ const store = {
     darkMode: useDarkModeStore()
 };
 
-const wallpaperProvider = ref<'default' | 'bing' | 'custom'>(store.wallpaper.getCurrentWallpaper());
 
 // 默认壁纸列表选择
-const defaultWallpaperManager = new DefaultWallpaperManager(store.wallpaper);
+const defaultWM = new DefaultWallpaperManager(store.wallpaper);
 const defaultWallpaperListChoice = ref(store.wallpaper.default.index);
 watch(defaultWallpaperListChoice, (value) => {
-    defaultWallpaperManager.setWallpaper(Number(value));
-    defaultWallpaperManager.enable();
+    defaultWM.setWallpaper(value);
+    defaultWM.enable();
 });
 
-// 自定义壁纸
+// 必应壁纸质量选择
+const bingWM = new BingWallpaperManager(store.wallpaper);
+const bingWallpaperListChoice = ref(store.wallpaper.bing.index);
+watch(bingWallpaperListChoice, (value) => {
+    bingWM.setWallpaper(value);
+    bingWM.enable();
+});
+
+// 必应随机壁纸质量选择
+const bingRandomWM = new BingRandomWallpaperManager(store.wallpaper);
+const bingRandomWallpaperListChoice = ref(store.wallpaper.bingRandom.index);
+watch(bingRandomWallpaperListChoice, (value) => {
+    bingRandomWM.setWallpaper(value);
+    bingRandomWM.enable();
+});
+
+const bingWallpaperListIndex2String = (index: number): string => {
+    if (index === 0) return '无损';
+    if (index === 1) return '标清';
+    if (index === 2) return '低质量'
+    return '低质量';
+}
+
+// 设置本地壁纸
 const fileChecker = ref<HTMLInputElement | null>(null);
-const setCustomizeWallpaper = async () => {
+const setLocalWallpaper = async () => {
     if (!fileChecker.value?.files?.length) {
         alert('请选择一个文件！');
         return;
     }
 
-    const reader = new FileReader();
-    reader.readAsDataURL(fileChecker.value.files[0]);
-    reader.onloadend = () => {
-        lfSet('CustomizeWallpaper', reader.result, (err) => {
-            if (err !== null) console.log('[Error] setCustomizeWallpaper: localforage.setItem');
-            new CustomWallpaperManager(store.wallpaper).enable();
-        });
-    };
+    const file = fileChecker.value.files[0]!;
+
+    new LocalWallpaperManager(store.wallpaper).setWallpaper(file);
 };
 
 // 壁纸来源选择
-watch(wallpaperProvider, async (value) => {
-    switch (value) {
-        case 'default':
-            defaultWallpaperManager.enable();
-            break;
-        case 'bing':
-            new BingWallpaperManager(store.wallpaper).enable();
-            break;
-        case 'custom':
-            fileChecker.value?.click();
-            break;
+const wallpaperProvider = ref<WallpaperTypes>(store.wallpaper.getCurrentWallpaper());
+watch(wallpaperProvider, (value) => {
+    if (value === 'default') {
+        defaultWM.enable();
+        return;
+    }
+
+    if (value === 'bing') {
+        bingWM.enable();
+        return
+    }
+
+    if (value === 'bing-random') {
+        bingRandomWM.enable();
+        return
+    }
+
+    if (value === 'url') {
+        const wm = new UrlWallpaperManager(store.wallpaper);
+        const src = prompt('请输入一个指向图片的网址，作为背景：', '')
+        if (!src) {
+            alert('您没有输入任何内容');
+            return
+        }
+
+        wm.setWallpaper(src);
+        wm.enable();
+        return
+    }
+
+    if (value === 'local') {
+        fileChecker.value?.click();
+        return
     }
 });
 </script>
 
 <template>
-    <input ref="fileChecker" type="file" accept="image/*" @change="setCustomizeWallpaper()" v-show="false" />
+    <input ref="fileChecker" type="file" accept="image/*" @change="setLocalWallpaper()" v-show="false" />
 
     <ul>
         <li>
             <span>壁纸来源</span>
             <select v-model="wallpaperProvider">
                 <option value="default" :selected="store.wallpaper.default.enable">默认壁纸</option>
-                <option value="bing" :selected="store.wallpaper.bing.enable">必应每日一图</option>
-                <option value="custom" :selected="store.wallpaper.custom.enable">自定义壁纸</option>
+                <option value="bing" :selected="store.wallpaper.bing.enable">必应每日壁纸</option>
+                <option value="bing-random" :selected="store.wallpaper.bingRandom.enable">必应随机壁纸</option>
+                <option value="url" :selected="store.wallpaper.bing.enable">自定义网址</option>
+                <option value="local" :selected="store.wallpaper.local.enable">自定义壁纸</option>
             </select>
         </li>
         <li v-show="store.wallpaper.default.enable">
@@ -78,9 +118,25 @@ watch(wallpaperProvider, async (value) => {
                 </option>
             </select>
         </li>
+        <li v-show="store.wallpaper.bing.enable">
+            <span>必应壁纸质量</span>
+            <select v-model="bingWallpaperListChoice" class="p-lr">
+                <option v-for="(_, i) in store.wallpaper.bing.wallpaper" :key="i" :value="i">
+                    {{ bingWallpaperListIndex2String(i) }}
+                </option>
+            </select>
+        </li>
+        <li v-show="store.wallpaper.bingRandom.enable">
+            <span>必应随机壁纸质量</span>
+            <select v-model="bingRandomWallpaperListChoice" class="p-lr">
+                <option v-for="(_, i) in store.wallpaper.bingRandom.wallpaper" :key="i" :value="i">
+                    {{ bingWallpaperListIndex2String(i) }}
+                </option>
+            </select>
+        </li>
         <li>
             <span>背景聚焦模糊效果</span>
-            <Switcher @click="store.wallpaper.setWallpaperFocusBlur(null)" :active="store.wallpaper.focusBlur" />
+            <Switcher @click="store.wallpaper.setWallpaperFocusBlur()" :active="store.wallpaper.focusBlur" />
         </li>
     </ul>
 </template>

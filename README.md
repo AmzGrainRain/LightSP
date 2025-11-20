@@ -21,13 +21,13 @@
 ## 初始化 & 启动
 
 ```bash
-npm install && npm run dev
+pnpm i && pnpm dev
 ```
 
 ## 编译
 
-```powershell
-npm run build
+```bash
+pnpm build
 ```
 
 ## 快捷键
@@ -50,7 +50,8 @@ npm run build
 - 自定义搜索引擎
 - 壁纸聚焦
 - 必应壁纸
-- 自定义壁纸
+- 自定义远程壁纸
+- 自定义本地壁纸
 - 日期显示与隐藏
 - 深色模式
 - 跟随系统的深色模式

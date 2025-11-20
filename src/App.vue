@@ -177,31 +177,18 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
  * 检查版本号
  */
 const CheckVersion = () => {
-    const resetStore = () => {
-        alert('非常抱歉！！！个性化数据结构发生改变，已还原个性化设置。');
-        clear().then(() => {
-            localStorage.removeItem('LightSP');
-            localStorage.removeItem('LightSP-weather');
-            localStorage.removeItem('LightSP-darkMode');
-            localStorage.removeItem('LightSP-wallpaper');
-            localStorage.removeItem('LightSP-particle');
-            localStorage.removeItem('LightSP-global');
-            location.reload();
-        });
-    };
-
-    switch (store.global.version) {
-        case '3.1.9.1':
-            break;
-        case '3.1.9':
-            break;
-        case '3.1.8-hotfix':
-            break;
-        case '3.1.8.1':
-            break;
-        default:
-            resetStore();   
-    }
+    if (store.global.version === '3.2.0') return;
+    
+    alert('配置合并太难做啦~ 由于持久化数据的结构发生改变，将还原个性化设置以避免出现问题。');
+    clear().then(() => {
+        localStorage.removeItem('LightSP');
+        localStorage.removeItem('LightSP-weather');
+        localStorage.removeItem('LightSP-darkMode');
+        localStorage.removeItem('LightSP-wallpaper');
+        localStorage.removeItem('LightSP-particle');
+        localStorage.removeItem('LightSP-global');
+        location.reload();
+    });
 };
 
 /**
@@ -234,21 +221,17 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <div
-        id="app"
-        class="p-mx d-flex overflow-hide"
-        :style="{
-            fontFamily: store.global.font,
-            justifyContent: store.global.adaptiveHeight ? 'center' : 'unset',
-            // 如果启用了 自适应高度 则应屏蔽 偏移高度
-            '--offset-height': `${store.global.adaptiveHeight ? 0 : store.global.offsetHeight}rem`,
-            '--border-radius': `${store.global.borderRadius}px`,
-            '--blur-factor': `${store.global.blur.enable ? `blur(${store.global.blur.factor}px)` : '0px'}`,
-            '--color': store.darkMode.enabled ? store.darkMode.colorStyle.text : store.global.colorStyle.text,
-            '--bg-color': store.darkMode.enabled ? store.darkMode.getBackgroundColor() : store.global.getBackgroundColor(),
-            '--fr-color': store.darkMode.enabled ? store.darkMode.getForegroundColor() : store.global.getForegroundColor()
-        }"
-    >
+    <div id="app" class="p-mx d-flex overflow-hide" :style="{
+        fontFamily: store.global.font,
+        justifyContent: store.global.adaptiveHeight ? 'center' : 'unset',
+        // 如果启用了 自适应高度 则应屏蔽 偏移高度
+        '--offset-height': `${store.global.adaptiveHeight ? 0 : store.global.offsetHeight}rem`,
+        '--border-radius': `${store.global.borderRadius}px`,
+        '--blur-factor': `${store.global.blur.enable ? `blur(${store.global.blur.factor}px)` : '0px'}`,
+        '--color': store.darkMode.enabled ? store.darkMode.colorStyle.text : store.global.colorStyle.text,
+        '--bg-color': store.darkMode.enabled ? store.darkMode.getBackgroundColor() : store.global.getBackgroundColor(),
+        '--fr-color': store.darkMode.enabled ? store.darkMode.getForegroundColor() : store.global.getForegroundColor()
+    }">
         <!-- <Particle /> -->
 
         <Wallpaper :Blur="backgroundBlur" />
@@ -256,22 +239,14 @@ onBeforeMount(() => {
         <div class="search-box transition" :class="{ actived: !keywordIsEmpty() && !keywordListIsEmpty() }">
             <Clock @click="showSettings = true" title="点击打开设置" />
             <div style="height: 1rem"></div>
-            <SearchBox
-                Placeholder="输入搜索内容"
-                Title="按下回车搜索"
-                @updateEvent="
-                    (text: string): void => {
-                        keyword = text;
-                    }
-                "
-            />
+            <SearchBox Placeholder="输入搜索内容" Title="按下回车搜索" @updateEvent="
+                (text: string): void => {
+                    keyword = text;
+                }
+            " />
             <div style="height: 0.8rem"></div>
-            <KeywordList
-                v-if="!store.global.showKeywordList"
-                :Keywords="keyword"
-                :ListData="keywordList"
-                :Selected="keywordListIndex"
-            />
+            <KeywordList v-if="!store.global.showKeywordList" :Keywords="keyword" :ListData="keywordList"
+                :Selected="keywordListIndex" />
         </div>
 
         <Weather Title="点击查看详情" />

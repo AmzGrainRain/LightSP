@@ -8,7 +8,7 @@ import './style.styl';
 
 // 配置 localforage
 localforage.config({
-    name: 'customBackgroundImage'
+    name: 'LocalBackgroundImage'
 });
 
 // Pinia 初始化 & Pinia 数据持久化

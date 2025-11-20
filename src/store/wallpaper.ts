@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
-import { getItem } from 'localforage';
+import { getItem, setItem } from 'localforage';
+
+export type WallpaperTypes = 'default' | 'bing' | 'bing-random' | 'url' | 'local';
 
 export const useWallpaperStore = defineStore('wallpaper', {
     state: () => ({
@@ -8,6 +10,7 @@ export const useWallpaperStore = defineStore('wallpaper', {
             enable: true,
             index: 0,
             wallpaper: [
+                '3.2.0.png',
                 '3.1.9.jpg',
                 '3.1.8.jpg',
                 '3.1.6.png',
@@ -20,10 +23,31 @@ export const useWallpaperStore = defineStore('wallpaper', {
         },
         // 必应壁纸
         bing: {
-            enable: false
+            enable: false,
+            index: 1,
+            wallpaper: [
+                'https://bing.img.run/uhd.php',
+                'https://bing.img.run/1920x1080.php',
+                'https://bing.img.run/1366x768.php'
+            ]
+        },
+        // 必应随机壁纸
+        bingRandom: {
+            enable: false,
+            index: 1,
+            wallpaper: [
+                'https://bing.img.run/rand_uhd.php',
+                'https://bing.img.run/rand.php',
+                'https://bing.img.run/rand_1366x768.php'
+            ]
+        },
+        // 自定义 url 壁纸
+        url: {
+            enable: false,
+            src: ''
         },
         // 自定义壁纸
-        custom: {
+        local: {
             enable: false
         },
         // 聚焦模糊
@@ -31,35 +55,34 @@ export const useWallpaperStore = defineStore('wallpaper', {
     }),
     getters: {},
     actions: {
-        getCurrentWallpaper(): 'default' | 'bing' | 'custom' {
+        getCurrentWallpaper(): WallpaperTypes {
             if (this.default.enable) return 'default';
             if (this.bing.enable) return 'bing';
-            if (this.custom.enable) return 'custom';
+            if (this.bingRandom.enable) return 'bing-random';
+            if (this.url.enable) return 'url';
+            if (this.local.enable) return 'local';
 
-            // 异常情况
-            this.default.enable = true;
-            this.bing.enable = false;
-            this.custom.enable = false;
             return 'default';
         },
         restoreDefaultWallpaper() {
-            this.default.enable = true;
-            this.bing.enable = false;
-            this.custom.enable = false;
+            localStorage.removeItem('LightSP-wallpaper');
             location.reload();
         },
-        enableWallpaper(name: 'default' | 'bing' | 'custom') {
+        enableWallpaper(name: WallpaperTypes) {
             this.default.enable = false;
             this.bing.enable = false;
-            this.custom.enable = false;
+            this.bingRandom.enable = false;
+            this.local.enable = false;
 
-            if (name === 'default') this.default.enable = true;
-            else if (name === 'bing') this.bing.enable = true;
-            else if (name === 'custom') this.custom.enable = true;
+            if (name === 'bing') this.bing.enable = true;
+            else if (name === 'bing-random') this.bingRandom.enable = true;
+            else if (name === 'url') this.url.enable = true;
+            else if (name === 'local') this.local.enable = true;
+            else this.default.enable = true;
             location.reload();
         },
-        setWallpaperFocusBlur(status: boolean | null) {
-            if (status === null) this.focusBlur = !this.focusBlur;
+        setWallpaperFocusBlur(status?: boolean) {
+            if (status === undefined) this.focusBlur = !this.focusBlur;
             else this.focusBlur = status;
         }
     }
@@ -94,22 +117,15 @@ export class DefaultWallpaperManager implements WallpaperManager {
 export class BingWallpaperManager implements WallpaperManager {
     constructor(private store: ReturnType<typeof useWallpaperStore>) {}
 
-    async getWallpaperURL(): Promise<string | undefined> {
-        try {
-            const response = await fetch('https://khlee.fun:3333/api/wallpaper', {
-                method: 'GET'
-            });
-
-            const data = await response.json();
-            if (data === null) return undefined;
-            return 'https://cn.bing.com/' + data.images[0].url;
-        } catch (error) {
-            console.error('Failed to fetch Bing wallpaper:', error);
-            return undefined;
-        }
+    getWallpaperURL(): string {
+        return this.store.bing.wallpaper[this.store.bing.index];
     }
 
-    setWallpaper(): void {}
+    setWallpaper(index: number): void {
+        if (index >= 0 || index < this.store.bing.wallpaper.length) {
+            this.store.bing.index = index;
+        }
+    }
 
     enable(): void {
         if (this.store.bing.enable) this.store.restoreDefaultWallpaper();
@@ -118,11 +134,49 @@ export class BingWallpaperManager implements WallpaperManager {
     }
 }
 
-export class CustomWallpaperManager implements WallpaperManager {
+export class BingRandomWallpaperManager implements WallpaperManager {
+    constructor(private store: ReturnType<typeof useWallpaperStore>) {}
+
+    getWallpaperURL(): string {
+        return this.store.bingRandom.wallpaper[this.store.bingRandom.index];
+    }
+
+    setWallpaper(index: number): void {
+        if (index >= 0 || index < this.store.bingRandom.wallpaper.length) {
+            this.store.bingRandom.index = index;
+        }
+    }
+
+    enable(): void {
+        if (this.store.bingRandom.enable) this.store.restoreDefaultWallpaper();
+        else this.store.enableWallpaper('bing-random');
+        location.reload();
+    }
+}
+
+export class UrlWallpaperManager implements WallpaperManager {
+    constructor(private store: ReturnType<typeof useWallpaperStore>) {}
+
+    getWallpaperURL(): string {
+        return this.store.url.src;
+    }
+
+    setWallpaper(src: string): void {
+        this.store.url.src = src;
+    }
+
+    enable(): void {
+        if (this.store.url.enable) this.store.restoreDefaultWallpaper();
+        else this.store.enableWallpaper('url');
+        location.reload();
+    }
+}
+
+export class LocalWallpaperManager implements WallpaperManager {
     constructor(private store: ReturnType<typeof useWallpaperStore>) {}
 
     async getWallpaperURL(): Promise<string | undefined> {
-        const value = await getItem<string>('CustomizeWallpaper');
+        const value = await getItem<string>('LocalWallpaper');
         if (!value) {
             alert('自定义图片不存在，已自动切换为默认背景。');
             this.store.restoreDefaultWallpaper();
@@ -132,33 +186,44 @@ export class CustomWallpaperManager implements WallpaperManager {
         return value;
     }
 
-    setWallpaper(): void {
-
+    setWallpaper(file: File): void {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setItem('LocalWallpaper', reader.result, (err) => {
+                if (err !== null) console.log('[Error] setCustomizeWallpaper: localforage.setItem');
+                this.enable();
+            });
+        };
     }
 
     async enable(): Promise<void> {
-        const value = await getItem<string>('CustomizeWallpaper');
+        const value = await getItem<string>('LocalWallpaper');
         if (!value) {
             alert('您还没有设置一个图片，所以无法将自定义图片作为背景。');
             location.reload();
             return;
         }
 
-        if (this.store.custom.enable) {
+        if (this.store.local.enable) {
             this.store.enableWallpaper('default');
             location.reload();
             return;
         }
 
-        this.store.enableWallpaper('custom');
+        this.store.enableWallpaper('local');
         location.reload();
     }
 }
 
-export const GetWallpaperManager = (store: ReturnType<typeof useWallpaperStore>): WallpaperManager | undefined => {
+export const WallpaperManagerFactory = (
+    store: ReturnType<typeof useWallpaperStore>
+): WallpaperManager | undefined => {
     const current = store.getCurrentWallpaper();
-    if (current === 'default') return new DefaultWallpaperManager(store) as DefaultWallpaperManager;
-    else if (current === 'bing') return new BingWallpaperManager(store) as BingWallpaperManager;
-    else if (current === 'custom') return new CustomWallpaperManager(store) as CustomWallpaperManager;
+    if (current === 'default') return new DefaultWallpaperManager(store);
+    else if (current === 'bing') return new BingWallpaperManager(store);
+    else if (current === 'bing-random') return new BingRandomWallpaperManager(store);
+    else if (current === 'url') return new UrlWallpaperManager(store);
+    else if (current === 'local') return new LocalWallpaperManager(store);
     return undefined;
-}
+};

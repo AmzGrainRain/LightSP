@@ -22,9 +22,9 @@ function Build_And_Package {
     Copy-Item -Path $platformDirectory -Destination $publicDirectory -Recurse -Force
 
     if ($osName -eq [System.PlatformID]::Win32NT) {
-        $null = Start-Process -FilePath "npm.cmd" -ArgumentList "run build-src" -NoNewWindow -Wait -PassThru -WorkingDirectory $PSScriptRoot
+        $null = Start-Process -FilePath "pnpm.cmd" -ArgumentList "run build-src" -NoNewWindow -Wait -PassThru -WorkingDirectory $PSScriptRoot
     } else {
-        $null = Start-Process -FilePath "npm" -ArgumentList "run build-src" -NoNewWindow -Wait -PassThru -WorkingDirectory $PSScriptRoot
+        $null = Start-Process -FilePath "pnpm" -ArgumentList "run build-src" -NoNewWindow -Wait -PassThru -WorkingDirectory $PSScriptRoot
     }
 
     Compress-Archive -Path "$buildDirectory\*" -DestinationPath "$buildDirectory\$buildType.zip"

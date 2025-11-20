@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useWallpaperStore, GetWallpaperManager } from '../store/wallpaper';
+import { useWallpaperStore, WallpaperManagerFactory } from '../store/wallpaper';
 import { useDarkModeStore } from '../store/darkMode';
 
 interface Props {
@@ -17,9 +17,9 @@ const store = {
 
 const backgroundEl = ref<HTMLImageElement | null>(null);
 const backgroundLoaded = ref(false);
-const wallpaperManager = GetWallpaperManager(store.wallpaper);
+const wallpaperManager = WallpaperManagerFactory(store.wallpaper);
 
-const SetWallpaper = async () => {
+onMounted(async () => {
     if (backgroundEl.value === null) {
         alert('无法获取背景元素');
         return;
@@ -37,25 +37,15 @@ const SetWallpaper = async () => {
     }
 
     backgroundEl.value.setAttribute('src', url);
-};
-
-onMounted(async () => {
-    await SetWallpaper();
 });
 </script>
 
 <template>
-    <img
-        ref="backgroundEl"
-        class="penetrate object-fit-cover"
-        :class="{
-            fadeIn: backgroundLoaded,
-            focused: store.wallpaper.focusBlur && props.Blur,
-            'dark-mode': store.darkMode.darkWallpaper
-        }"
-        @load="backgroundLoaded = true"
-        alt="bg"
-    />
+    <img ref="backgroundEl" class="penetrate object-fit-cover" :class="{
+        fadeIn: backgroundLoaded,
+        focused: store.wallpaper.focusBlur && props.Blur,
+        'dark-mode': store.darkMode.darkWallpaper
+    }" @load="backgroundLoaded = true" alt="bg" />
 </template>
 
 <style lang="stylus" scoped>
