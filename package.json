@@ -15,14 +15,14 @@
     "@tsparticles/vue3": "^3.0.1",
     "localforage": "^1.10.0",
     "pinia": "^3.0.2",
-    "vue": "^3.5.13"
+    "vue": "^3.5.25"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.3",
     "npm-check-updates": "^19.1.2",
     "stylus": "^0.64.0",
     "typescript": "^5.8.3",
-    "vite": "^7.0.4",
-    "vue-tsc": "^3.0.1"
+    "vue-tsc": "^3.1.8",
+    "vite": "^7.2.7"
   }
 }
