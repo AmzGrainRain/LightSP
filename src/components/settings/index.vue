@@ -4,7 +4,6 @@ import { useDarkModeStore } from '../../store/darkMode';
 import { clear as lfClear } from 'localforage';
 import GlobalSetting from './global.vue';
 import BackgroundSetting from './background.vue';
-// import ParticleSetting from './particle.vue';
 import ClockSetting from './clock.vue';
 import DarkModeSetting from './darkMode.vue';
 import WeatherSetting from './weather.vue';
@@ -60,9 +59,6 @@ const reset = (): void => {
 
                 <h4>背景</h4>
                 <Background-Setting />
-
-                <!-- <h4>粒子</h4>
-                <Particle-Setting /> -->
 
                 <h4>深色模式</h4>
                 <DarkMode-Setting />

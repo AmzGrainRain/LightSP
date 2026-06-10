@@ -12,13 +12,7 @@ export const useWallpaperStore = defineStore('wallpaper', {
             wallpaper: [
                 '3.2.0.png',
                 '3.1.9.jpg',
-                '3.1.8.jpg',
-                '3.1.6.png',
-                '3.1.5.jpg',
-                '3.1.4.jpg',
-                '3.1.3.png',
-                '3.1.2.jpg',
-                '3.1.1.jpg'
+                '3.1.8.jpg'
             ]
         },
         // 必应壁纸

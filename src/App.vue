@@ -5,7 +5,6 @@ import { useDarkModeStore } from './store/darkMode';
 import { clear } from 'localforage';
 import Weather from './components/Weather.vue';
 import Wallpaper from './components/Wallpaper.vue';
-// import Particle from './components/settings/particle.vue';
 import Clock from './components/Clock.vue';
 import SearchBox from './components/SearchBox.vue';
 import KeywordList from './components/KeywordList.vue';
@@ -178,6 +177,7 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
  */
 const CheckVersion = () => {
     if (store.global.version === '3.2.0') return;
+    if (store.global.version === '3.2.1') return;
     
     alert('配置合并太难做啦~ 由于持久化数据的结构发生改变，将还原个性化设置以避免出现问题。');
     clear().then(() => {
@@ -185,7 +185,6 @@ const CheckVersion = () => {
         localStorage.removeItem('LightSP-weather');
         localStorage.removeItem('LightSP-darkMode');
         localStorage.removeItem('LightSP-wallpaper');
-        localStorage.removeItem('LightSP-particle');
         localStorage.removeItem('LightSP-global');
         location.reload();
     });
@@ -232,8 +231,6 @@ onBeforeMount(() => {
         '--bg-color': store.darkMode.enabled ? store.darkMode.getBackgroundColor() : store.global.getBackgroundColor(),
         '--fr-color': store.darkMode.enabled ? store.darkMode.getForegroundColor() : store.global.getForegroundColor()
     }">
-        <!-- <Particle /> -->
-
         <Wallpaper :Blur="backgroundBlur" />
 
         <div class="search-box transition" :class="{ actived: !keywordIsEmpty() && !keywordListIsEmpty() }">

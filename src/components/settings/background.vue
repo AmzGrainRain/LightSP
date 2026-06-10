@@ -2,14 +2,12 @@
 import { ref, watch } from 'vue';
 import { useIndexStore } from '../../store';
 import { useWallpaperStore, DefaultWallpaperManager, BingWallpaperManager, BingRandomWallpaperManager, LocalWallpaperManager, WallpaperTypes, UrlWallpaperManager } from '../../store/wallpaper';
-import { useParticleStore } from '../../store/particle';
 import { useDarkModeStore } from '../../store/darkMode';
 import Switcher from '../Switcher.vue';
 
 const store = {
     global: useIndexStore(),
     wallpaper: useWallpaperStore(),
-    particle: useParticleStore(),
     darkMode: useDarkModeStore()
 };
 

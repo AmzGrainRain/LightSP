@@ -59,9 +59,6 @@ img
   opacity 0
   z-index -1
 
-#bg-particles
-  position absolute
-
 .focused
   transform scale(1.1)
   filter blur(4px)
