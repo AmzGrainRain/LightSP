@@ -18,7 +18,7 @@
     "vue": "^3.5.25"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.0",
+    "@vitejs/plugin-vue": "^6.0.3",
     "npm-check-updates": "^19.1.2",
     "stylus": "^0.64.0",
     "typescript": "^5.8.3",
