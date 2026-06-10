@@ -22,7 +22,7 @@
     "npm-check-updates": "^19.1.2",
     "stylus": "^0.64.0",
     "typescript": "^5.8.3",
-    "vite": "^7.0.4",
+    "vite": "^7.2.7",
     "vue-tsc": "^3.0.1"
   }
 }
