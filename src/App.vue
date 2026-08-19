@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { watch, onBeforeMount, ref, Ref } from 'vue';
 import { useIndexStore } from './store';
+import { useClockStore } from './store/clock';
 import { useDarkModeStore } from './store/darkMode';
-import { clear } from 'localforage';
+import { useWallpaperStore } from './store/wallpaper';
 import Weather from './components/Weather.vue';
 import Wallpaper from './components/Wallpaper.vue';
 import Clock from './components/Clock.vue';
@@ -12,16 +13,33 @@ import Settings from './components/settings/index.vue';
 
 type KeywordListType = { text: string; url: string }[];
 type Direction = 'up' | 'down';
+type BaiduSuggestionResponse = { g?: { q: string }[]; permissionRequired?: boolean };
+type KeywordSuggestionMessage = { type: 'getKeywordSuggestions'; query: string };
+type OriginPermissions = {
+    request: (permissions: { origins: string[] }) => Promise<boolean>;
+};
+
+type BrowserRuntime = {
+    sendMessage: (message: KeywordSuggestionMessage) => Promise<BaiduSuggestionResponse>;
+};
+type ChromeRuntime = {
+    lastError?: { message?: string };
+    sendMessage: (message: KeywordSuggestionMessage, callback: (response?: BaiduSuggestionResponse) => void) => void;
+};
 
 const store = {
     global: useIndexStore(),
-    darkMode: useDarkModeStore()
+    clock: useClockStore(),
+    darkMode: useDarkModeStore(),
+    wallpaper: useWallpaperStore()
 };
 
 const showSettings: Ref<boolean> = ref(false);
 const keyword: Ref<string> = ref('');
 const keywordList: Ref<KeywordListType> = ref([]);
 const keywordListIndex: Ref<number> = ref(-1);
+const keywordSuggestionPermissionRequired: Ref<boolean> = ref(false);
+let keywordListRequestId = 0;
 
 const clearKeyword = (): void => {
     keyword.value = '';
@@ -37,21 +55,86 @@ const keywordIsEmpty = (): boolean => keyword.value.length === 0;
 const keywordListIsEmpty = (): boolean => keywordList.value.length === 0;
 const keywordListIndexIsDefault = (): boolean => keywordListIndex.value === -1;
 
-const updateKeywordList = async (): Promise<void> => {
-    const req = await fetch(`https://www.baidu.com/sugrec?ie=utf-8&prod=pc&from=pc_web&json=1&wd=${keyword.value}`, {
-        method: 'GET',
-        mode: 'cors'
-    });
-    const res: any[] | undefined = (await req.json())?.g;
-    if (!res || res.length == 0) return;
+const getKeywordSuggestions = (query: string): Promise<BaiduSuggestionResponse> => {
+    const extensionContext = globalThis as typeof globalThis & {
+        browser?: { runtime?: BrowserRuntime };
+        chrome?: { runtime?: ChromeRuntime };
+    };
+    const message: KeywordSuggestionMessage = { type: 'getKeywordSuggestions', query };
 
-    keywordList.value.length = 0;
-    res.forEach((item: any) => {
-        keywordList.value.push({
-            text: item.q,
-            url: `https://www.baidu.com/s?ie=utf-8&wd=${item.q}`
+    if (extensionContext.browser?.runtime) {
+        return extensionContext.browser.runtime.sendMessage(message);
+    }
+
+    if (extensionContext.chrome?.runtime) {
+        return new Promise((resolve, reject) => {
+            const runtime = extensionContext.chrome?.runtime;
+            if (!runtime) {
+                reject(new Error('扩展运行时不可用'));
+                return;
+            }
+            runtime.sendMessage(message, (response) => {
+                if (runtime.lastError) {
+                    reject(new Error(runtime.lastError.message));
+                    return;
+                }
+                resolve(response ?? {});
+            });
         });
-    });
+    }
+
+    return Promise.reject(new Error('未在扩展环境中运行'));
+};
+
+const requestKeywordSuggestionPermission = (): Promise<boolean> => {
+    const extensionContext = globalThis as typeof globalThis & {
+        browser?: { permissions?: OriginPermissions };
+        chrome?: { permissions?: OriginPermissions };
+    };
+    const permissions = extensionContext.browser?.permissions ?? extensionContext.chrome?.permissions;
+
+    if (!permissions) return Promise.resolve(false);
+
+    return permissions.request({ origins: ['https://www.baidu.com/*'] });
+};
+
+const updateKeywordList = (): void => {
+    keywordList.value.length = 0;
+
+    const query = keyword.value.trim();
+    if (!query) return;
+
+    const requestId = ++keywordListRequestId;
+    getKeywordSuggestions(query)
+        .then((response) => {
+            if (requestId !== keywordListRequestId) return;
+
+            if (response.permissionRequired) {
+                keywordSuggestionPermissionRequired.value = true;
+                return;
+            }
+
+            response.g?.forEach((item) => {
+                keywordList.value.push({
+                    text: item.q,
+                    url: `https://www.baidu.com/s?ie=utf-8&wd=${encodeURIComponent(item.q)}`
+                });
+            });
+        })
+        .catch(() => {
+            if (requestId === keywordListRequestId) keywordList.value.length = 0;
+        });
+};
+
+const enableKeywordSuggestions = (): void => {
+    requestKeywordSuggestionPermission()
+        .then((granted) => {
+            keywordSuggestionPermissionRequired.value = !granted;
+            if (granted) updateKeywordList();
+        })
+        .catch(() => {
+            keywordSuggestionPermissionRequired.value = true;
+        });
 };
 
 const switchKeywordListIndex = (direction: Direction): void => {
@@ -97,7 +180,11 @@ watch(keyword, () => {
     // 根据输入框内容决定是否启用背景放大+模糊效果
     backgroundBlur.value = !keywordIsEmpty();
     // 关键词为空则不更新关键词列表
-    if (!backgroundBlur.value) return;
+    if (!backgroundBlur.value) {
+        keywordListRequestId++;
+        keywordList.value.length = 0;
+        return;
+    }
     updateKeywordList();
     resetKeywordListIndex();
 });
@@ -136,7 +223,7 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
         switch (e.key) {
             // Ctrl + S - 打开设置
             case Keys.Settings:
-                showSettings.value = !showSettings;
+                showSettings.value = !showSettings.value;
                 break;
             // Ctrl + F - 翻译
             case Keys.Translation:
@@ -175,19 +262,87 @@ document.addEventListener('keydown', (e: KeyboardEvent): void => {
 /**
  * 检查版本号
  */
-const CheckVersion = () => {
-    if (store.global.version === '3.2.0') return;
-    if (store.global.version === '3.2.1') return;
-    
-    alert('配置合并太难做啦~ 由于持久化数据的结构发生改变，将还原个性化设置以避免出现问题。');
-    clear().then(() => {
-        localStorage.removeItem('LightSP');
-        localStorage.removeItem('LightSP-weather');
-        localStorage.removeItem('LightSP-darkMode');
-        localStorage.removeItem('LightSP-wallpaper');
-        localStorage.removeItem('LightSP-global');
-        location.reload();
+const CURRENT_CONFIG_VERSION = '4.0.2';
+
+const configMigrations: Record<string, () => void> = {
+    // 4.0.1 起，showKeywordList 与其名称一致：true 表示显示列表。
+    // 旧版本的 false 表示显示，因此需要反转以保留实际显示状态。
+    '3.2.0': () => {
+        store.global.showKeywordList = !store.global.showKeywordList;
+        store.global.version = '4.0.1';
+    },
+    '3.2.1': () => {
+        store.global.showKeywordList = !store.global.showKeywordList;
+        store.global.version = '4.0.1';
+    },
+    '4.0.0': () => {
+        store.global.showKeywordList = !store.global.showKeywordList;
+        store.global.version = '4.0.1';
+    },
+    // 4.0.2 新增搜索框显示配置，旧版始终显示搜索框。
+    '4.0.1': () => {
+        store.global.showSearchBox = true;
+        store.global.version = CURRENT_CONFIG_VERSION;
+    }
+};
+
+const MigrateClockConfig = (): void => {
+    const legacyStore = store.clock as typeof store.clock & {
+        dateVisible?: boolean;
+        secondsVisible?: boolean;
+        lunarVisible?: boolean;
+    };
+    const hasLegacySettings =
+        typeof legacyStore.dateVisible === 'boolean' ||
+        typeof legacyStore.secondsVisible === 'boolean' ||
+        typeof legacyStore.lunarVisible === 'boolean';
+
+    if (!hasLegacySettings) return;
+
+    const dateSlots = ['hidden', 'hidden', 'hidden'];
+    if (legacyStore.dateVisible) {
+        dateSlots[0] = 'date-chinese';
+        dateSlots[1] = 'week-long';
+        if (legacyStore.lunarVisible) dateSlots[2] = 'lunar';
+    }
+
+    store.clock.$patch({
+        dateSlots,
+        timeFormat: legacyStore.secondsVisible ? '24-hour-seconds' : '24-hour'
     });
+};
+
+const MigrateWallpaperConfig = (): void => {
+    const legacyStore = store.wallpaper as typeof store.wallpaper & {
+        bing?: { enable?: boolean };
+        bingRandom?: { enable?: boolean };
+    };
+    const usedRemovedBingWallpaper = legacyStore.bing?.enable || legacyStore.bingRandom?.enable;
+
+    if (usedRemovedBingWallpaper) {
+        store.wallpaper.$patch({
+            default: { enable: true },
+            url: { ...store.wallpaper.url, enable: false },
+            local: { ...store.wallpaper.local, enable: false }
+        });
+    }
+
+    delete legacyStore.bing;
+    delete legacyStore.bingRandom;
+};
+
+const CheckVersion = (): void => {
+    while (store.global.version !== CURRENT_CONFIG_VERSION) {
+        const migrate = configMigrations[store.global.version];
+        if (!migrate) {
+            console.warn(`未找到 ${store.global.version} 到 ${CURRENT_CONFIG_VERSION} 的配置迁移，将保留已有配置。`);
+            store.global.version = CURRENT_CONFIG_VERSION;
+            break;
+        }
+        migrate();
+    }
+    MigrateClockConfig();
+    MigrateWallpaperConfig();
 };
 
 /**
@@ -220,7 +375,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <div id="app" class="p-mx d-flex overflow-hide" :style="{
+    <div id="app" class="flex h-screen w-screen flex-col flex-nowrap items-center overflow-hidden p-6" :style="{
         fontFamily: store.global.font,
         justifyContent: store.global.adaptiveHeight ? 'center' : 'unset',
         // 如果启用了 自适应高度 则应屏蔽 偏移高度
@@ -233,66 +388,34 @@ onBeforeMount(() => {
     }">
         <Wallpaper :Blur="backgroundBlur" />
 
-        <div class="search-box transition" :class="{ actived: !keywordIsEmpty() && !keywordListIsEmpty() }">
+        <div
+            class="flex w-180 flex-col flex-wrap items-center pt-(--offset-height) transition-all duration-300 max-[1024px]:w-4/5 max-[512px]:w-[95%]"
+            :class="store.global.showSearchBox && store.global.showKeywordList && !keywordIsEmpty() && !keywordListIsEmpty() ? 'pb-0' : 'pb-[15%]'"
+        >
             <Clock @click="showSettings = true" title="点击打开设置" />
-            <div style="height: 1rem"></div>
-            <SearchBox Placeholder="输入搜索内容" Title="按下回车搜索" @updateEvent="
+            <div class="h-4"></div>
+            <SearchBox v-if="store.global.showSearchBox" Placeholder="输入搜索内容" Title="按下回车搜索" @updateEvent="
                 (text: string): void => {
                     keyword = text;
                 }
             " />
-            <div style="height: 0.8rem"></div>
-            <KeywordList v-if="!store.global.showKeywordList" :Keywords="keyword" :ListData="keywordList"
+            <button
+                v-if="store.global.showSearchBox && store.global.showKeywordList && keywordSuggestionPermissionRequired"
+                class="mt-3 cursor-pointer rounded-(--border-radius) border border-[#8888] px-3 py-1 text-sm transition-colors hover:bg-white/20"
+                type="button"
+                @click="enableKeywordSuggestions"
+            >
+                授权百度搜索建议
+            </button>
+            <div class="h-[0.8rem]"></div>
+            <KeywordList v-if="store.global.showSearchBox && store.global.showKeywordList" :Keywords="keyword" :ListData="keywordList"
                 :Selected="keywordListIndex" />
         </div>
 
         <Weather Title="点击查看详情" />
 
         <transition name="fade">
-            <Settings v-show="showSettings" :show="showSettings" @close="showSettings = false" />
+            <Settings v-show="showSettings" @close="showSettings = false" />
         </transition>
     </div>
 </template>
-
-<style lang="stylus" scoped>
-#app
-    flex-flow column nowrap
-    justify-content center
-    align-items center
-    width 100vw
-    height 100vh
-
-.search-box
-    padding-top var(--offset-height)
-    padding-bottom 15%
-    display flex
-    align-items center
-    flex-flow column wrap
-    width 45rem
-
-    @media screen and (max-width: 1024px)
-        width 80%
-
-    @media screen and (max-width: 512px)
-        width 95%
-
-.search-box.actived
-    padding-bottom 0
-</style>
-
-<style lang="stylus">
-.blur
-    backdrop-filter var(--blur-factor)
-
-.fade-enter-from
-.fade-leave-to
-    transform translateX(442px)
-
-.fade-enter-active
-.fade-leave-active
-    transition all .7s cubic-bezier(0,1,.3,1)
-
-.fade-enter-to
-.fade-leave-from
-    transform translateX(0)
-</style>

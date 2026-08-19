@@ -10,35 +10,22 @@ withDefaults(
 </script>
 
 <template>
-  <div class="position-relative w-100 h-100 border-solid border-radius-lg overflow-hide">
+  <div class="relative h-5 w-10 overflow-hidden rounded-2xl border border-black/5 shadow-[inset_0_0_2px_#888]">
     <input
       type="checkbox"
-      class="position-absolute m-0 w-100 h-100 pointer"
+      class="absolute left-0 top-0 m-0 h-full w-full cursor-pointer opacity-0"
       placeholder="朴实无华的按钮"
       :checked="active"
     />
     <i
-      class="position-absolute w-50 h-100 border-solid border-radius-lg transition-ease-in-out"
+      class="pointer-events-none absolute h-full w-1/2 rounded-2xl border border-black/5 bg-[#888] transition-all duration-300 ease-in-out"
     ></i>
   </div>
 </template>
 
-<style lang="stylus" scoped>
-div
-  width 2.5rem
-  height 1.25rem
-  box-shadow inset 0 0 2px #888
-
-input
-  top 0
-  left 0
-  opacity 0
-
-  &:checked ~ i
-    background-color #8296ff !important
-    transform: translateX(100%)
-
-i
-  pointer-events none
-  background-color #888
+<style scoped>
+input:checked ~ i {
+  background-color: #8296ff !important;
+  transform: translateX(100%);
+}
 </style>

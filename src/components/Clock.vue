@@ -1,63 +1,70 @@
 <script setup lang='ts'>
-import { reactive } from 'vue'
-import { useClockStore } from '../store/clock'
+import { reactive, watch } from 'vue'
+import { getDateSlotCategory, useClockStore } from '../store/clock'
 
-interface Reactive {
-  date: string
-  time: string
-}
-const data = reactive<Reactive>({
-  date: 'xxxx-xx-xx xxx',
-  time: '00:00:00'
+const data = reactive({
+  dateInfo: '',
+  time: '00:00'
 })
 
 const store = useClockStore()
-const week: string[] = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+const week: string[] = ['日', '一', '二', '三', '四', '五', '六']
+let lunarLibrary: Promise<typeof import('lunar-typescript')> | undefined
 
-const updateTime = () => {
-  const t = new Date()
-  const Y = t.getFullYear()
-  const M = t.getMonth() + 1 < 10 ? `0${t.getMonth() + 1}` : t.getMonth() + 1
-  const D = t.getDate() < 10 ? `0${t.getDate()}` : t.getDate()
-  const d = week[t.getDay()]
-  const h = t.getHours() < 10 ? `0${t.getHours()}` : t.getHours()
-  const m = t.getMinutes() < 10 ? `0${t.getMinutes()}` : t.getMinutes()
-  const s = t.getSeconds() < 10 ? `0${t.getSeconds()}` : t.getSeconds()
-  data.date = `${Y}年${M}月${D}日 ${d}`
-  let tmp = `${h}:${m}`
-  if (store.secondsVisible) tmp += `:${s}`
-  data.time = tmp
+const formatDateSlot = (slot: string, date: Date, lunar: string): string => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  switch (slot) {
+    case 'date-chinese': return `${year}年${month}月${day}日`
+    case 'date-dot': return `${year}.${month}.${day}`
+    case 'date-slash': return `${year}/${month}/${day}`
+    case 'week-long': return `星期${week[date.getDay()]}`
+    case 'week-short': return `周${week[date.getDay()]}`
+    case 'lunar': return lunar
+    default: return ''
+  }
 }
 
-// Show time in advance
-updateTime()
+const updateTime = async () => {
+  const date = new Date()
+  const dateSlots = store.dateSlots.filter((slot) => getDateSlotCategory(slot) !== 'hidden')
+  let lunar = ''
 
-// Refresh time
-setInterval(() => {
-  updateTime()
-}, 1000)
+  if (dateSlots.includes('lunar')) {
+    const { Solar } = await (lunarLibrary ??= import('lunar-typescript'))
+    const lunarDate = Solar.fromDate(date).getLunar()
+    lunar = `农历${lunarDate.getMonthInChinese()}月${lunarDate.getDayInChinese()}`
+  }
+  data.dateInfo = dateSlots.map((slot) => formatDateSlot(slot, date, lunar)).join(' ')
+
+  const hours = date.getHours()
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  const seconds = date.getSeconds().toString().padStart(2, '0')
+  const hour12 = hours % 12 || 12
+  const amPm = hours < 12 ? 'AM' : 'PM'
+  data.time = {
+    '24-hour': `${hours.toString().padStart(2, '0')}:${minutes}`,
+    '12-hour': `${amPm} ${hour12}:${minutes}`,
+    '24-hour-seconds': `${hours.toString().padStart(2, '0')}:${minutes}:${seconds}`,
+    '12-hour-seconds': `${amPm} ${hour12}:${minutes}:${seconds}`,
+    '12-hour-suffix': `${hour12}:${minutes} ${amPm}`,
+    '12-hour-seconds-suffix': `${hour12}:${minutes}:${seconds} ${amPm}`
+  }[store.timeFormat] ?? `${hours.toString().padStart(2, '0')}:${minutes}`
+}
+
+watch(() => [store.dateSlots, store.timeFormat], updateTime, { deep: true })
+updateTime()
+setInterval(updateTime, 1000)
 </script>
 
 <template>
-  <div class='d-flex text-center pointer'>
-    <p v-if='store.dateVisible' class='date text-size-m'>{{ data.date }}</p>
-    <p class='time p-t-sm'>{{ data.time }}</p>
+  <div
+    class="flex flex-col flex-wrap text-center [text-shadow:0_0_4px_#0008] transition-transform duration-300 hover:scale-110 cursor-pointer ease-[cubic-bezier(.14,.94,.36,1.38)]"
+  >
+    <p v-if="data.dateInfo && store.dateAboveTime" class="text-xs">{{ data.dateInfo }}</p>
+    <p class="pt-1 text-[2.5rem]">{{ data.time }}</p>
+    <p v-if="data.dateInfo && !store.dateAboveTime" class="text-xs">{{ data.dateInfo }}</p>
   </div>
 </template>
-
-<style lang='stylus' scoped>
-div
-  flex-flow column wrap
-  text-shadow 0 0 4px #0008
-  transition transform 0.3s cubic-bezier(.14,.94,.36,1.38)
-
-  &:hover
-    transform scale(1.1)
-
-.date
-  letter-spacing .1rem
-
-.time
-  font-size 2.5rem
-  letter-spacing .2rem
-</style>

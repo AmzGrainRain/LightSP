@@ -6,7 +6,7 @@ $osName = [System.Environment]::OSVersion.Platform
 function Build_And_Package {
     param(
         [Parameter(Mandatory=$true)]
-        [ValidateSet('webpage', 'chromium', 'firefox')]
+        [ValidateSet('chromium', 'firefox')]
         [string]$buildType
     )
 
@@ -36,20 +36,18 @@ function Build_And_Package {
 
 Clear-Host
 Write-Host("THE FOLLOWING BUILD TYPES ARE CURRENTLY AVAILABLE:")
-Write-Host("1.Normal")
-Write-Host("2.Chromium Extension")
-Write-Host("3.Firefox Extension")
-Write-Host("4.Package all available build types")
+Write-Host("1.Chromium Extension")
+Write-Host("2.Firefox Extension")
+Write-Host("3.Package all available build types")
 Write-Host("")
 
 [string]$buildType = ""
 while (1) {
     [int]$userChoice = Read-Host(">")
     $buildType = switch($userChoice) {
-        1 { 'webpage' }
-        2 { 'chromium' }
-        3 { 'firefox' }
-        4 { 'all' }
+        1 { 'chromium' }
+        2 { 'firefox' }
+        3 { 'all' }
         default { 'error' }
     }
 
@@ -65,9 +63,6 @@ New-Item -Path "$outputPath" -ItemType Directory
 [string]$packaged = ""
 
 if ($buildType -eq 'all') {
-    $packaged = Build_And_Package -buildType 'webpage'
-    Copy-Item -Path "$packaged" -Destination "$outputPath/"
-
     $packaged = Build_And_Package -buildType 'chromium'
     Copy-Item -Path "$packaged" -Destination "$outputPath/"
 

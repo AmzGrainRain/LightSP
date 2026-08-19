@@ -2,7 +2,7 @@ import { createApp, toRaw } from 'vue';
 import { createPinia, PiniaPluginContext } from 'pinia';
 import localforage from 'localforage';
 import App from './App.vue';
-import './style.styl';
+import './style.css';
 
 // 配置 localforage
 localforage.config({

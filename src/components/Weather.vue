@@ -57,7 +57,7 @@ onBeforeMount(() => {
   <a
     v-if="store.weather.enabled"
     v-show="weatherLoaded"
-    class="d-block p-tb-sm p-lr transition pointer blur"
+    class="weather-link glass-effect absolute right-4 top-4 block cursor-pointer rounded-[calc(var(--border-radius)-4px)] px-2 py-1 transition-all duration-300 hover:bg-(--fr-color)"
     :title="Title"
     :href="weather.link"
     target="_blank"
@@ -66,32 +66,29 @@ onBeforeMount(() => {
     }"
   >
     <i :class="`qi-${weather.icon}`"></i>
-    <div style="display: inline-block; width: 0.4rem"></div>
-    <span v-show="weather.link.length !== 0">{{ `${weather.temp}°C&nbsp;|&nbsp;${weather.text}` }}</span>
+    <span class="inline-block w-[0.4rem]" aria-hidden="true"></span>
+    <span class="[text-shadow:0_0_4px_#0008]" v-show="weather.link.length !== 0">{{ `${weather.temp}°C&nbsp;|&nbsp;${weather.text}` }}</span>
   </a>
 </template>
 
-<style lang="stylus" scoped>
-@import url('../assets/weather/qweather-icons.css')
-a
-  position absolute
-  top 1rem
-  right 1rem
-  border-radius calc(var(--border-radius) - 4px)
-  transform translateX(120%)
+<style scoped>
+@import url('../assets/weather/qweather-icons.css');
 
-  &:hover
-    background-color var(--fr-color)
+.weather-link {
+  transform: translateX(120%);
+}
 
-  span
-    text-shadow 0 0 4px #0008
+.slideIn {
+  animation: aniSlideIn 0.5s forwards;
+}
 
-.slideIn
-  animation aniSlideIn .5s forwards
+@keyframes aniSlideIn {
+  0% {
+    transform: translateX(120%);
+  }
 
-@keyframes aniSlideIn
-  0%
-    transform translateX(120%)
-  100%
-    transform translateX(0)
+  100% {
+    transform: translateX(0);
+  }
+}
 </style>

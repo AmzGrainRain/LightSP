@@ -8,18 +8,18 @@ defineProps<{
 
 <template>
     <div
-        class="w-100 h-0 overflow-x-hide overflow-y-auto transition scrollbar-hide"
-        :class="{
-            actived: ListData.length && Keywords.length
-        }"
+        class="h-0 w-full overflow-x-hidden overflow-y-auto transition-all duration-300 scrollbar-hide"
+        :class="ListData.length && Keywords.length ? 'h-125' : ''"
     >
-        <ul class="m-tb-0 m-lr-auto">
-            <li class="m-b w-100 transition blur" v-for="(item, index) in ListData" :key="index">
+        <ul class="mx-auto my-0">
+            <li
+                class="glass-effect mb-2 h-10 w-full overflow-hidden rounded-(--border-radius) border border-[#8888] bg-(--bg-color) transition-all duration-300 last:mb-0"
+                v-for="(item, index) in ListData"
+                :key="index"
+            >
                 <a
-                    class="d-block p-lr-lg w-100 h-100 transition text-overflow-ellipsis"
-                    :class="{
-                        selected: Selected === index
-                    }"
+                    class="block h-full w-full overflow-hidden text-ellipsis whitespace-nowrap px-3 leading-10 text-(--color) transition-transform duration-300 hover:translate-x-2"
+                    :class="Selected === index ? 'translate-x-2' : ''"
                     :href="item.url"
                     >{{ item.text }}
                 </a>
@@ -27,27 +27,3 @@ defineProps<{
         </ul>
     </div>
 </template>
-
-<style lang="stylus" scoped>
-div.actived
-    height 500px
-
-ul li
-    height 2.5rem
-    border 1px solid #8888
-    border-radius var(--border-radius)
-    background-color var(--bg-color)
-    overflow hidden
-
-    &:last-child
-        margin 0
-
-    a
-        line-height 2.5rem
-        color var(--color)
-
-        &:hover
-        &.selected
-            text-indent .5rem
-            letter-spacing 2px
-</style>

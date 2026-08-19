@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background-color: #000;
+        color: #fff;
+        font-size: 14px;
+        line-height: 1.2;
+    }
+
+    *,
+    ::before,
+    ::after {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    input,
+    select {
+        outline: none;
+    }
+
+    img {
+        -webkit-user-drag: none;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background: #aaa;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    ::selection {
+        background-color: transparent;
+    }
+}
+
+@utility glass-effect {
+    backdrop-filter: var(--blur-factor);
+}
+
+@utility scrollbar-hide {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    transform: translateX(442px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.7s cubic-bezier(0, 1, 0.3, 1);
+}
+
+.fade-enter-to,
+.fade-leave-from {
+    transform: translateX(0);
+}

@@ -7,6 +7,7 @@ import csvFile from '../../assets/weather/city_list.csv?raw'
 // 获取城市列表 https://github.com/qwd/LocationList/blob/master/China-City-List-latest.csv
 
 import Switcher from '../Switcher.vue'
+import { settingRowClass, settingsTextInputClass } from './classes'
 
 const store = {
   global: useIndexStore(),
@@ -41,73 +42,41 @@ const setLocation = (id: number | string) => {
   store.weather.setWeatherLocation(id)
 }
 
-let tmp = ''
-csvFile.split('\n').forEach((e: any) => {
-  /*
-    0        1    2   3   4    5      6       7     8      9        10           11        12       13
-101070209,Xigang,西岗,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,38.914265,121.616112,210203
-  */
-  const item: string[] = e.split(',')
-  tmp += `${item[7]}-${item[9]}-${item[2]}-${item[0]}\n`
-})
-cityData.value = tmp.split('\n')
-tmp = ''
+{
+  let tmp = ''
+  csvFile.split('\n').forEach((e: any) => {
+    /*
+      0        1    2   3   4    5      6       7     8      9        10           11        12       13
+  101070209,Xigang,西岗,CN,China,中国,Liaoning,辽宁省,Dalian,大连市,Asia/Shanghai,38.914265,121.616112,210203
+    */
+    const item: string[] = e.split(',')
+    tmp += `${item[7]}-${item[9]}-${item[2]}-${item[0]}\n`
+  })
+  cityData.value = tmp.split('\n')
+  tmp = ''
+}
 </script>
 
 <template>
   <ul>
-    <li>
+    <li :class="settingRowClass">
       <span>显示天气组件</span>
       <Switcher @click="store.weather.setWeatherStatus(null)" :active="store.weather.enabled" />
     </li>
-    <li>
+    <li :class="settingRowClass">
       <span>设置天气位置</span>
-      <input
-        class="w-50 text-size-m text-center border-none border-radius-sm"
-        type="text"
-        placeholder="城市名 (无需完整地址)"
-        title="请不要输入完整的位置"
-        v-model="keyword"
-      />
+      <input :class="[settingsTextInputClass, 'w-1/2 text-xs']" type="text" placeholder="城市名 (无需完整地址)"
+        title="请不要输入完整的位置" v-model="keyword" />
     </li>
-    <li v-show="hitList.length">
-      <ul
-        id="hit-list"
-        class="w-100 overflow-x-hide overflow-y-auto border-radius"
-        v-show="hitList.length"
-      >
+    <li :class="settingRowClass" v-show="hitList.length">
+      <ul id="hit-list" class="h-64 w-full overflow-x-hidden overflow-y-auto rounded-(--border-radius)"
+        v-show="hitList.length">
         <li
-          class="m-b-sm p-lr text-center border-radius pointer"
-          v-for="(item, index) in hitList"
-          :key="index"
-          @click="setLocation(item.substring(item.length - 9))"
-        >
+          class="mb-1 cursor-pointer rounded-(--border-radius) leading-8 text-center text-xs transition-colors duration-200 bg-[#8882] hover:bg-[#8883]"
+          v-for="(item, index) in hitList" :key="index" @click="setLocation(item.substring(item.length - 9))">
           {{ item.substring(0, item.length - 10) }}
         </li>
       </ul>
     </li>
   </ul>
 </template>
-
-<style lang="stylus" scoped>
-li
-  margin 14px 0
-  padding 8px 10px
-  display flex
-  justify-content space-between
-  align-items center
-  border-radius calc(var(--border-radius) - 4px)
-  background-color var(--fr-color)
-
-#hit-list
-  height 256px
-
-  li
-    font-size 12px
-    transition background-color .2s
-    &:hover
-      background-color #8883
-
-    &:first-child
-      margin-top 0 !important
-</style>

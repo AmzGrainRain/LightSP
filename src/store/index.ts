@@ -11,17 +11,18 @@ export enum SearchEngine {
 
 export const useIndexStore = defineStore('global', {
     state: () => ({
-        version: '3.2.0',
+        version: '4.0.2',
         first: true,
         blur: {
             enable: true,
             factor: 22
         },
-        showKeywordList: false,
+        showKeywordList: true,
+        showSearchBox: true,
         borderRadius: 12,
         adaptiveHeight: true,
         offsetHeight: 0,
-        font: 'FusionPixel',
+        font: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
         colorStyle: {
             text: '#000000',
             background: { r: 255, g: 255, b: 255, a: 60 },

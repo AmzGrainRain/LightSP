@@ -9,7 +9,6 @@ import DarkModeSetting from './darkMode.vue';
 import WeatherSetting from './weather.vue';
 
 const emit = defineEmits(['close']);
-const props = defineProps<{ show: boolean }>();
 
 const store = {
     global: useIndexStore(),
@@ -41,55 +40,64 @@ const reset = (): void => {
         });
     }
 };
+
+const actionButtonClass =
+    'mb-2 mr-4 h-8 cursor-pointer rounded-[calc(var(--border-radius)-4px)] border-0 bg-[var(--bg-color)] px-3 font-[inherit] text-[inherit] transition-all duration-300 hover:bg-[#8296ff]';
+
+const versionClass =
+    'mb-2 inline-flex h-8 cursor-pointer items-center rounded-[calc(var(--border-radius)-4px)] border-0 px-3 transition-all duration-300';
 </script>
 
 <template>
-    <div id="settings" @click="emit('close')">
-        <div class="inner overflow-hide blur" @click.stop>
-            <div class="bar p-lr-ex">
+    <div id="settings" class="fixed inset-0 m-auto h-[calc(100vh-2rem)] w-[calc(100vw-2rem)]" @click="emit('close')">
+        <div
+            class="glass-effect float-right h-full w-105 max-w-full overflow-hidden rounded-[calc(var(--border-radius)-4px)] border border-[#888a] bg-(--bg-color) text-(--color)"
+            @click.stop
+        >
+            <div class="flex h-12 items-center justify-between px-4 shadow-[0_1px_.2rem_#8884]">
                 <h3>设置</h3>
-                <span class="p-lr p-tb-sm pointer" @click.stop="emit('close')">关闭</span>
+                <span class="cursor-pointer px-2 py-1" @click.stop="emit('close')">关闭</span>
             </div>
-            <div class="panel p-lr-lg p-t-lg" :class="{ show: props.show }">
-                <h4>全局</h4>
+            <div class="h-[calc(100%-3rem)] overflow-x-hidden overflow-y-auto px-3 pt-3">
+                <h4 class="pl-[.3rem]">全局</h4>
                 <Global-Setting />
 
-                <h4>时钟</h4>
+                <h4 class="pl-[.3rem]">时钟</h4>
                 <Clock-Setting />
 
-                <h4>背景</h4>
+                <h4 class="pl-[.3rem]">背景</h4>
                 <Background-Setting />
 
-                <h4>深色模式</h4>
+                <h4 class="pl-[.3rem]">深色模式</h4>
                 <DarkMode-Setting />
 
-                <h4>天气</h4>
+                <h4 class="pl-[.3rem]">天气</h4>
                 <Weather-Setting />
 
-                <h4>其他</h4>
-                <div class="other">
+                <h4 class="pl-[.3rem]">其他</h4>
+                <div class="mt-2">
                     <input
                         id="hotkey-help"
-                        class="m-b p-lr-lg border-none transition pointer"
+                        :class="actionButtonClass"
                         type="button"
                         value="快捷键"
                         @click="hotkeyHelp()"
                     />
                     <input
                         id="feedback"
-                        class="m-b p-lr-lg border-none transition pointer"
+                        :class="actionButtonClass"
                         type="button"
                         value="反馈"
                         @click="feedback()"
                     />
                     <input
                         id="reset"
-                        class="m-b p-lr-lg border-none border-radius transition pointer"
+                        :class="actionButtonClass"
                         type="button"
                         value="恢复默认设置"
                         @click="reset()"
                     />
-                    <span id="version" class="m-b p-lr-lg border-none border-radius transition pointer"
+                    <span id="version" :class="versionClass"
                         >v{{ store.global.version }}</span
                     >
                 </div>
@@ -97,60 +105,3 @@ const reset = (): void => {
         </div>
     </div>
 </template>
-
-<style lang="stylus" scoped>
-::selection
-    background transparent
-
-#settings
-    position fixed
-    top 0
-    left 0
-    right 0
-    bottom 0
-    margin auto
-    width calc(100vw - 2rem)
-    height calc(100vh - 2rem)
-
-
-    .inner
-        float right
-        width 420px
-        height 100%
-        color var(--color)
-        border: 1px solid #888a;
-        background-color var(--bg-color)
-        border-radius calc(var(--border-radius) - 4px)
-
-        div.bar
-            display flex
-            justify-content space-between
-            align-items center
-            height 3rem
-            box-shadow 0 1px .2rem #8884
-
-        div.panel
-            height calc(100% - 3rem)
-            overflow hidden auto
-
-        h4
-            padding-left .3rem
-
-        div.other
-            margin-top .5rem
-
-            input
-                margin-right 1rem
-
-#hotkey-help
-#feedback
-#reset
-    height 2rem
-    color inherit
-    font-family inherit
-    border-radius calc(var(--border-radius) - 4px)
-    background-color var(----bg-color)
-
-    &:hover
-        background-color #8296ff
-</style>

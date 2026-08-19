@@ -17,23 +17,22 @@ watch(text, (newVal) => {
 <template>
   <input
     type="text"
-    class="p-lr w-100 text-center text-size-sm border-none transition blur"
+    class="glass-effect h-10 w-full border border-[#8888] px-2 text-center text-base transition-all duration-300 outline-0"
     :placeholder="Placeholder"
     :title="Title"
     v-model="text"
   />
 </template>
 
-<style lang="stylus" scoped>
-input
-  --alpha 20
-  font-family inherit
-  height 2.5rem
-  color var(--color)
-  border 1px solid #8888
-  border-radius var(--border-radius)
-  background-color var(--bg-color)
+<style scoped>
+input {
+  font-family: inherit;
+  color: var(--color);
+  border-radius: var(--border-radius);
+  background-color: var(--bg-color);
+}
 
-  &::selection
-    background-color #000
+input::selection {
+  background-color: #000;
+}
 </style>
