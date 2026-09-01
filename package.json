@@ -18,7 +18,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.2",
     "@vitejs/plugin-vue": "^6.0.7",
-    "npm-check-updates": "^22.2.3",
+    "npm-check-updates": "^23.1.0",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3",
     "vite": "^8.1.4",
