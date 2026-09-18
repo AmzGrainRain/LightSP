@@ -52,7 +52,6 @@ const resetKeywordListIndex = (): void => {
 };
 
 const keywordIsEmpty = (): boolean => keyword.value.length === 0;
-const keywordListIsEmpty = (): boolean => keywordList.value.length === 0;
 const keywordListIndexIsDefault = (): boolean => keywordListIndex.value === -1;
 
 const getKeywordSuggestions = (query: string): Promise<BaiduSuggestionResponse> => {
@@ -283,6 +282,18 @@ const configMigrations: Record<string, () => void> = {
     '4.0.1': () => {
         store.global.showSearchBox = true;
         store.global.version = CURRENT_CONFIG_VERSION;
+    },
+    // 4.0.3 移除了部分搜索引擎
+    '4.0.2': () => {
+        store.global.searchEngine.list = [
+            { name: '必应搜索', url: 'https://cn.bing.com/search?form=QBLH&q={}' },
+            { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?va=g&t=hj&ia=web&q={}' },
+            { name: '谷歌搜索', url: 'https://www.google.com/search?q={}' },
+            { name: '百度搜素', url: 'https://www.baidu.com/s?ie=utf-8&wd={}' },
+            { name: '360搜索', url: 'https://www.so.com/s?ie=utf-8&q={}' },
+            { name: '搜狗搜索', url: 'https://www.sogou.com/web?query={}' },
+            { name: '自定义', url: '' }
+        ]
     }
 };
 
@@ -389,27 +400,26 @@ onBeforeMount(() => {
         <Wallpaper :Blur="backgroundBlur" />
 
         <div
-            class="flex w-180 flex-col flex-wrap items-center pt-(--offset-height) transition-all duration-300 max-[1024px]:w-4/5 max-[512px]:w-[95%]"
-            :class="store.global.showSearchBox && store.global.showKeywordList && !keywordIsEmpty() && !keywordListIsEmpty() ? 'pb-0' : 'pb-[15%]'"
-        >
+            class="flex w-180 flex-col flex-wrap items-center pt-(--offset-height) pb-[15%] transition-all duration-300 max-[1024px]:w-4/5 max-[512px]:w-[95%]">
             <Clock @click="showSettings = true" title="点击打开设置" />
             <div class="h-4"></div>
-            <SearchBox v-if="store.global.showSearchBox" Placeholder="输入搜索内容" Title="按下回车搜索" @updateEvent="
-                (text: string): void => {
-                    keyword = text;
-                }
-            " />
-            <button
-                v-if="store.global.showSearchBox && store.global.showKeywordList && keywordSuggestionPermissionRequired"
-                class="mt-3 cursor-pointer rounded-(--border-radius) border border-[#8888] px-3 py-1 text-sm transition-colors hover:bg-white/20"
-                type="button"
-                @click="enableKeywordSuggestions"
-            >
-                授权百度搜索建议
-            </button>
-            <div class="h-[0.8rem]"></div>
-            <KeywordList v-if="store.global.showSearchBox && store.global.showKeywordList" :Keywords="keyword" :ListData="keywordList"
-                :Selected="keywordListIndex" />
+            <div class="relative w-full">
+                <SearchBox v-if="store.global.showSearchBox" Placeholder="输入搜索内容" Title="按下回车搜索" @updateEvent="
+                    (text: string): void => {
+                        keyword = text;
+                    }
+                " />
+                <button
+                    v-if="store.global.showSearchBox && store.global.showKeywordList && keywordSuggestionPermissionRequired"
+                    class="mt-3 cursor-pointer rounded-(--border-radius) border border-[#8888] px-3 py-1 text-sm transition-colors hover:bg-white/20"
+                    type="button" @click="enableKeywordSuggestions">
+                    授权百度搜索建议
+                </button>
+                <div class="h-[0.8rem]"></div>
+                <KeywordList v-if="store.global.showSearchBox && store.global.showKeywordList"
+                    class="absolute left-0 top-full" :Keywords="keyword" :ListData="keywordList"
+                    :Selected="keywordListIndex" />
+            </div>
         </div>
 
         <Weather Title="点击查看详情" />
